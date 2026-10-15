@@ -187,7 +187,7 @@ export default function Contact() {
                   fileInputRef.current?.click();
                 }
               }}
-              className="border-2 border-dashed border-[#B8C5A8]/30 p-8 text-center hover:border-vampire-red/80 transition-colors cursor-pointer group rounded-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red backdrop-blur-md bg-[#693D4E]/20"
+              className="border-2 border-dashed border-[#B8C5A8]/30 p-8 text-center hover:border-vampire-red/80 transition-colors cursor-pointer group rounded-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red backdrop-blur-md bg-[#22121b]/40"
               onClick={() => fileInputRef.current?.click()}
               aria-label={t("Haz clic para adjuntar referencias (PDF, JPG, PNG)", "Click to attach references (PDF, JPG, PNG)")}
             >

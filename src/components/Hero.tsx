@@ -20,7 +20,6 @@ export default function Hero() {
   const plateRightRef = useRef<HTMLDivElement>(null);
   const plateLeftRef = useRef<HTMLDivElement>(null);
   const descCardRef = useRef<HTMLDivElement>(null);
-  const metadataCardRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
@@ -57,9 +56,9 @@ export default function Hero() {
           '-=0.9'
         )
         .fromTo(
-          [descCardRef.current, metadataCardRef.current],
+          descCardRef.current,
           { y: 40, opacity: 0, scale: 0.96 },
-          { y: 0, opacity: 1, scale: 1, duration: 1.0, stagger: 0.15, ease: 'back.out(1.2)' },
+          { y: 0, opacity: 1, scale: 1, duration: 1.0, ease: 'back.out(1.2)' },
           '-=0.6'
         )
         .fromTo(
@@ -173,7 +172,7 @@ export default function Hero() {
     <section 
       ref={sectionRef} 
       className="relative min-h-[100svh] flex flex-col justify-between items-center overflow-hidden pt-24 pb-12 px-4 sm:px-6 md:px-12 select-none"
-      style={{ backgroundColor: '#693D4E' }}
+      style={{ backgroundColor: '#22121b' }}
     >
       {/* 1. Dark Moody Botanical Background with Chiaroscuro Floral Centerpiece */}
       <BotanicalBackground />
@@ -183,7 +182,7 @@ export default function Hero() {
         <SideRays
           speed={1.2}
           rayColor1="#B8C5A8"
-          rayColor2="#33432B"
+          rayColor2="#24301d"
           intensity={1.2}
           spread={2.2}
           origin="top-right"
@@ -201,15 +200,15 @@ export default function Hero() {
         ref={plateRightRef}
         className="absolute right-4 sm:right-8 md:right-16 lg:right-24 top-28 sm:top-32 md:top-36 z-10 pointer-events-none max-w-[170px] sm:max-w-[220px] md:max-w-[300px] lg:max-w-[340px] will-change-transform"
       >
-        <div className="p-2 sm:p-2.5 rounded-none backdrop-blur-xl bg-[#693D4E]/45 border border-[#B8C5A8]/30 shadow-[0_20px_60px_rgba(51,67,43,0.7)] rotate-3">
-          <div className="relative aspect-[4/5] overflow-hidden border border-[#B8C5A8]/20 bg-[#33432B]">
+        <div className="p-2 sm:p-2.5 rounded-none backdrop-blur-xl bg-[#22121b]/60 border border-[#B8C5A8]/30 shadow-[0_20px_60px_rgba(22,32,18,0.85)] rotate-3">
+          <div className="relative aspect-[4/5] overflow-hidden border border-[#B8C5A8]/20 bg-[#24301d]">
             <img 
               src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=900&auto=format&fit=crop" 
               alt="Archival Nocturne Flora" 
               className="w-full h-full object-cover filter contrast-110 brightness-90 hover:scale-105 transition-transform duration-700"
             />
             {/* Chiaroscuro vignette overlay on photo */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#33432B]/80 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#162012]/85 via-transparent to-transparent pointer-events-none" />
             <div className="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between text-[9px] font-mono tracking-widest text-[#B8C5A8]">
               <span>FIG. 01 · NOCTURNA</span>
               <span>8K CHIAROSCURO</span>
@@ -223,14 +222,14 @@ export default function Hero() {
         ref={plateLeftRef}
         className="absolute left-4 sm:left-8 md:left-14 lg:left-20 bottom-36 sm:bottom-40 md:bottom-44 z-10 pointer-events-none max-w-[150px] sm:max-w-[190px] md:max-w-[250px] lg:max-w-[280px] will-change-transform hidden sm:block"
       >
-        <div className="p-2 rounded-none backdrop-blur-xl bg-[#693D4E]/45 border border-[#B8C5A8]/30 shadow-[0_20px_60px_rgba(51,67,43,0.7)] -rotate-3">
-          <div className="relative aspect-[3/4] overflow-hidden border border-[#B8C5A8]/20 bg-[#33432B]">
+        <div className="p-2 rounded-none backdrop-blur-xl bg-[#22121b]/60 border border-[#B8C5A8]/30 shadow-[0_20px_60px_rgba(22,32,18,0.85)] -rotate-3">
+          <div className="relative aspect-[3/4] overflow-hidden border border-[#B8C5A8]/20 bg-[#24301d]">
             <img 
               src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800&auto=format&fit=crop" 
               alt="Botanical Study Dissection" 
               className="w-full h-full object-cover filter contrast-115 brightness-95"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#693D4E]/80 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#22121b]/85 via-transparent to-transparent pointer-events-none" />
             <div className="absolute bottom-1.5 left-2 right-2 flex items-center justify-between text-[8px] font-mono tracking-widest text-[#B8C5A8]">
               <span>PLATE 04 · STUDY</span>
               <span>EXP. 2026</span>
@@ -246,9 +245,7 @@ export default function Hero() {
       >
         <div className="flex items-center gap-2">
           <Sparkles size={14} className="text-[#B8C5A8] animate-pulse" aria-hidden="true" />
-          <span>{t("EDITORIAL FOLIO MMXXVI", "EDITORIAL FOLIO MMXXVI")}</span>
-          <span className="text-[#B8C5A8]/40">/</span>
-          <span className="text-[#B8C5A8]/80">{t("CONCEPT ART & ENTORNO", "CONCEPT ART & ENVIRONMENT")}</span>
+          <span className="font-bold text-[#B8C5A8]">{t("CONCEPT ART & ENTORNO", "CONCEPT ART & ENVIRONMENT")}</span>
         </div>
         <div className="flex items-center gap-3 text-[10px] text-[#B8C5A8]/80">
           <span>{t("MADRID · REMOTO", "MADRID · REMOTE")}</span>
@@ -265,22 +262,22 @@ export default function Hero() {
         {/* Line 1: Colossal First Name overlapping the floral center and secondary plates */}
         <h1 
           ref={titleLine1Ref}
-          className="text-[3.8rem] sm:text-[6.5rem] md:text-[9rem] lg:text-[12rem] xl:text-[14.5rem] 2xl:text-[17rem] font-serif font-black tracking-tighter uppercase leading-[0.78] text-[#B8C5A8] drop-shadow-[0_20px_45px_rgba(51,67,43,0.95)] transform will-change-transform select-none"
-          style={{ textShadow: '0 8px 30px rgba(51,67,43,0.9)' }}
+          className="text-[3.8rem] sm:text-[6.5rem] md:text-[9rem] lg:text-[12rem] xl:text-[14.5rem] 2xl:text-[17rem] font-serif font-black tracking-tighter uppercase leading-[0.78] text-[#B8C5A8] drop-shadow-[0_20px_45px_rgba(22,32,18,0.95)] transform will-change-transform select-none"
+          style={{ textShadow: '0 8px 30px rgba(22,32,18,0.95)' }}
         >
           MARINA
         </h1>
 
         {/* Central Intersecting Editorial Ribbon across the flowers */}
-        <div className="my-[-0.5rem] sm:my-[-1rem] lg:my-[-1.5rem] z-30 px-4 py-1 sm:px-6 sm:py-1.5 backdrop-blur-md bg-[#693D4E]/60 border-y border-[#B8C5A8]/30 max-w-2xl text-[10px] sm:text-xs md:text-sm font-serif italic text-[#B8C5A8] tracking-[0.2em] uppercase">
+        <div className="my-[-0.5rem] sm:my-[-1rem] lg:my-[-1.5rem] z-30 px-4 py-1 sm:px-6 sm:py-1.5 backdrop-blur-md bg-[#22121b]/70 border-y border-[#B8C5A8]/30 max-w-2xl text-[10px] sm:text-xs md:text-sm font-serif italic text-[#B8C5A8] tracking-[0.2em] uppercase">
           {t("«Mundos Nocturnos de Flora y Claroscuro»", "«Nocturne Worlds of Flora & Chiaroscuro»")}
         </div>
 
         {/* Line 2: Colossal Surname intersecting right through the dusty pink floral petals */}
         <h1 
           ref={titleLine2Ref}
-          className="text-[3.8rem] sm:text-[6.5rem] md:text-[9rem] lg:text-[12rem] xl:text-[14.5rem] 2xl:text-[17rem] font-serif font-black tracking-tighter uppercase leading-[0.78] text-[#B8C5A8] drop-shadow-[0_20px_45px_rgba(51,67,43,0.95)] transform will-change-transform select-none"
-          style={{ textShadow: '0 8px 30px rgba(51,67,43,0.9)' }}
+          className="text-[3.8rem] sm:text-[6.5rem] md:text-[9rem] lg:text-[12rem] xl:text-[14.5rem] 2xl:text-[17rem] font-serif font-black tracking-tighter uppercase leading-[0.78] text-[#B8C5A8] drop-shadow-[0_20px_45px_rgba(22,32,18,0.95)] transform will-change-transform select-none"
+          style={{ textShadow: '0 8px 30px rgba(22,32,18,0.95)' }}
         >
           MARTÍN
         </h1>
@@ -289,10 +286,10 @@ export default function Hero() {
       {/* 6. Heavy Frosted Glass Blur Panels for Negative Space & Usability */}
       <div className="relative z-20 w-full max-w-7xl flex flex-col md:flex-row items-end justify-between gap-6 pointer-events-auto">
         
-        {/* Left Editorial Card: Frosted Negative Space with Artist Statement & CTA */}
+        {/* Editorial Card: Frosted Negative Space with Artist Statement & CTA */}
         <div 
           ref={descCardRef}
-          className="p-5 sm:p-6 md:p-7 rounded-none backdrop-blur-2xl bg-[#693D4E]/55 border border-[#B8C5A8]/30 shadow-[0_25px_60px_rgba(51,67,43,0.75)] max-w-md will-change-transform"
+          className="p-5 sm:p-6 md:p-7 rounded-none backdrop-blur-2xl bg-[#22121b]/70 border border-[#B8C5A8]/30 shadow-[0_25px_60px_rgba(22,32,18,0.85)] max-w-md will-change-transform"
         >
           <div className="flex items-center gap-2 mb-2.5 text-[10px] font-mono tracking-widest text-[#B8C5A8] uppercase">
             <Compass size={13} className="text-[#B8C5A8]" aria-hidden="true" />
@@ -309,7 +306,7 @@ export default function Hero() {
             <a
               ref={ctaRef}
               href="#portfolio"
-              className="inline-flex items-center gap-2.5 border-2 border-[#B8C5A8] bg-[#33432B]/80 text-[#B8C5A8] px-6 sm:px-8 py-3.5 uppercase tracking-[0.25em] font-mono text-xs font-bold hover:bg-[#B8C5A8] hover:text-[#33432B] transition-all duration-300 rounded-none min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8] shadow-lg active:scale-95"
+              className="inline-flex items-center gap-2.5 border-2 border-[#B8C5A8] bg-[#24301d]/90 text-[#B8C5A8] px-6 sm:px-8 py-3.5 uppercase tracking-[0.25em] font-mono text-xs font-bold hover:bg-[#B8C5A8] hover:text-[#162012] transition-all duration-300 rounded-none min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8] shadow-lg active:scale-95"
             >
               <span>{t("Explorar Obras", "Explore Works")}</span>
               <ArrowDownRight size={16} aria-hidden="true" />
@@ -320,36 +317,6 @@ export default function Hero() {
             >
               {t("Biografía", "Biography")}
             </a>
-          </div>
-        </div>
-
-        {/* Right Editorial Metadata Card: Frosted Negative Space Information Module */}
-        <div 
-          ref={metadataCardRef}
-          className="p-4 sm:p-5 rounded-none backdrop-blur-2xl bg-[#693D4E]/55 border border-[#B8C5A8]/30 shadow-[0_25px_60px_rgba(51,67,43,0.75)] hidden lg:flex flex-col gap-2 text-right will-change-transform max-w-xs"
-        >
-          <div className="text-[10px] font-mono tracking-widest text-[#B8C5A8] uppercase font-bold">
-            {t("SISTEMA CROMÁTICO EDITORIAL", "EDITORIAL COLOR SYSTEM")}
-          </div>
-          <div className="flex items-center justify-end gap-2 text-[11px] font-mono text-[#B8C5A8]/90">
-            <span>{t("Ciruela Apagado", "Muted Plum")}</span>
-            <span className="w-3 h-3 rounded-none bg-[#693D4E] border border-[#B8C5A8]/40" />
-            <span className="text-[#B8C5A8]/50">#693D4E</span>
-          </div>
-          <div className="flex items-center justify-end gap-2 text-[11px] font-mono text-[#B8C5A8]/90">
-            <span>{t("Sombras Kombu", "Kombu Shadows")}</span>
-            <span className="w-3 h-3 rounded-none bg-[#33432B] border border-[#B8C5A8]/40" />
-            <span className="text-[#B8C5A8]/50">#33432B</span>
-          </div>
-          <div className="flex items-center justify-end gap-2 text-[11px] font-mono text-[#B8C5A8]/90">
-            <span>{t("Pétalos Rosa", "Dusty Pink")}</span>
-            <span className="w-3 h-3 rounded-none bg-[#D2A7AA] border border-[#B8C5A8]/40" />
-            <span className="text-[#B8C5A8]/50">#D2A7AA</span>
-          </div>
-          <div className="flex items-center justify-end gap-2 text-[11px] font-mono text-[#B8C5A8]">
-            <span className="font-bold">{t("Tipografía Salvia", "Pale Sage Text")}</span>
-            <span className="w-3 h-3 rounded-none bg-[#B8C5A8] border border-[#33432B]" />
-            <span className="text-[#B8C5A8]/80 font-bold">#B8C5A8</span>
           </div>
         </div>
       </div>

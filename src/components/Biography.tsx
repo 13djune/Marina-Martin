@@ -206,10 +206,10 @@ export default function Biography() {
                 <button 
                   type="button"
                   onClick={downloadPortfolio}
-                  className="inline-flex items-center gap-2.5 border-2 border-vampire-red/40 hover:border-amber-400 bg-black/60 hover:bg-amber-400/10 text-bone hover:text-amber-300 text-xs uppercase tracking-[0.2em] px-6 py-3.5 font-bold transition-all duration-300 rounded-sm cursor-pointer shadow-md hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
+                  className="inline-flex items-center gap-2.5 border-2 border-vampire-red/40 hover:border-[#B8C5A8] bg-black/60 hover:bg-[#B8C5A8]/10 text-bone hover:text-[#B8C5A8] text-xs uppercase tracking-[0.2em] px-6 py-3.5 font-bold transition-all duration-300 rounded-sm cursor-pointer shadow-md hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
                   title={t("Descargar Dossier de Portfolio en PDF", "Download Portfolio Dossier PDF")}
                 >
-                  <FileText size={16} className="text-amber-300 group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
+                  <FileText size={16} className="text-[#B8C5A8] group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
                   <span>{t("DESCARGAR PORTFOLIO", "DOWNLOAD PORTFOLIO")}</span>
                 </button>
 
@@ -254,7 +254,7 @@ export default function Biography() {
               >
                 <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
                 <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">{t("Ilustradora Freelance", "Freelance Illustrator")}</h5>
-                <div className="text-xs uppercase tracking-wider text-amber-300 font-mono font-semibold mb-2 mt-1">
+                <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2 mt-1">
                   {t("Autónoma", "Freelance")} • {t("2022 - Actualidad", "2022 - Present")}
                 </div>
                 <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
@@ -270,8 +270,8 @@ export default function Biography() {
               >
                 <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
                 <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">{t("Artista Conceptual", "Concept Artist")}</h5>
-                <div className="text-xs uppercase tracking-wider text-amber-300 font-mono font-semibold mb-2 mt-1">
-                  <a href="https://www.linkedin.com/company/nocturnia-studios/" target="_blank" rel="noopener noreferrer" className="hover:text-vampire-red transition-colors inline-block underline decoration-amber-300/40">
+                <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2 mt-1">
+                  <a href="https://www.linkedin.com/company/nocturnia-studios/" target="_blank" rel="noopener noreferrer" className="hover:text-vampire-red transition-colors inline-block underline decoration-[#B8C5A8]/40">
                     Nocturnia Studios
                   </a> • {t("Ago 2023 - Actualidad", "Aug 2023 - Present")}
                 </div>
@@ -288,7 +288,7 @@ export default function Biography() {
               >
                 <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
                 <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">{t("Azafata de Eventos, AULA", "Event Hostess, AULA")}</h5>
-                <div className="text-xs uppercase tracking-wider text-amber-300 font-mono font-semibold mb-2 mt-1">
+                <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2 mt-1">
                   Lightbox Academy • {t("Mar 2023", "Mar 2023")}
                 </div>
                 <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
@@ -317,7 +317,7 @@ export default function Biography() {
                     Lightbox Academy
                   </a>
                 </h5>
-                <div className="text-xs uppercase tracking-wider text-amber-300 font-mono font-semibold mb-2 mt-1">
+                <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2 mt-1">
                   2023 · {t("Madrid, España", "Madrid, Spain")}
                 </div>
                 <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
@@ -333,7 +333,7 @@ export default function Biography() {
               >
                 <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
                 <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">{t("Grado en Bellas Artes", "Degree in Fine Arts")}</h5>
-                <div className="text-xs uppercase tracking-wider text-amber-300 font-mono font-semibold mb-2 mt-1">
+                <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2 mt-1">
                   Universidad de Granada • 2017 - 2021
                 </div>
                 <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
@@ -370,12 +370,12 @@ export default function Biography() {
                 <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">
                   {t("Certamen de Pintura Rápida 2026", "2026 Quick Painting Contest")}
                 </h5>
-                <div className="text-xs uppercase tracking-wider text-amber-300 font-mono font-semibold mb-2 mt-0.5">
+                <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2 mt-0.5">
                   <a 
                     href="https://fundacioncrg.com/fundacion-caja-rural-granada-entrega-el-primer-premio-de-su-xviii-certamen-de-pintura-rapida-a-pepe-bonano/" 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="hover:text-vampire-red transition-colors inline-block underline decoration-amber-300/40"
+                    className="hover:text-vampire-red transition-colors inline-block underline decoration-[#B8C5A8]/40"
                     title={t("Ver enlace oficial en Fundación Caja Rural Granada", "View official link at Fundación Caja Rural Granada")}
                   >
                     Fundación Caja Rural Granada ↗
@@ -395,7 +395,7 @@ export default function Biography() {
               >
                 <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-3 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-amber-300 font-bold bg-amber-400/10 px-2 py-0.5 rounded-sm border border-amber-400/20">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#B8C5A8] font-bold bg-vampire-red/15 px-2 py-0.5 rounded-sm border border-vampire-red/30">
                     {t("1º PREMIO", "1ST PRIZE")}
                   </span>
                   <span className="text-[11px] font-mono text-bone-muted">{t("Nov 2022", "Nov 2022")}</span>
@@ -410,7 +410,7 @@ export default function Biography() {
                     {t("VI Edición Speed Painting", "VI Speed Painting Edition")}
                   </a>
                 </h5>
-                <div className="text-xs uppercase tracking-wider text-amber-300 font-mono font-semibold mb-2 mt-0.5">
+                <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2 mt-0.5">
                   Lightbox Academy & NVIDIA
                 </div>
                 <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">

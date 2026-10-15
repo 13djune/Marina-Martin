@@ -45,14 +45,14 @@ export default function BotanicalBackground() {
     <div 
       ref={containerRef}
       className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0"
-      style={{ backgroundColor: '#693D4E' }}
+      style={{ backgroundColor: '#22121b' }}
       aria-hidden="true"
     >
-      {/* 1. Base Muted Plum Purple (#693D4E) with Kombu Green (#33432B) Shadows */}
+      {/* 1. Base Darker Muted Plum Purple (#22121b) with Deep Kombu Green (#24301d) Shadows */}
       <div 
         className="absolute inset-0 z-0"
         style={{
-          background: 'radial-gradient(ellipse at 50% 45%, #693D4E 0%, #4c2937 40%, #33432B 75%, #1e2919 100%)'
+          background: 'radial-gradient(ellipse at 50% 45%, #2a1421 0%, #200f19 40%, #1a2416 75%, #0f160d 100%)'
         }}
       />
 
@@ -71,10 +71,10 @@ export default function BotanicalBackground() {
           <defs>
             {/* Chiaroscuro directional lighting gradient: Dusty Pink glow to Kombu Green shadow */}
             <radialGradient id="chiaroscuroGlow" cx="48%" cy="40%" r="55%">
-              <stop offset="0%" stopColor="#D2A7AA" stopOpacity="0.4" />
-              <stop offset="35%" stopColor="#693D4E" stopOpacity="0.35" />
-              <stop offset="65%" stopColor="#33432B" stopOpacity="0.75" />
-              <stop offset="100%" stopColor="#1e2919" stopOpacity="0.98" />
+              <stop offset="0%" stopColor="#D2A7AA" stopOpacity="0.35" />
+              <stop offset="35%" stopColor="#22121b" stopOpacity="0.4" />
+              <stop offset="65%" stopColor="#1a2416" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#0e150c" stopOpacity="0.99" />
             </radialGradient>
 
             {/* Dusty Pink (#D2A7AA) Petal Gradients */}
@@ -260,25 +260,25 @@ export default function BotanicalBackground() {
               </g>
             </g>
 
-            {/* Floating Chiaroscuro Spores / Dew Drops */}
+            {/* Floating Chiaroscuro Spores / Dew Drops (Pale Sage & Soft Blush, no yellow) */}
             <g opacity="0.6">
               <circle cx="720" cy="330" r="2.5" fill="#fdf0f1" filter="url(#softGlowFilter)" />
-              <circle cx="890" cy="310" r="3" fill="#ffe082" filter="url(#softGlowFilter)" />
+              <circle cx="890" cy="310" r="3" fill="#B8C5A8" filter="url(#softGlowFilter)" />
               <circle cx="770" cy="240" r="1.8" fill="#fdf0f1" />
-              <circle cx="630" cy="380" r="2.2" fill="#ffe082" />
+              <circle cx="630" cy="380" r="2.2" fill="#B8C5A8" />
               <circle cx="980" cy="360" r="2" fill="#fdf0f1" />
-              <circle cx="850" cy="490" r="2.5" fill="#ffd54f" filter="url(#softGlowFilter)" />
+              <circle cx="850" cy="490" r="2.5" fill="#B8C5A8" filter="url(#softGlowFilter)" />
             </g>
           </g>
         </svg>
       </div>
 
-      {/* 3. Heavy Frosted Glass Blur Effects for Negative Space */}
+      {/* 3. Heavy Frosted Glass Blur Effects for Negative Space (Darker Chiaroscuro Mood) */}
       {/* Heavy smooth blur layer on outer edges creating clean negative space for typography and UI */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at 50% 46%, transparent 18%, rgba(105, 61, 78, 0.45) 45%, rgba(51, 67, 43, 0.85) 75%, #33432B 92%, #1e2919 100%)',
+          background: 'radial-gradient(ellipse at 50% 46%, transparent 18%, rgba(34, 18, 27, 0.55) 45%, rgba(26, 36, 21, 0.9) 75%, #162012 92%, #0e150c 100%)',
         }}
       />
 
@@ -288,7 +288,7 @@ export default function BotanicalBackground() {
         style={{
           maskImage: 'radial-gradient(ellipse at 50% 46%, transparent 22%, black 78%)',
           WebkitMaskImage: 'radial-gradient(ellipse at 50% 46%, transparent 22%, black 78%)',
-          backgroundColor: 'rgba(105, 61, 78, 0.45)',
+          backgroundColor: 'rgba(34, 18, 27, 0.5)',
         }}
       />
 
@@ -296,7 +296,7 @@ export default function BotanicalBackground() {
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          boxShadow: 'inset 0 0 160px 80px rgba(105, 61, 78, 0.9), inset 0 0 320px 160px rgba(51, 67, 43, 0.95)',
+          boxShadow: 'inset 0 0 160px 80px rgba(34, 18, 27, 0.96), inset 0 0 320px 160px rgba(22, 32, 18, 0.98)',
         }}
       />
     </div>

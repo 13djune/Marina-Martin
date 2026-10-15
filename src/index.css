@@ -4,24 +4,24 @@
   --font-serif: "Playfair Display", serif;
   --font-body: "Lora", serif;
 
-  --color-vampire-bg: #693D4E; /* Muted plum purple base */
-  --color-vampire-card: #522d3c; /* Card background deep plum */
+  --color-vampire-bg: #22121b; /* Deep muted plum purple base (darker) */
+  --color-vampire-card: #2d1823; /* Card background deep plum */
   --color-vampire-red: #B8C5A8; /* Pale sage green primary accent & UI */
   --color-vampire-red-dark: #9dae8c;
   --color-accent-green: #B8C5A8;
   --color-accent-green-dark: #9dae8c;
   --color-bone: #B8C5A8; /* Pale sage green strictly for all text */
-  --color-bone-muted: #B8C5A8; /* Pale sage green */
-  --color-tropical-green: #33432B; /* Kombu Green shadows */
-  --color-tropical-dark: #1e2919;
-  --color-kombu-green: #33432B; /* Kombu Green requested by user */
-  --color-kombu-green-dark: #1e2919;
-  --color-muted-plum: #693D4E; /* Muted plum purple requested by user */
-  --color-muted-plum-dark: #3a1e2a;
-  --color-pale-sage: #B8C5A8; /* Pale sage green requested by user */
+  --color-bone-muted: #8fa07e; /* Pale sage green muted */
+  --color-tropical-green: #24301d; /* Kombu Green shadows */
+  --color-tropical-dark: #162012;
+  --color-kombu-green: #24301d; /* Kombu Green deep shadows */
+  --color-kombu-green-dark: #162012;
+  --color-muted-plum: #22121b; /* Deep muted plum purple base */
+  --color-muted-plum-dark: #150910;
+  --color-pale-sage: #B8C5A8; /* Pale sage green */
   --color-sage-green: #B8C5A8; /* Pale sage green */
   --color-sage-green-light: #d8e2cd; /* Luminous soft sage */
-  --color-dusty-pink: #D2A7AA; /* Dusty pink requested by user */
+  --color-dusty-pink: #D2A7AA; /* Dusty pink petals */
   --color-dusty-pink-light: #e8c7c9;
   --color-dusty-pink-deep: #a66a70;
 }
@@ -33,7 +33,7 @@
   }
   
   body {
-    background-color: #693D4E;
+    background-color: #22121b;
     color: #B8C5A8;
     font-family: "Lora", Georgia, serif;
     overflow-x: hidden;
