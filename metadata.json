@@ -1,0 +1,8 @@
+{
+  "name": "Marina Martín",
+  "description": "Un portafolio web para una artista conceptual con vibras tropicales y vampíricas, galería interactiva y animaciones suaves.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
