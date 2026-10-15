@@ -78,10 +78,10 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
             repeat: Infinity, 
             ease: "easeInOut" 
           }}
-          className="w-14 h-14 sm:w-16 sm:h-16 border border-vampire-red rotate-45 flex items-center justify-center shadow-[0_0_30px_rgba(255,59,31,0.25)] mb-10 sm:mb-12 relative"
+          className="w-14 h-14 sm:w-16 sm:h-16 border border-vampire-red rotate-45 organic-diamond flex items-center justify-center shadow-[0_0_30px_rgba(184,197,168,0.35)] mb-10 sm:mb-12 relative"
         >
           <motion.div 
-            className="w-3.5 h-3.5 bg-vampire-red"
+            className="w-3.5 h-3.5 bg-vampire-red rounded-[28%] shadow-[0_0_8px_rgba(184,197,168,0.7)]"
             animate={{ scale: [1, 1.4, 1] }}
             transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
           />
@@ -93,9 +93,9 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         </div>
         
         {/* Progress Bar */}
-        <div className="w-48 h-[2px] bg-white/10 relative overflow-hidden rounded-full">
+        <div className="w-48 h-[2px] bg-vampire-red/20 relative overflow-hidden rounded-full">
           <motion.div 
-            className="absolute top-0 left-0 bottom-0 bg-vampire-red shadow-[0_0_8px_rgba(255,59,31,0.8)]"
+            className="absolute top-0 left-0 bottom-0 bg-vampire-red shadow-[0_0_8px_rgba(184,197,168,0.8)]"
             animate={{ width: `${Math.min(100, progress)}%` }}
             transition={{ type: "tween", ease: "easeOut", duration: 0.15 }}
           />

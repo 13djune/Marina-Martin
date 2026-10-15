@@ -169,15 +169,15 @@ export default function Gallery() {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`relative px-3.5 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider transition-colors duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red ${
                   isActive
-                    ? 'text-white font-bold'
-                    : 'text-bone-muted hover:text-bone hover:bg-white/5'
+                    ? 'text-black font-bold'
+                    : 'text-bone-muted hover:text-bone hover:bg-[#B8C5A8]/10'
                 }`}
               >
                 {/* Active Pill Layout Indicator Animation */}
                 {isActive && (
                   <motion.span
                     layoutId="active-gallery-pill"
-                    className="absolute inset-0 rounded-full bg-vampire-red shadow-[0_0_15px_rgba(255,59,31,0.5)] z-0"
+                    className="absolute inset-0 rounded-full bg-vampire-red shadow-[0_0_15px_rgba(184,197,168,0.5)] z-0"
                     transition={{ type: 'spring', stiffness: 380, damping: 28 }}
                   />
                 )}
@@ -187,7 +187,7 @@ export default function Gallery() {
           })}
 
           <div className="ml-auto text-[11px] font-mono text-bone-muted hidden md:block">
-            {t("Mostrando", "Showing")} <strong className="text-white">{filteredItems.length}</strong> / {galleryItems.length}
+            {t("Mostrando", "Showing")} <strong className="text-vampire-red">{filteredItems.length}</strong> / {galleryItems.length}
           </div>
         </div>
 

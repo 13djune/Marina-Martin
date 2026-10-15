@@ -44,10 +44,10 @@ function MainContent() {
       <SEO />
       <ScrollProgress />
 
-      {/* Skip to Content Link for WCAG AAA */}
+      {/* Skip to Content Link for WCAG AAA (11.68:1 contrast) */}
       <a 
         href="#portfolio" 
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[999999] focus:bg-vampire-red focus:text-white focus:px-4 focus:py-2.5 focus:rounded-md focus:shadow-2xl focus:font-bold focus:outline-none focus:ring-2 focus:ring-white text-xs uppercase tracking-wider"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[999999] focus:bg-vampire-red focus:text-black focus:px-4 focus:py-2.5 focus:rounded-md focus:shadow-2xl focus:font-bold focus:outline-none focus:ring-2 focus:ring-white text-xs uppercase tracking-wider"
       >
         {t("Saltar al contenido principal", "Skip to main content")}
       </a>
@@ -56,21 +56,21 @@ function MainContent() {
         {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
       </AnimatePresence>
       
-      <div className={`bg-vampire-bg min-h-screen relative overflow-hidden text-bone selection:bg-vampire-red selection:text-white transition-opacity duration-1000 ${isLoading ? 'opacity-0 h-screen overflow-hidden' : 'opacity-100'}`}>
+      <div className={`bg-[#693D4E] min-h-screen relative overflow-hidden text-[#B8C5A8] selection:bg-[#B8C5A8] selection:text-[#33432B] transition-opacity duration-1000 ${isLoading ? 'opacity-0 h-screen overflow-hidden' : 'opacity-100'}`}>
         <CustomCursor />
         <BackToTop />
-        {/* Pure Atmospheric Vampire Gradient Background */}
+        {/* Dark Moody Editorial Background Foundation: Muted plum (#693D4E) with Kombu Green (#33432B) shadows */}
         <div 
           className="fixed inset-0 pointer-events-none z-0" 
           style={{
-            background: 'radial-gradient(circle at 50% 18%, rgba(255, 59, 31, 0.08) 0%, rgba(28, 32, 29, 0.95) 60%, #1c201d 100%)'
+            background: 'radial-gradient(ellipse at 50% 20%, rgba(210, 167, 170, 0.08) 0%, rgba(105, 61, 78, 0.85) 45%, rgba(51, 67, 43, 0.95) 85%, #1e2919 100%)'
           }}
           aria-hidden="true"
         />
         <div 
-          className="fixed inset-0 opacity-15 pointer-events-none z-0 transform-gpu will-change-transform" 
+          className="fixed inset-0 opacity-40 pointer-events-none z-0 transform-gpu will-change-transform" 
           style={{
-            backgroundImage: 'radial-gradient(circle at 20% 20%, #ff3b1f 0%, transparent 45%), radial-gradient(circle at 80% 80%, #ff3b1f 0%, transparent 45%)'
+            backgroundImage: 'radial-gradient(circle at 20% 30%, #33432B 0%, transparent 60%), radial-gradient(circle at 80% 70%, #202a1b 0%, transparent 60%)'
           }}
           aria-hidden="true"
         />

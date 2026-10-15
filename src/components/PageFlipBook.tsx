@@ -26,7 +26,7 @@ export const PageFlipBook: React.FC<PageFlipBookProps> = ({
   currentSpread,
   onSpreadChange,
   onOpenZoom,
-  accentColor = '#ff3b1f',
+  accentColor = '#B8C5A8',
   bookRef,
   flipBookRef,
 }) => {
@@ -308,19 +308,19 @@ export const PageFlipBook: React.FC<PageFlipBookProps> = ({
 
                 {/* Center Embossed Monogram */}
                 <div className="my-auto flex flex-col items-center justify-center text-center z-10">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-white/20 flex items-center justify-center text-white/70 font-serif italic text-xl sm:text-2xl shadow-inner mb-3 bg-black/40">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-vampire-red/30 flex items-center justify-center text-bone-muted font-serif italic text-xl sm:text-2xl shadow-inner mb-3 bg-black/40">
                     MMP
                   </div>
                   <h4 className="font-serif italic text-bone text-base sm:text-lg font-bold">
                     Marina Martín Prieto
                   </h4>
-                  <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.25em] text-white/50 mt-1">
+                  <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.25em] text-bone-muted mt-1">
                     {t("ARCHIVO PRIVADO DE ESTUDIO", "PRIVATE STUDIO ARCHIVE")}
                   </p>
                 </div>
 
                 {/* Bottom Colophon Footer */}
-                <div className="z-10 flex items-center justify-between text-[8px] sm:text-[9px] font-mono text-white/40 border-t border-white/10 pt-3">
+                <div className="z-10 flex items-center justify-between text-[8px] sm:text-[9px] font-mono text-bone-muted/70 border-t border-vampire-red/20 pt-3">
                   <span>MMP · ARCHIVO DE ESTUDIO</span>
                   <span>{project.year} · ALL RIGHTS RESERVED</span>
                 </div>
@@ -385,7 +385,7 @@ export const PageFlipBook: React.FC<PageFlipBookProps> = ({
                       e.stopPropagation();
                       onOpenZoom(project.imageUrl);
                     }}
-                    className="no-flip absolute bottom-2 right-2 px-2.5 py-1 rounded-none bg-black/80 hover:bg-vampire-red text-white text-[9px] sm:text-[10px] font-mono flex items-center gap-1.5 transition-all shadow-lg border border-white/10 cursor-pointer"
+                    className="no-flip absolute bottom-2 right-2 px-2.5 py-1 rounded-none bg-black/80 hover:bg-vampire-red text-vampire-red hover:text-black text-[9px] sm:text-[10px] font-mono flex items-center gap-1.5 transition-all shadow-lg border border-vampire-red/30 cursor-pointer"
                     title={t("Ver lámina en pantalla completa", "View full resolution plate")}
                   >
                     <Maximize2 size={12} />
@@ -558,7 +558,7 @@ export const PageFlipBook: React.FC<PageFlipBookProps> = ({
                       e.stopPropagation();
                       onOpenZoom(secondaryImage);
                     }}
-                    className="no-flip absolute bottom-2 right-2 px-2 py-0.5 rounded-none bg-black/80 hover:bg-vampire-red text-white text-[9px] font-mono flex items-center gap-1 transition-all shadow-md border border-white/10 cursor-pointer"
+                    className="no-flip absolute bottom-2 right-2 px-2 py-0.5 rounded-none bg-black/80 hover:bg-vampire-red text-vampire-red hover:text-black text-[9px] font-mono flex items-center gap-1 transition-all shadow-md border border-vampire-red/30 cursor-pointer"
                     title={t("Ver lámina en pantalla completa", "View full resolution plate")}
                   >
                     <Maximize2 size={11} />
@@ -718,7 +718,7 @@ export const PageFlipBook: React.FC<PageFlipBookProps> = ({
                       e.stopPropagation();
                       onOpenZoom(sketchImage);
                     }}
-                    className="no-flip absolute bottom-2 right-2 px-2 py-0.5 rounded-none bg-black/80 hover:bg-vampire-red text-white text-[9px] font-mono flex items-center gap-1 transition-all shadow-md border border-white/10 cursor-pointer"
+                    className="no-flip absolute bottom-2 right-2 px-2 py-0.5 rounded-none bg-black/80 hover:bg-vampire-red text-vampire-red hover:text-black text-[9px] font-mono flex items-center gap-1 transition-all shadow-md border border-vampire-red/30 cursor-pointer"
                     title={t("Ver lámina en pantalla completa", "View full resolution plate")}
                   >
                     <Maximize2 size={11} />
@@ -728,18 +728,18 @@ export const PageFlipBook: React.FC<PageFlipBookProps> = ({
 
                 {/* Hotspot Drawer / Caption */}
                 {activeHotspot ? (
-                  <div className="p-2 rounded-none bg-black/90 text-white text-[9px] sm:text-[10px] border border-amber-400/40 animate-in fade-in duration-200">
+                  <div className="p-2 rounded-none bg-black/90 text-bone text-[9px] sm:text-[10px] border border-amber-400/40 animate-in fade-in duration-200">
                     <div className="flex items-center justify-between text-amber-400 font-bold mb-0.5">
                       <span>✦ {t(activeHotspot.titleEs, activeHotspot.titleEn)}</span>
                       <button 
                         type="button" 
                         onClick={(e) => { e.stopPropagation(); setActiveHotspot(null); }}
-                        className="text-white/60 hover:text-white px-1 cursor-pointer"
+                        className="text-bone-muted hover:text-vampire-red px-1 cursor-pointer transition-colors"
                       >
                         ✕
                       </button>
                     </div>
-                    <p className="font-serif italic text-white/90">
+                    <p className="font-serif italic text-bone">
                       {t(activeHotspot.descriptionEs, activeHotspot.descriptionEn)}
                     </p>
                   </div>
@@ -813,18 +813,18 @@ export const PageFlipBook: React.FC<PageFlipBookProps> = ({
                     backgroundImage: 'linear-gradient(to right, rgba(0,0,0,0.6), rgba(255,255,255,0.1) 50%, rgba(0,0,0,0.5))' 
                   }}
                 >
-                  <div className="transform -rotate-90 whitespace-nowrap text-[8px] sm:text-[9px] uppercase tracking-[0.25em] text-white/50 font-serif font-bold pointer-events-none">
+                  <div className="transform -rotate-90 whitespace-nowrap text-[8px] sm:text-[9px] uppercase tracking-[0.25em] text-bone-muted font-serif font-bold pointer-events-none">
                     <span>{project.sketchbookVol}</span>
                   </div>
                 </div>
 
                 {/* Spine Hinge Groove */}
-                <div className="absolute top-0 bottom-0 left-[30px] sm:left-[38px] md:left-[42px] w-[2px] bg-black/60 border-r border-white/10 pointer-events-none z-20 shadow-inner" />
+                <div className="absolute top-0 bottom-0 left-[30px] sm:left-[38px] md:left-[42px] w-[2px] bg-black/60 border-r border-vampire-red/20 pointer-events-none z-20 shadow-inner" />
 
                 {/* Cover Header Details */}
-                <div className="relative z-10 pl-9 sm:pl-12 pr-2 sm:pr-4 pt-1 sm:pt-2 flex items-center justify-between text-[9px] sm:text-[10px] font-mono tracking-widest text-white/70">
+                <div className="relative z-10 pl-9 sm:pl-12 pr-2 sm:pr-4 pt-1 sm:pt-2 flex items-center justify-between text-[9px] sm:text-[10px] font-mono tracking-widest text-bone">
                   <span className="uppercase font-semibold tracking-[0.2em]">{project.sketchbookVol}</span>
-                  <span className="font-semibold text-white/50">{project.year}</span>
+                  <span className="font-semibold text-bone-muted">{project.year}</span>
                 </div>
 
                 {/* Prominent Center Artwork Plate */}
@@ -844,13 +844,13 @@ export const PageFlipBook: React.FC<PageFlipBookProps> = ({
                 {/* Cover Footer & Artist Signature */}
                 <div className="relative z-10 pl-9 sm:pl-12 pr-2 sm:pr-4 pb-1 sm:pb-2">
                   <div className="text-[8px] sm:text-[9px] font-mono tracking-[0.2em] uppercase text-vampire-red font-bold mb-1 flex items-center gap-1">
-                    <span className="w-1 h-1 rounded-none bg-vampire-red" />
+                    <span className="w-1.5 h-1.5 rotate-45 organic-diamond-sm bg-vampire-red shadow-[0_0_6px_rgba(184,197,168,0.7)]" />
                     <span>{t(project.categoryEs, project.categoryEn)}</span>
                   </div>
                   <h3 className="font-serif italic font-bold text-sm sm:text-lg md:text-xl text-bone leading-tight drop-shadow-sm mb-1.5">
                     {t(project.titleEs, project.titleEn)}
                   </h3>
-                  <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[8px] sm:text-[9px] font-mono text-white/60">
+                  <div className="pt-1.5 border-t border-vampire-red/20 flex items-center justify-between text-[8px] sm:text-[9px] font-mono text-bone-muted">
                     <span className="tracking-wider">MARINA MARTÍN PRIETO</span>
                     <span className="text-vampire-red font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                       {t("ABRIR", "OPEN")} ➔
@@ -896,7 +896,7 @@ export const PageFlipBook: React.FC<PageFlipBookProps> = ({
                       className="w-full h-full object-cover filter contrast-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-                    <span className="absolute bottom-1 right-2 text-[7px] sm:text-[8px] font-mono text-white/90">
+                    <span className="absolute bottom-1 right-2 text-[7px] sm:text-[8px] font-mono text-bone font-bold">
                       REF. SK-001
                     </span>
                   </div>
@@ -928,12 +928,12 @@ export const PageFlipBook: React.FC<PageFlipBookProps> = ({
 
       {/* Touch & Swipe Helper Hint on Mobile */}
       {isMobile && (
-        <div className="mt-3 flex items-center gap-3 text-[11px] font-mono text-white/50">
+        <div className="mt-3 flex items-center gap-3 text-[11px] font-mono text-bone-muted">
           <button 
             type="button" 
             onClick={turnPrev} 
             disabled={flippedCount <= 0}
-            className="px-3 py-1 rounded-md bg-white/10 hover:bg-white/20 disabled:opacity-20 flex items-center gap-1 cursor-pointer"
+            className="px-3 py-1 rounded-md bg-black/60 border border-vampire-red/25 hover:bg-vampire-red/20 text-bone hover:text-vampire-red disabled:opacity-20 flex items-center gap-1 cursor-pointer transition-colors"
           >
             <ChevronLeft size={14} /> {t("Ant.", "Prev")}
           </button>
@@ -942,7 +942,7 @@ export const PageFlipBook: React.FC<PageFlipBookProps> = ({
             type="button" 
             onClick={turnNext} 
             disabled={flippedCount >= totalLeaves}
-            className="px-3 py-1 rounded-md bg-white/10 hover:bg-white/20 disabled:opacity-20 flex items-center gap-1 cursor-pointer"
+            className="px-3 py-1 rounded-md bg-black/60 border border-vampire-red/25 hover:bg-vampire-red/20 text-bone hover:text-vampire-red disabled:opacity-20 flex items-center gap-1 cursor-pointer transition-colors"
           >
             {t("Sig.", "Next")} <ChevronRight size={14} />
           </button>

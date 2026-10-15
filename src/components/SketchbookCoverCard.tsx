@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { motion } from 'motion/react';
-import { BookOpen, Sparkles } from 'lucide-react';
+import { motion, useMotionValue, useSpring } from 'motion/react';
 import { Project } from '../data';
 import { useLanguage } from '../LanguageContext';
 import ProgressiveImage from './ui/ProgressiveImage';
@@ -13,9 +12,17 @@ interface SketchbookCoverCardProps {
 
 export const SketchbookCoverCard: React.FC<SketchbookCoverCardProps> = ({ project, index, onClick }) => {
   const { t } = useLanguage();
-  const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
-  const [rotate, setRotate] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Motion values for smooth 3D tilt tracking
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Silky spring physics for tilt rotation
+  const tiltSpring = { stiffness: 280, damping: 24, mass: 0.5 };
+  const rotateX = useSpring(mouseY, tiltSpring);
+  const rotateY = useSpring(mouseX, tiltSpring);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -24,16 +31,23 @@ export const SketchbookCoverCard: React.FC<SketchbookCoverCardProps> = ({ projec
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    // Gentle 3D perspective tilt
-    setRotate({
-      x: ((y - centerY) / centerY) * -10,
-      y: ((x - centerX) / centerX) * 12,
-    });
+
+    // Normalised tilt angles: X tilts based on Y, Y tilts based on X
+    const tiltAmountX = ((y - centerY) / centerY) * -12;
+    const tiltAmountY = ((x - centerX) / centerX) * 14;
+
+    mouseY.set(tiltAmountX);
+    mouseX.set(tiltAmountY);
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
   };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    setRotate({ x: 0, y: 0 });
+    mouseX.set(0);
+    mouseY.set(0);
   };
 
   return (
@@ -41,7 +55,7 @@ export const SketchbookCoverCard: React.FC<SketchbookCoverCardProps> = ({ projec
       ref={cardRef}
       className="group relative cursor-pointer select-none py-4"
       style={{ perspective: '1600px' }}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
@@ -57,30 +71,31 @@ export const SketchbookCoverCard: React.FC<SketchbookCoverCardProps> = ({ projec
     >
       {/* 3D Contact Shadow on Table/Desk */}
       <div 
-        className="absolute -bottom-2 inset-x-6 h-10 rounded-full blur-xl pointer-events-none transition-all duration-500"
+        className="absolute -bottom-2 inset-x-6 h-10 rounded-none blur-xl pointer-events-none transition-all duration-500"
         style={{
           backgroundColor: 'rgba(0,0,0,0.85)',
           transform: isHovered ? 'scale(1.08) translateY(12px)' : 'scale(0.95)',
           opacity: isHovered ? 0.95 : 0.65,
         }}
+        aria-hidden="true"
       />
 
-      {/* 3D Physical Book Structure - Square 1:1 Aspect Ratio (Crisp Square Corners) */}
+      {/* 3D Physical Book Structure - Square 1:1 Aspect Ratio (Crisp Square Corners, stays closed & tilts with mouse) */}
       <motion.div
         className="relative w-full aspect-square rounded-none transform-gpu transition-shadow duration-500"
-        animate={{
-          rotateX: isHovered ? rotate.x : 0,
-          rotateY: isHovered ? rotate.y : 0,
-          y: isHovered ? -12 : 0,
-          scale: isHovered ? 1.03 : 1,
-        }}
-        transition={{ type: 'spring', stiffness: 280, damping: 22 }}
         style={{
           transformStyle: 'preserve-3d',
+          rotateX,
+          rotateY,
           boxShadow: isHovered 
             ? `0 35px 70px -15px rgba(0,0,0,0.98), 0 0 40px ${project.accentColor}25`
             : '0 20px 45px -10px rgba(0,0,0,0.85)',
         }}
+        animate={{
+          y: isHovered ? -12 : 0,
+          scale: isHovered ? 1.03 : 1,
+        }}
+        transition={{ type: 'spring', stiffness: 280, damping: 22 }}
       >
         {/* Hardcover Casing - Sharp Square Format, No Border Radius */}
         <div 
@@ -88,8 +103,8 @@ export const SketchbookCoverCard: React.FC<SketchbookCoverCardProps> = ({ projec
           style={{
             backgroundColor: project.coverColor,
             backgroundImage: `
-              radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.07) 0%, transparent 70%),
-              linear-gradient(160deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.65) 100%)
+              radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 70%),
+              linear-gradient(160deg, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.68) 100%)
             `,
           }}
         >
@@ -117,18 +132,18 @@ export const SketchbookCoverCard: React.FC<SketchbookCoverCardProps> = ({ projec
             }}
           >
             {/* Vertical Spine Title */}
-            <div className="transform -rotate-90 whitespace-nowrap text-[7.5px] sm:text-[8px] uppercase tracking-[0.25em] text-white/50 font-serif font-semibold pointer-events-none">
+            <div className="transform -rotate-90 whitespace-nowrap text-[7.5px] sm:text-[8px] uppercase tracking-[0.25em] text-bone-muted font-serif font-semibold pointer-events-none">
               <span>{project.sketchbookVol}</span>
             </div>
           </div>
 
           {/* Spine Hinge Indentation */}
-          <div className="absolute top-0 bottom-0 left-[30px] sm:left-[34px] md:left-[36px] w-[2px] bg-black/50 border-r border-white/10 pointer-events-none z-20 shadow-inner" />
+          <div className="absolute top-0 bottom-0 left-[30px] sm:left-[34px] md:left-[36px] w-[2px] bg-black/50 border-r border-vampire-red/20 pointer-events-none z-20 shadow-inner" />
 
           {/* Cover Header Details */}
-          <div className="relative z-10 pl-10 sm:pl-11 md:pl-12 pr-4 pt-3 sm:pt-3.5 flex items-center justify-between text-[10px] font-mono tracking-widest text-white/60">
-            <span className="uppercase font-medium text-white/70">{project.sketchbookVol}</span>
-            <span className="font-medium text-white/50">{project.year}</span>
+          <div className="relative z-10 pl-10 sm:pl-11 md:pl-12 pr-4 pt-3 sm:pt-3.5 flex items-center justify-between text-[10px] font-mono tracking-widest text-bone-muted">
+            <span className="uppercase font-medium text-bone">{project.sketchbookVol}</span>
+            <span className="font-medium text-bone-muted">{project.year}</span>
           </div>
 
           {/* Center Artwork Plate (Square / Crisp) */}
@@ -173,16 +188,16 @@ export const SketchbookCoverCard: React.FC<SketchbookCoverCardProps> = ({ projec
 
           {/* Cover Footer & Clean Typography */}
           <div className="relative z-10 pl-10 sm:pl-11 md:pl-12 pr-4 pb-3 sm:pb-3.5">
-            <div className="text-[10px] font-mono tracking-[0.2em] uppercase text-[#ff6e58] font-bold mb-1 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#ff6e58]" aria-hidden="true" />
+            <div className="text-[10px] font-mono tracking-[0.2em] uppercase text-[#B8C5A8] font-bold mb-1 flex items-center gap-1.5">
+              <span className="w-2 h-2 rotate-45 organic-diamond-sm bg-[#B8C5A8] shadow-[0_0_6px_rgba(184,197,168,0.7)]" aria-hidden="true" />
               <span className="truncate">{t(project.categoryEs, project.categoryEn)}</span>
             </div>
-            <h3 className="font-serif italic font-bold text-base sm:text-lg md:text-xl text-bone leading-tight drop-shadow-sm mb-1.5 group-hover:text-white transition-colors truncate">
+            <h3 className="font-serif italic font-bold text-base sm:text-lg md:text-xl text-bone leading-tight drop-shadow-sm mb-1.5 group-hover:text-vampire-red transition-colors truncate">
               {t(project.titleEs, project.titleEn)}
             </h3>
-            <div className="pt-1.5 border-t border-white/20 flex items-center justify-between text-[10px] font-mono text-bone-muted group-hover:text-white transition-colors">
+            <div className="pt-1.5 border-t border-vampire-red/20 flex items-center justify-between text-[10px] font-mono text-bone-muted group-hover:text-vampire-red transition-colors">
               <span className="tracking-wider">{t("ABRIR CUADERNO", "OPEN SKETCHBOOK")}</span>
-              <span className="text-[#ff6e58] font-bold transform group-hover:translate-x-1.5 transition-transform duration-300">➔</span>
+              <span className="text-[#B8C5A8] font-bold transform group-hover:translate-x-1.5 transition-transform duration-300">➔</span>
             </div>
           </div>
         </div>

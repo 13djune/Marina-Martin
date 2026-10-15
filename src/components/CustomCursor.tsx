@@ -6,47 +6,55 @@ export default function CustomCursor() {
   const [isClicking, setIsClicking] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
-  // Instant positions for primary cursor to avoid any lag
+  // Instant positions for primary cursor
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
-  // Velocity tracking for natural fluid blob motion stretch
+  // Velocity tracking across X and Y axes
   const velX = useVelocity(cursorX);
   const velY = useVelocity(cursorY);
 
-  // Smooth positions for outer decorative shape
-  const springConfig = { damping: 24, stiffness: 280, mass: 0.6 };
-  const smoothX = useSpring(cursorX, springConfig);
-  const smoothY = useSpring(cursorY, springConfig);
+  // Smooth positions for outer fluid aura
+  const ringSpringConfig = { damping: 22, stiffness: 260, mass: 0.55 };
+  const smoothX = useSpring(cursorX, ringSpringConfig);
+  const smoothY = useSpring(cursorY, ringSpringConfig);
 
-  // Subtle velocity-based blob elongation (capped to avoid exaggerated deformation)
-  const rawSpeed = useTransform(() => {
+  // Combined speed along the motion trajectory (capped to keep deformation elegant)
+  const speed = useTransform(() => {
     const vx = velX.get();
     const vy = velY.get();
-    return Math.min(Math.hypot(vx, vy), 900);
+    return Math.min(Math.hypot(vx, vy), 1400);
   });
-  
-  // Spring-softened blob stretch & squash for organic fluid feel
-  const blobStretch = useSpring(
-    useTransform(rawSpeed, [0, 900], [1, 1.28]),
-    { damping: 20, stiffness: 260 }
-  );
-  const blobSquash = useSpring(
-    useTransform(rawSpeed, [0, 900], [1, 0.82]),
-    { damping: 20, stiffness: 260 }
-  );
 
-  // Motion angle so blob subtly aligns with movement direction
-  const blobAngle = useTransform(() => {
+  // Angle of motion along the X and Y axes
+  const moveAngle = useTransform(() => {
     const vx = velX.get();
     const vy = velY.get();
     if (Math.hypot(vx, vy) < 25) return 0;
     return Math.atan2(vy, vx) * (180 / Math.PI);
   });
-  const smoothAngle = useSpring(blobAngle, { damping: 25, stiffness: 200 });
+  const smoothAngle = useSpring(moveAngle, { damping: 20, stiffness: 320 });
+
+  // Axis-responsive elongation: stretches along the movement vector
+  const stretch = useTransform(speed, [0, 1200], [1, 1.55]);
+  const smoothStretch = useSpring(stretch, { damping: 18, stiffness: 300 });
+
+  // Incompressible fluid volume conservation: squashes perpendicularly
+  const squash = useTransform(speed, [0, 1200], [1, 0.74]);
+  const smoothSquash = useSpring(squash, { damping: 18, stiffness: 300 });
+
+  // Outer ring deformation along movement axis
+  const outerStretch = useSpring(
+    useTransform(speed, [0, 1200], [1, 1.38]),
+    { damping: 20, stiffness: 250 }
+  );
+  const outerSquash = useSpring(
+    useTransform(speed, [0, 1200], [1, 0.82]),
+    { damping: 20, stiffness: 250 }
+  );
 
   useEffect(() => {
-    // Only show custom cursor on devices with a mouse
+    // Only show custom cursor on devices with a fine pointer (mouse)
     if (window.matchMedia('(pointer: coarse)').matches) {
       return;
     }
@@ -65,7 +73,8 @@ export default function CustomCursor() {
         target.closest('button') ||
         target.closest('a') ||
         target.classList.contains('cursor-pointer') ||
-        target.closest('.cursor-pointer')
+        target.closest('.cursor-pointer') ||
+        target.getAttribute('role') === 'button'
       ) {
         setIsHovering(true);
       } else {
@@ -105,65 +114,70 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Inner Fluid Droplet: gentle undulating blob morphing */}
+      {/* Primary Fluid Droplet with mix-blend-difference on interaction */}
       <motion.div
-        className="fixed top-0 left-0 w-3.5 h-3.5 bg-vampire-red pointer-events-none z-[1000000] hidden sm:block origin-center shadow-[0_0_12px_rgba(255,59,31,0.75)]"
+        className={`fixed top-0 left-0 pointer-events-none z-[1000000] hidden sm:block origin-center rounded-full ${
+          isHovering 
+            ? 'w-10 h-10 bg-[#B8C5A8] mix-blend-difference shadow-none' 
+            : 'w-3.5 h-3.5 bg-[#B8C5A8] shadow-[0_0_14px_rgba(184,197,168,0.85)]'
+        }`}
         style={{
           x: cursorX,
           y: cursorY,
-          marginLeft: '-7px',
-          marginTop: '-7px',
-          rotate: smoothAngle,
-          scaleX: blobStretch,
-          scaleY: blobSquash,
+          marginLeft: isHovering ? '-20px' : '-7px',
+          marginTop: isHovering ? '-20px' : '-7px',
+          rotate: isHovering ? 0 : smoothAngle,
+          scaleX: isHovering ? 1 : smoothStretch,
+          scaleY: isHovering ? 1 : smoothSquash,
         }}
         animate={{
-          scale: isClicking ? 0.6 : isHovering ? 2.2 : 1,
+          scale: isClicking ? 0.8 : isHovering ? 1 : 1,
           borderRadius: isHovering 
             ? '50%'
             : [
-                '48% 52% 56% 44% / 52% 48% 54% 46%',
-                '54% 46% 44% 56% / 46% 54% 48% 52%',
-                '44% 56% 52% 48% / 54% 46% 52% 48%',
-                '48% 52% 56% 44% / 52% 48% 54% 46%',
+                '60% 40% 50% 50% / 50% 50% 50% 50%',
+                '50% 50% 40% 60% / 45% 55% 45% 55%',
+                '40% 60% 55% 45% / 55% 45% 55% 45%',
+                '60% 40% 50% 50% / 50% 50% 50% 50%',
               ],
         }}
         transition={{
-          scale: { type: 'tween', duration: 0.15 },
-          borderRadius: { duration: 3.2, repeat: Infinity, ease: 'easeInOut' },
+          scale: { type: 'spring', stiffness: 350, damping: 22 },
+          borderRadius: { duration: 2.8, repeat: Infinity, ease: 'easeInOut' },
         }}
       />
       
-      {/* Outer Organic Blob Ring: moves with fluid drag & subtle morphing */}
+      {/* Outer Organic Fluid Aura Ring */}
       <motion.div
-        className="fixed top-0 left-0 w-10 h-10 border border-white/45 pointer-events-none z-[1000000] hidden sm:block origin-center shadow-[0_0_15px_rgba(255,255,255,0.08)] backdrop-blur-[0.5px]"
+        className={`fixed top-0 left-0 pointer-events-none z-[1000000] hidden sm:block origin-center rounded-full transition-opacity duration-200 ${
+          isHovering 
+            ? 'w-14 h-14 border-2 border-[#B8C5A8] mix-blend-difference' 
+            : 'w-10 h-10 border border-[#B8C5A8]/70 shadow-[0_0_18px_rgba(184,197,168,0.4)]'
+        }`}
         style={{
           x: smoothX,
           y: smoothY,
-          marginLeft: '-20px',
-          marginTop: '-20px',
-          rotate: smoothAngle,
-          scaleX: blobStretch,
-          scaleY: blobSquash,
+          marginLeft: isHovering ? '-28px' : '-20px',
+          marginTop: isHovering ? '-28px' : '-20px',
+          rotate: isHovering ? 0 : smoothAngle,
+          scaleX: isHovering ? 1 : outerStretch,
+          scaleY: isHovering ? 1 : outerSquash,
         }}
         animate={{
-          scale: isClicking ? 0.75 : isHovering ? 1.35 : 1,
-          opacity: isHovering ? 0 : 0.85,
-          borderRadius: isClicking
+          scale: isClicking ? 0.75 : isHovering ? 1.05 : 1,
+          opacity: isHovering ? 0.95 : 0.8,
+          borderRadius: isHovering
             ? '50%'
-            : isHovering
-              ? '50%'
-              : [
-                  '44% 56% 62% 38% / 54% 46% 54% 46%',
-                  '56% 44% 38% 62% / 46% 54% 44% 56%',
-                  '40% 60% 54% 46% / 58% 42% 56% 44%',
-                  '44% 56% 62% 38% / 54% 46% 54% 46%',
-                ],
+            : [
+                '45% 55% 65% 35% / 55% 45% 55% 45%',
+                '58% 42% 38% 62% / 45% 55% 42% 58%',
+                '40% 60% 52% 48% / 60% 40% 58% 42%',
+                '45% 55% 65% 35% / 55% 45% 55% 45%',
+              ],
         }}
         transition={{
-          scale: { type: 'tween', duration: 0.2 },
-          opacity: { duration: 0.2 },
-          borderRadius: { duration: 3.8, repeat: Infinity, ease: 'easeInOut' },
+          scale: { type: 'spring', stiffness: 300, damping: 24 },
+          borderRadius: { duration: 3.4, repeat: Infinity, ease: 'easeInOut' },
         }}
       />
     </>

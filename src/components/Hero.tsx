@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ArrowDownRight, Compass, Sparkles } from 'lucide-react';
 import { useLanguage } from '../LanguageContext';
 import SideRays from './SideRays';
+import BotanicalBackground from './BotanicalBackground';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -13,9 +14,13 @@ export default function Hero() {
   const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const titleLine1Ref = useRef<HTMLSpanElement>(null);
-  const titleLine2Ref = useRef<HTMLSpanElement>(null);
-  const descRef = useRef<HTMLParagraphElement>(null);
+  const titleLine1Ref = useRef<HTMLHeadingElement>(null);
+  const titleLine2Ref = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLDivElement>(null);
+  const plateRightRef = useRef<HTMLDivElement>(null);
+  const plateLeftRef = useRef<HTMLDivElement>(null);
+  const descCardRef = useRef<HTMLDivElement>(null);
+  const metadataCardRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
@@ -24,26 +29,38 @@ export default function Hero() {
     if (!section) return;
 
     const ctx = gsap.context(() => {
-      // 1. Initial Choreographed Entrance Timeline
+      // 1. Initial Choreographed Editorial Entrance Timeline
       const introTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
       introTl
         .fromTo(
-          [titleLine1Ref.current, titleLine2Ref.current],
-          { y: 60, opacity: 0, rotateX: 25, transformPerspective: 1000 },
-          { y: 0, opacity: 1, rotateX: 0, duration: 1.2, stagger: 0.18, delay: 0.2 }
+          [plateLeftRef.current, plateRightRef.current],
+          { y: 50, opacity: 0, scale: 0.94 },
+          { y: 0, opacity: 1, scale: 1, duration: 1.3, stagger: 0.2, delay: 0.1 }
         )
         .fromTo(
-          descRef.current,
-          { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.9 },
+          subtitleRef.current,
+          { y: -20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8 },
+          '-=0.9'
+        )
+        .fromTo(
+          titleLine1Ref.current,
+          { y: 80, opacity: 0, skewY: 3 },
+          { y: 0, opacity: 1, skewY: 0, duration: 1.2 },
+          '-=0.7'
+        )
+        .fromTo(
+          titleLine2Ref.current,
+          { y: 90, opacity: 0, skewY: -3 },
+          { y: 0, opacity: 1, skewY: 0, duration: 1.2 },
+          '-=0.9'
+        )
+        .fromTo(
+          [descCardRef.current, metadataCardRef.current],
+          { y: 40, opacity: 0, scale: 0.96 },
+          { y: 0, opacity: 1, scale: 1, duration: 1.0, stagger: 0.15, ease: 'back.out(1.2)' },
           '-=0.6'
-        )
-        .fromTo(
-          ctaRef.current,
-          { y: 25, opacity: 0, scale: 0.95 },
-          { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(1.4)' },
-          '-=0.5'
         )
         .fromTo(
           scrollIndicatorRef.current,
@@ -55,7 +72,7 @@ export default function Hero() {
       // Continuous subtle bounce on scroll indicator
       if (scrollIndicatorRef.current) {
         gsap.to(scrollIndicatorRef.current.querySelector('.chevron-bounce'), {
-          y: 7,
+          y: 6,
           repeat: -1,
           yoyo: true,
           duration: 0.9,
@@ -63,17 +80,73 @@ export default function Hero() {
         });
       }
 
-      // 2. ScrollTrigger Parallax on Scroll Down
-      if (contentRef.current) {
-        gsap.to(contentRef.current, {
-          yPercent: 40,
-          opacity: 0,
+      // 2. Parallax layers on scroll down
+      if (titleLine1Ref.current) {
+        gsap.to(titleLine1Ref.current, {
+          xPercent: -8,
+          opacity: 0.3,
           ease: 'none',
           scrollTrigger: {
             trigger: section,
             start: 'top top',
             end: 'bottom top',
-            scrub: 0.6,
+            scrub: 0.5,
+          },
+        });
+      }
+
+      if (titleLine2Ref.current) {
+        gsap.to(titleLine2Ref.current, {
+          xPercent: 8,
+          opacity: 0.3,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 0.5,
+          },
+        });
+      }
+
+      if (plateRightRef.current) {
+        gsap.to(plateRightRef.current, {
+          yPercent: -25,
+          rotate: 6,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 0.8,
+          },
+        });
+      }
+
+      if (plateLeftRef.current) {
+        gsap.to(plateLeftRef.current, {
+          yPercent: 20,
+          rotate: -5,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 0.8,
+          },
+        });
+      }
+
+      if (descCardRef.current) {
+        gsap.to(descCardRef.current, {
+          yPercent: 30,
+          opacity: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: '60% top',
+            scrub: 0.5,
           },
         });
       }
@@ -86,7 +159,7 @@ export default function Hero() {
           scrollTrigger: {
             trigger: section,
             start: 'top top',
-            end: '30% top',
+            end: '25% top',
             scrub: true,
           },
         });
@@ -99,76 +172,197 @@ export default function Hero() {
   return (
     <section 
       ref={sectionRef} 
-      className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden"
+      className="relative min-h-[100svh] flex flex-col justify-between items-center overflow-hidden pt-24 pb-12 px-4 sm:px-6 md:px-12 select-none"
+      style={{ backgroundColor: '#693D4E' }}
     >
-      {/* Pure Atmospheric Vampire Gradient Background */}
-      <div 
-        className="absolute inset-0 z-0 bg-gradient-to-b from-vampire-bg via-[#161a17] to-vampire-bg"
-        style={{
-          backgroundImage: 'radial-gradient(circle at 50% 35%, rgba(255, 59, 31, 0.08) 0%, rgba(28, 32, 29, 0.95) 70%, #1c201d 100%)'
-        }}
-      />
+      {/* 1. Dark Moody Botanical Background with Chiaroscuro Floral Centerpiece */}
+      <BotanicalBackground />
 
-      {/* Light Rays */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      {/* 2. Cinematic Volumetric Lighting Rays */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-40 mix-blend-screen">
         <SideRays
-          speed={1.5}
-          rayColor1="#ff3b1f"
-          rayColor2="#801005"
+          speed={1.2}
+          rayColor1="#B8C5A8"
+          rayColor2="#33432B"
           intensity={1.2}
-          spread={2}
+          spread={2.2}
           origin="top-right"
-          tilt={-10}
-          saturation={1}
-          blend={0.5}
-          falloff={1.2}
-          opacity={0.4}
+          tilt={-12}
+          saturation={0.9}
+          blend={0.6}
+          falloff={1.1}
+          opacity={0.3}
         />
       </div>
 
-      {/* Content */}
+      {/* 3. Secondary Curated Photographic Plates (Layered beneath & intersected by massive typography) */}
+      {/* Secondary Photo 1 - Top-Right Archival Plate */}
       <div 
-        ref={contentRef}
-        className="relative z-10 text-left px-4 max-w-7xl mx-auto w-full mt-20 will-change-transform"
+        ref={plateRightRef}
+        className="absolute right-4 sm:right-8 md:right-16 lg:right-24 top-28 sm:top-32 md:top-36 z-10 pointer-events-none max-w-[170px] sm:max-w-[220px] md:max-w-[300px] lg:max-w-[340px] will-change-transform"
       >
-        <h1 className="text-7xl md:text-9xl font-black uppercase leading-[0.85] mb-6 transform-origin-left">
-          <span ref={titleLine1Ref} className="inline-block will-change-transform">
-            {t("Luz &", "Exotic")}
-          </span>
-          <br />
-          <span ref={titleLine2Ref} className="text-vampire-red inline-block will-change-transform">
-            {t("Color", "Decay")}
-          </span>
-        </h1>
-        
-        <p
-          ref={descRef}
-          className="font-sans text-sm md:text-base leading-relaxed text-bone-muted max-w-sm mb-12 font-medium will-change-transform"
-        >
-          {t(
-            "Concept artist especializada en traducir ideas en ilustraciones llenas de vida, movimiento y color.",
-            "Concept artist specializing in translating ideas into illustrations full of life, movement and color."
-          )}
-        </p>
-
-        <a
-          ref={ctaRef}
-          href="#portfolio"
-          className="inline-flex items-center gap-2 border-2 border-vampire-red text-bone px-8 py-4 uppercase tracking-[0.3em] font-sans text-xs font-bold hover:bg-vampire-red hover:text-white transition-all duration-300 rounded-sm min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white will-change-transform"
-        >
-          {t("Ver Galería", "View Gallery")}
-        </a>
+        <div className="p-2 sm:p-2.5 rounded-none backdrop-blur-xl bg-[#693D4E]/45 border border-[#B8C5A8]/30 shadow-[0_20px_60px_rgba(51,67,43,0.7)] rotate-3">
+          <div className="relative aspect-[4/5] overflow-hidden border border-[#B8C5A8]/20 bg-[#33432B]">
+            <img 
+              src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=900&auto=format&fit=crop" 
+              alt="Archival Nocturne Flora" 
+              className="w-full h-full object-cover filter contrast-110 brightness-90 hover:scale-105 transition-transform duration-700"
+            />
+            {/* Chiaroscuro vignette overlay on photo */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#33432B]/80 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between text-[9px] font-mono tracking-widest text-[#B8C5A8]">
+              <span>FIG. 01 · NOCTURNA</span>
+              <span>8K CHIAROSCURO</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Secondary Photo 2 - Lower-Left Editorial Dissection Plate */}
+      <div 
+        ref={plateLeftRef}
+        className="absolute left-4 sm:left-8 md:left-14 lg:left-20 bottom-36 sm:bottom-40 md:bottom-44 z-10 pointer-events-none max-w-[150px] sm:max-w-[190px] md:max-w-[250px] lg:max-w-[280px] will-change-transform hidden sm:block"
+      >
+        <div className="p-2 rounded-none backdrop-blur-xl bg-[#693D4E]/45 border border-[#B8C5A8]/30 shadow-[0_20px_60px_rgba(51,67,43,0.7)] -rotate-3">
+          <div className="relative aspect-[3/4] overflow-hidden border border-[#B8C5A8]/20 bg-[#33432B]">
+            <img 
+              src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800&auto=format&fit=crop" 
+              alt="Botanical Study Dissection" 
+              className="w-full h-full object-cover filter contrast-115 brightness-95"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#693D4E]/80 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute bottom-1.5 left-2 right-2 flex items-center justify-between text-[8px] font-mono tracking-widest text-[#B8C5A8]">
+              <span>PLATE 04 · STUDY</span>
+              <span>EXP. 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Top Editorial Kicker & Exhibition Coordinates */}
+      <div 
+        ref={subtitleRef}
+        className="relative z-20 w-full max-w-7xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[11px] sm:text-xs font-mono uppercase tracking-[0.3em] text-[#B8C5A8] border-b border-[#B8C5A8]/20 pb-3"
+      >
+        <div className="flex items-center gap-2">
+          <Sparkles size={14} className="text-[#B8C5A8] animate-pulse" aria-hidden="true" />
+          <span>{t("EDITORIAL FOLIO MMXXVI", "EDITORIAL FOLIO MMXXVI")}</span>
+          <span className="text-[#B8C5A8]/40">/</span>
+          <span className="text-[#B8C5A8]/80">{t("CONCEPT ART & ENTORNO", "CONCEPT ART & ENVIRONMENT")}</span>
+        </div>
+        <div className="flex items-center gap-3 text-[10px] text-[#B8C5A8]/80">
+          <span>{t("MADRID · REMOTO", "MADRID · REMOTE")}</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#B8C5A8]" aria-hidden="true" />
+          <span>{t("ILUMINACIÓN CINEMATOGRÁFICA 8K", "8K CINEMATIC LIGHTING")}</span>
+        </div>
+      </div>
+
+      {/* 5. MASSIVE BOLD TYPOGRAPHY: Intentionally Overlapping, Intersecting & Sitting Directly on Top */}
+      <div 
+        ref={contentRef}
+        className="relative z-20 w-full max-w-[1600px] my-auto flex flex-col items-center justify-center text-center pointer-events-none"
+      >
+        {/* Line 1: Colossal First Name overlapping the floral center and secondary plates */}
+        <h1 
+          ref={titleLine1Ref}
+          className="text-[3.8rem] sm:text-[6.5rem] md:text-[9rem] lg:text-[12rem] xl:text-[14.5rem] 2xl:text-[17rem] font-serif font-black tracking-tighter uppercase leading-[0.78] text-[#B8C5A8] drop-shadow-[0_20px_45px_rgba(51,67,43,0.95)] transform will-change-transform select-none"
+          style={{ textShadow: '0 8px 30px rgba(51,67,43,0.9)' }}
+        >
+          MARINA
+        </h1>
+
+        {/* Central Intersecting Editorial Ribbon across the flowers */}
+        <div className="my-[-0.5rem] sm:my-[-1rem] lg:my-[-1.5rem] z-30 px-4 py-1 sm:px-6 sm:py-1.5 backdrop-blur-md bg-[#693D4E]/60 border-y border-[#B8C5A8]/30 max-w-2xl text-[10px] sm:text-xs md:text-sm font-serif italic text-[#B8C5A8] tracking-[0.2em] uppercase">
+          {t("«Mundos Nocturnos de Flora y Claroscuro»", "«Nocturne Worlds of Flora & Chiaroscuro»")}
+        </div>
+
+        {/* Line 2: Colossal Surname intersecting right through the dusty pink floral petals */}
+        <h1 
+          ref={titleLine2Ref}
+          className="text-[3.8rem] sm:text-[6.5rem] md:text-[9rem] lg:text-[12rem] xl:text-[14.5rem] 2xl:text-[17rem] font-serif font-black tracking-tighter uppercase leading-[0.78] text-[#B8C5A8] drop-shadow-[0_20px_45px_rgba(51,67,43,0.95)] transform will-change-transform select-none"
+          style={{ textShadow: '0 8px 30px rgba(51,67,43,0.9)' }}
+        >
+          MARTÍN
+        </h1>
+      </div>
+
+      {/* 6. Heavy Frosted Glass Blur Panels for Negative Space & Usability */}
+      <div className="relative z-20 w-full max-w-7xl flex flex-col md:flex-row items-end justify-between gap-6 pointer-events-auto">
+        
+        {/* Left Editorial Card: Frosted Negative Space with Artist Statement & CTA */}
+        <div 
+          ref={descCardRef}
+          className="p-5 sm:p-6 md:p-7 rounded-none backdrop-blur-2xl bg-[#693D4E]/55 border border-[#B8C5A8]/30 shadow-[0_25px_60px_rgba(51,67,43,0.75)] max-w-md will-change-transform"
+        >
+          <div className="flex items-center gap-2 mb-2.5 text-[10px] font-mono tracking-widest text-[#B8C5A8] uppercase">
+            <Compass size={13} className="text-[#B8C5A8]" aria-hidden="true" />
+            <span>{t("DECLARACIÓN ARTÍSTICA", "ARTIST STATEMENT")}</span>
+          </div>
+          <p className="font-serif italic text-xs sm:text-sm text-[#B8C5A8] leading-relaxed mb-5">
+            {t(
+              "Concept artist especializada en traducir ideas en ilustraciones llenas de vida, movimiento, claroscuro y atmósferas botánicas densas.",
+              "Concept artist specializing in translating ideas into illustrations full of life, movement, chiaroscuro, and dense botanical atmospheres."
+            )}
+          </p>
+
+          <div className="flex items-center gap-3">
+            <a
+              ref={ctaRef}
+              href="#portfolio"
+              className="inline-flex items-center gap-2.5 border-2 border-[#B8C5A8] bg-[#33432B]/80 text-[#B8C5A8] px-6 sm:px-8 py-3.5 uppercase tracking-[0.25em] font-mono text-xs font-bold hover:bg-[#B8C5A8] hover:text-[#33432B] transition-all duration-300 rounded-none min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8] shadow-lg active:scale-95"
+            >
+              <span>{t("Explorar Obras", "Explore Works")}</span>
+              <ArrowDownRight size={16} aria-hidden="true" />
+            </a>
+            <a
+              href="#about"
+              className="inline-flex items-center gap-1.5 text-xs font-mono tracking-wider text-[#B8C5A8] hover:underline underline-offset-4 px-2 py-3 min-h-[44px]"
+            >
+              {t("Biografía", "Biography")}
+            </a>
+          </div>
+        </div>
+
+        {/* Right Editorial Metadata Card: Frosted Negative Space Information Module */}
+        <div 
+          ref={metadataCardRef}
+          className="p-4 sm:p-5 rounded-none backdrop-blur-2xl bg-[#693D4E]/55 border border-[#B8C5A8]/30 shadow-[0_25px_60px_rgba(51,67,43,0.75)] hidden lg:flex flex-col gap-2 text-right will-change-transform max-w-xs"
+        >
+          <div className="text-[10px] font-mono tracking-widest text-[#B8C5A8] uppercase font-bold">
+            {t("SISTEMA CROMÁTICO EDITORIAL", "EDITORIAL COLOR SYSTEM")}
+          </div>
+          <div className="flex items-center justify-end gap-2 text-[11px] font-mono text-[#B8C5A8]/90">
+            <span>{t("Ciruela Apagado", "Muted Plum")}</span>
+            <span className="w-3 h-3 rounded-none bg-[#693D4E] border border-[#B8C5A8]/40" />
+            <span className="text-[#B8C5A8]/50">#693D4E</span>
+          </div>
+          <div className="flex items-center justify-end gap-2 text-[11px] font-mono text-[#B8C5A8]/90">
+            <span>{t("Sombras Kombu", "Kombu Shadows")}</span>
+            <span className="w-3 h-3 rounded-none bg-[#33432B] border border-[#B8C5A8]/40" />
+            <span className="text-[#B8C5A8]/50">#33432B</span>
+          </div>
+          <div className="flex items-center justify-end gap-2 text-[11px] font-mono text-[#B8C5A8]/90">
+            <span>{t("Pétalos Rosa", "Dusty Pink")}</span>
+            <span className="w-3 h-3 rounded-none bg-[#D2A7AA] border border-[#B8C5A8]/40" />
+            <span className="text-[#B8C5A8]/50">#D2A7AA</span>
+          </div>
+          <div className="flex items-center justify-end gap-2 text-[11px] font-mono text-[#B8C5A8]">
+            <span className="font-bold">{t("Tipografía Salvia", "Pale Sage Text")}</span>
+            <span className="w-3 h-3 rounded-none bg-[#B8C5A8] border border-[#33432B]" />
+            <span className="text-[#B8C5A8]/80 font-bold">#B8C5A8</span>
+          </div>
+        </div>
+      </div>
+
+      {/* 7. Scroll Indicator with Pale Sage Icon */}
       <div
         ref={scrollIndicatorRef}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-bone will-change-transform"
+        className="mt-6 flex flex-col items-center gap-1.5 text-[#B8C5A8] will-change-transform pointer-events-none"
         aria-hidden="true"
       >
-        <span className="text-xs uppercase tracking-widest font-semibold">{t("Desplazar", "Scroll")}</span>
+        <span className="text-[9px] uppercase tracking-[0.3em] font-mono font-bold">{t("DESPLAZAR", "SCROLL")}</span>
         <div className="chevron-bounce">
-          <ChevronDown size={22} className="text-vampire-red" />
+          <ChevronDown size={18} className="text-[#B8C5A8]" />
         </div>
       </div>
     </section>

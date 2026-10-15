@@ -26,7 +26,7 @@ export const ArtworkZoomModal: React.FC<ArtworkZoomModalProps> = ({
   titleEn,
   sketchbookVol,
   year,
-  accentColor = '#ff3b1f',
+  accentColor = '#B8C5A8',
   onClose,
 }) => {
   const { t } = useLanguage();
@@ -234,7 +234,7 @@ export const ArtworkZoomModal: React.FC<ArtworkZoomModalProps> = ({
             <BookOpen size={16} style={{ color: accentColor }} />
           </div>
           <div className="flex flex-col">
-            <span className="text-[10px] font-mono tracking-widest text-white/50 uppercase">
+            <span className="text-[10px] font-mono tracking-widest text-bone-muted uppercase">
               {sketchbookVol || 'ARCHIVADO'} · {year || '2024'}
             </span>
             <h3 className="text-xs sm:text-sm font-serif italic font-bold text-bone truncate max-w-[200px] sm:max-w-md">
@@ -247,7 +247,7 @@ export const ArtworkZoomModal: React.FC<ArtworkZoomModalProps> = ({
         <button
           type="button"
           onClick={handleSafeClose}
-          className="min-h-[44px] min-w-[44px] flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full border border-white/20 bg-black/70 hover:bg-vampire-red hover:border-vampire-red text-bone hover:text-white transition-all cursor-pointer shadow-xl active:scale-95 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          className="min-h-[44px] min-w-[44px] flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full border border-white/20 bg-black/70 hover:bg-vampire-red hover:border-vampire-red text-bone hover:text-black transition-all cursor-pointer shadow-xl active:scale-95 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red focus-visible:ring-offset-2 focus-visible:ring-offset-black"
           aria-label={t("Cerrar y volver al cuaderno", "Close and return to sketchbook")}
           title={t("Cerrar y volver al cuaderno (Esc)", "Close and return to sketchbook (Esc)")}
         >
@@ -326,7 +326,7 @@ export const ArtworkZoomModal: React.FC<ArtworkZoomModalProps> = ({
             disabled={scale <= 1}
             className={`w-11 h-11 rounded-xl flex items-center justify-center border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red ${
               scale <= 1 
-                ? 'opacity-30 border-white/5 text-white/40 cursor-not-allowed' 
+                ? 'opacity-30 border-white/5 text-bone-muted/40 cursor-not-allowed' 
                 : 'border-white/20 bg-white/5 hover:bg-white/15 text-bone cursor-pointer active:scale-95'
             }`}
             title={t("Reducir zoom (-)", "Zoom out (-)")}
@@ -353,8 +353,8 @@ export const ArtworkZoomModal: React.FC<ArtworkZoomModalProps> = ({
             disabled={scale >= 4.5}
             className={`w-11 h-11 rounded-xl flex items-center justify-center border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red ${
               scale >= 4.5 
-                ? 'opacity-30 border-white/5 text-white/40 cursor-not-allowed' 
-                : 'border-white/20 bg-white/5 hover:bg-vampire-red hover:border-vampire-red text-bone cursor-pointer active:scale-95'
+                ? 'opacity-30 border-white/5 text-bone-muted/40 cursor-not-allowed' 
+                : 'border-white/20 bg-white/5 hover:bg-vampire-red hover:border-vampire-red text-bone hover:text-black cursor-pointer active:scale-95'
             }`}
             title={t("Aumentar zoom (+)", "Zoom in (+)")}
             aria-label={t("Aumentar zoom", "Zoom in")}
@@ -369,7 +369,7 @@ export const ArtworkZoomModal: React.FC<ArtworkZoomModalProps> = ({
             disabled={scale === 1 && position.x === 0 && position.y === 0}
             className={`w-11 h-11 rounded-xl flex items-center justify-center border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red ${
               scale === 1 && position.x === 0 && position.y === 0
-                ? 'opacity-30 border-white/5 text-white/40 cursor-not-allowed'
+                ? 'opacity-30 border-white/5 text-bone-muted/40 cursor-not-allowed'
                 : 'border-white/20 bg-white/5 hover:bg-white/15 text-bone cursor-pointer active:scale-95'
             }`}
             title={t("Restablecer encuadre original", "Reset view")}

@@ -145,7 +145,7 @@ export default function Contact() {
                 id="name"
                 name="name"
                 required
-                className="w-full bg-black/40 border border-white/30 rounded-md px-4 py-3 text-bone placeholder:text-stone-400 focus:outline-none focus:border-vampire-red focus-visible:ring-2 focus-visible:ring-vampire-red transition-colors"
+                className="w-full bg-black/40 border border-[#B8C5A8]/30 rounded-none px-4 py-3 text-bone placeholder:text-[#B8C5A8]/50 focus:outline-none focus:border-vampire-red focus-visible:ring-2 focus-visible:ring-vampire-red transition-colors"
                 placeholder={t("Tu nombre completo", "Your full name")}
               />
             </div>
@@ -156,7 +156,7 @@ export default function Contact() {
                 id="email"
                 name="email"
                 required
-                className="w-full bg-black/40 border border-white/30 rounded-md px-4 py-3 text-bone placeholder:text-stone-400 focus:outline-none focus:border-vampire-red focus-visible:ring-2 focus-visible:ring-vampire-red transition-colors"
+                className="w-full bg-black/40 border border-[#B8C5A8]/30 rounded-none px-4 py-3 text-bone placeholder:text-[#B8C5A8]/50 focus:outline-none focus:border-vampire-red focus-visible:ring-2 focus-visible:ring-vampire-red transition-colors"
                 placeholder={t("tu@email.com", "you@email.com")}
               />
             </div>
@@ -169,7 +169,7 @@ export default function Contact() {
               name="message"
               required
               rows={6}
-              className="w-full bg-black/40 border border-white/30 rounded-md px-4 py-3 text-bone placeholder:text-stone-400 focus:outline-none focus:border-vampire-red focus-visible:ring-2 focus-visible:ring-vampire-red transition-colors resize-none"
+              className="w-full bg-black/40 border border-[#B8C5A8]/30 rounded-none px-4 py-3 text-bone placeholder:text-[#B8C5A8]/50 focus:outline-none focus:border-vampire-red focus-visible:ring-2 focus-visible:ring-vampire-red transition-colors resize-none"
               placeholder={t("Cuéntame los detalles de la comisión...", "Tell me the details of the commission...")}
             ></textarea>
           </div>
@@ -187,7 +187,7 @@ export default function Contact() {
                   fileInputRef.current?.click();
                 }
               }}
-              className="border-2 border-dashed border-white/30 p-8 text-center hover:border-vampire-red/80 transition-colors cursor-pointer group rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
+              className="border-2 border-dashed border-[#B8C5A8]/30 p-8 text-center hover:border-vampire-red/80 transition-colors cursor-pointer group rounded-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red backdrop-blur-md bg-[#693D4E]/20"
               onClick={() => fileInputRef.current?.click()}
               aria-label={t("Haz clic para adjuntar referencias (PDF, JPG, PNG)", "Click to attach references (PDF, JPG, PNG)")}
             >
@@ -200,7 +200,7 @@ export default function Contact() {
               />
               
               <div className="w-12 h-12 mx-auto mb-4 relative flex items-center justify-center">
-                <div className="absolute inset-0 border border-white/30 group-hover:border-vampire-red rotate-45 transition-colors"></div>
+                <div className="absolute inset-0 border border-vampire-red/30 group-hover:border-vampire-red rotate-45 organic-diamond transition-colors"></div>
                 <Upload className="text-bone-muted group-hover:text-vampire-red transition-colors" size={22} aria-hidden="true" />
               </div>
               
@@ -212,12 +212,12 @@ export default function Contact() {
             {files.length > 0 && (
               <div className="mt-4 space-y-2">
                 {files.map((file, index) => (
-                  <div key={index} className="flex items-center justify-between bg-black/50 px-4 py-2.5 border border-white/20 rounded-md">
+                  <div key={index} className="flex items-center justify-between bg-black/50 px-4 py-2.5 border border-[#B8C5A8]/30 rounded-none">
                     <span className="text-sm text-bone truncate mr-4">{file.name}</span>
                     <button 
                       type="button" 
                       onClick={() => removeFile(index)}
-                      className="min-h-[44px] min-w-[44px] flex items-center justify-center text-bone-muted hover:text-vampire-red transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red rounded-sm"
+                      className="min-h-[44px] min-w-[44px] flex items-center justify-center text-bone-muted hover:text-vampire-red transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red rounded-none"
                       aria-label={`${t("Eliminar archivo", "Remove file")}: ${file.name}`}
                     >
                       <X size={18} aria-hidden="true" />
@@ -236,17 +236,17 @@ export default function Contact() {
                 initial={{ opacity: 0, y: 50, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                className={`fixed bottom-6 right-6 z-50 flex items-center p-4 border shadow-2xl backdrop-blur-md rounded-lg ${submitStatus === 'success' ? 'bg-green-950/90 border-green-400 text-white' : 'bg-red-950/90 border-red-400 text-white'}`}
+                className={`fixed bottom-6 right-6 z-50 flex items-center p-4 border shadow-2xl backdrop-blur-md rounded-lg ${submitStatus === 'success' ? 'bg-green-950/90 border-green-400 text-bone' : 'bg-red-950/90 border-red-400 text-bone'}`}
               >
                 {submitStatus === 'success' ? <CheckCircle2 className="mr-3 flex-shrink-0 text-green-400" size={24} /> : <XCircle className="mr-3 flex-shrink-0 text-red-400" size={24} />}
                 <div>
-                  <h4 className="font-bold text-white mb-0.5">{submitStatus === 'success' ? t("¡Éxito!", "Success!") : t("Error", "Error")}</h4>
+                  <h4 className="font-bold text-bone mb-0.5">{submitStatus === 'success' ? t("¡Éxito!", "Success!") : t("Error", "Error")}</h4>
                   <span className="text-sm text-bone">{statusMessage}</span>
                 </div>
                 <button 
                   type="button" 
                   onClick={() => setSubmitStatus('idle')}
-                  className="min-h-[44px] min-w-[44px] ml-4 flex items-center justify-center text-white/70 hover:text-white transition-colors"
+                  className="min-h-[44px] min-w-[44px] ml-4 flex items-center justify-center text-bone-muted hover:text-vampire-red transition-colors"
                   aria-label={t("Cerrar notificación", "Dismiss alert")}
                 >
                   <X size={18} aria-hidden="true" />
@@ -259,7 +259,7 @@ export default function Contact() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="group relative inline-flex items-center justify-center px-10 py-4 font-bold text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] min-w-[200px] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-sm"
+              className="group relative inline-flex items-center justify-center px-10 py-4 font-bold text-vampire-red group-hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] min-w-[200px] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red rounded-sm"
             >
               <div className="absolute inset-0 w-full h-full border-2 border-vampire-red transition-all duration-300 group-hover:bg-vampire-red"></div>
               <div className="absolute inset-0 w-full h-full border-2 border-vampire-red rotate-2 scale-105 opacity-50 group-hover:rotate-0 group-hover:scale-100 transition-all duration-300 pointer-events-none"></div>

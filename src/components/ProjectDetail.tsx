@@ -125,8 +125,8 @@ export default function ProjectDetail({ project, onClose }: ProjectDetailProps) 
           title={t("Cerrar y volver a la galería (Esc)", "Close and return to gallery (Esc)")}
         >
           <div className="w-9 h-9 sm:w-10 sm:h-10 relative flex items-center justify-center shrink-0">
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-md border border-white/20 rotate-45 transition-all duration-300 group-hover:bg-vampire-red group-hover:border-vampire-red group-hover:shadow-[0_0_15px_rgba(255,59,31,0.6)]" />
-            <ArrowLeft size={16} className="text-white relative z-10 group-hover:-translate-x-1 transition-transform duration-300" />
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-md border border-vampire-red/30 rotate-45 organic-diamond transition-all duration-300 group-hover:bg-vampire-red group-hover:border-vampire-red group-hover:shadow-[0_0_15px_rgba(184,197,168,0.6)]" />
+            <ArrowLeft size={16} className="text-vampire-red relative z-10 group-hover:text-black group-hover:-translate-x-1 transition-all duration-300" />
           </div>
           <span className="text-bone uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[11px] sm:text-xs font-serif font-bold group-hover:text-vampire-red transition-colors">
             {t('VOLVER', 'BACK')}

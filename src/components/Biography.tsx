@@ -111,8 +111,8 @@ export default function Biography() {
                 enableTilt={true}
                 enableMobileTilt={false}
                 behindGlowEnabled={true}
-                behindGlowColor="rgba(255, 59, 31, 0.15)"
-                innerGradient="linear-gradient(145deg, rgba(255, 59, 31, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)"
+                behindGlowColor="rgba(62, 232, 143, 0.2)"
+                innerGradient="linear-gradient(145deg, rgba(62, 232, 143, 0.12) 0%, rgba(255, 255, 255, 0.05) 100%)"
                 onContactClick={() => {
                   const element = document.getElementById('contact');
                   if (element) {
@@ -155,19 +155,19 @@ export default function Biography() {
               <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-10">
                   <div>
-                    <span className="block text-xl font-serif text-[#ff6e58] mb-1 font-bold">{t("Concept Art", "Concept Art")}</span>
+                    <span className="block text-xl font-serif text-[#B8C5A8] mb-1 font-bold">{t("Concept Art", "Concept Art")}</span>
                     <span className="text-xs uppercase tracking-[0.3em] font-sans text-bone-muted font-semibold">
                       {t("Entornos & Props", "Environments & Props")}
                     </span>
                   </div>
                   <div>
-                    <span className="block text-xl font-serif text-[#ff6e58] mb-1 font-bold">{t("Ilustración", "Illustration")}</span>
+                    <span className="block text-xl font-serif text-[#B8C5A8] mb-1 font-bold">{t("Ilustración", "Illustration")}</span>
                     <span className="text-xs uppercase tracking-[0.3em] font-sans text-bone-muted font-semibold">
                       {t("Luz & Color", "Light & Color")}
                     </span>
                   </div>
                   <div>
-                    <span className="block text-xl font-serif text-[#ff6e58] mb-1 font-bold">{t("Desarrollo Visual", "Visual Development")}</span>
+                    <span className="block text-xl font-serif text-[#B8C5A8] mb-1 font-bold">{t("Desarrollo Visual", "Visual Development")}</span>
                     <span className="text-xs uppercase tracking-[0.3em] font-sans text-bone-muted font-semibold">
                       {t("Narrativa visual", "Visual storytelling")}
                     </span>
@@ -177,14 +177,14 @@ export default function Biography() {
                 <div ref={chartWrapperRef} className="h-[250px] w-full will-change-transform">
                   <ResponsiveContainer width="100%" height="100%">
                     <RadarChart cx="50%" cy="50%" outerRadius="70%" data={skillsData}>
-                      <PolarGrid stroke="rgba(255, 255, 255, 0.15)" />
-                      <PolarAngleAxis dataKey="subject" tick={{ fill: '#f8f7f4', fontSize: 11, fontFamily: 'sans-serif', fontWeight: 600 }} />
+                      <PolarGrid stroke="rgba(184, 197, 168, 0.2)" />
+                      <PolarAngleAxis dataKey="subject" tick={{ fill: '#B8C5A8', fontSize: 11, fontFamily: 'sans-serif', fontWeight: 600 }} />
                       <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                       <RechartsTooltip 
-                        contentStyle={{ backgroundColor: 'rgba(10, 10, 10, 0.95)', borderColor: '#ff3b1f', color: '#f8f7f4' }}
-                        itemStyle={{ color: '#ff6e58' }}
+                        contentStyle={{ backgroundColor: 'rgba(105, 61, 78, 0.95)', borderColor: '#B8C5A8', color: '#B8C5A8' }}
+                        itemStyle={{ color: '#B8C5A8' }}
                       />
-                      <Radar name="Skills" dataKey="A" stroke="#ff3b1f" fill="#ff3b1f" fillOpacity={0.35} />
+                      <Radar name="Skills" dataKey="A" stroke="#B8C5A8" fill="#B8C5A8" fillOpacity={0.35} />
                     </RadarChart>
                   </ResponsiveContainer>
                 </div>
@@ -195,10 +195,10 @@ export default function Biography() {
                 <button 
                   type="button"
                   onClick={downloadCV}
-                  className="inline-flex items-center gap-2.5 border-2 border-white/30 hover:border-vampire-red bg-black/60 hover:bg-white/10 text-bone hover:text-white text-xs uppercase tracking-[0.2em] px-6 py-3.5 font-bold transition-all duration-300 rounded-sm cursor-pointer shadow-md hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  className="inline-flex items-center gap-2.5 border-2 border-vampire-red/40 hover:border-vampire-red bg-black/60 hover:bg-vampire-red/10 text-bone hover:text-vampire-red text-xs uppercase tracking-[0.2em] px-6 py-3.5 font-bold transition-all duration-300 rounded-sm cursor-pointer shadow-md hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
                   title={t("Descargar Curriculum Vitae en PDF", "Download Resume PDF")}
                 >
-                  <Download size={16} className="text-[#ff6e58] group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
+                  <Download size={16} className="text-[#B8C5A8] group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
                   <span>{t("DESCARGAR CV", "DOWNLOAD CV")}</span>
                 </button>
 
@@ -206,14 +206,14 @@ export default function Biography() {
                 <button 
                   type="button"
                   onClick={downloadPortfolio}
-                  className="inline-flex items-center gap-2.5 border-2 border-white/30 hover:border-amber-400 bg-black/60 hover:bg-white/10 text-bone hover:text-white text-xs uppercase tracking-[0.2em] px-6 py-3.5 font-bold transition-all duration-300 rounded-sm cursor-pointer shadow-md hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  className="inline-flex items-center gap-2.5 border-2 border-vampire-red/40 hover:border-amber-400 bg-black/60 hover:bg-amber-400/10 text-bone hover:text-amber-300 text-xs uppercase tracking-[0.2em] px-6 py-3.5 font-bold transition-all duration-300 rounded-sm cursor-pointer shadow-md hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
                   title={t("Descargar Dossier de Portfolio en PDF", "Download Portfolio Dossier PDF")}
                 >
                   <FileText size={16} className="text-amber-300 group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
                   <span>{t("DESCARGAR PORTFOLIO", "DOWNLOAD PORTFOLIO")}</span>
                 </button>
 
-                {/* 3. Trabaja Conmigo - Min 44x44px for WCAG AAA */}
+                {/* 3. Trabaja Conmigo - Min 44x44px for WCAG AAA (11.68:1 contrast with text-black) */}
                 <a
                   href="#contact"
                   onClick={(e) => {
@@ -225,7 +225,7 @@ export default function Biography() {
                       window.location.hash = '#contact';
                     }
                   }}
-                  className="inline-flex items-center gap-2.5 bg-vampire-red hover:bg-vampire-red-dark text-white text-xs uppercase tracking-[0.2em] px-7 py-3.5 font-bold transition-all duration-300 rounded-sm cursor-pointer shadow-lg hover:shadow-[0_0_20px_rgba(255,59,31,0.5)] hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  className="inline-flex items-center gap-2.5 bg-vampire-red hover:bg-vampire-red-dark text-black text-xs uppercase tracking-[0.2em] px-7 py-3.5 font-black transition-all duration-300 rounded-sm cursor-pointer shadow-lg hover:shadow-[0_0_20px_rgba(184,197,168,0.5)] hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                   title={t("Ir a la sección de contacto", "Scroll to contact section")}
                 >
                   <span>{t("TRABAJA CONMIGO", "WORK WITH ME")}</span>
@@ -252,7 +252,7 @@ export default function Biography() {
               <div 
                 className="relative pl-6 border-l-2 border-white/15"
               >
-                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 -left-[6px] top-2 shadow-[0_0_8px_rgba(255,59,31,0.6)]" aria-hidden="true"></div>
+                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
                 <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">{t("Ilustradora Freelance", "Freelance Illustrator")}</h5>
                 <div className="text-xs uppercase tracking-wider text-amber-300 font-mono font-semibold mb-2 mt-1">
                   {t("Autónoma", "Freelance")} • {t("2022 - Actualidad", "2022 - Present")}
@@ -268,7 +268,7 @@ export default function Biography() {
               <div 
                 className="relative pl-6 border-l-2 border-white/15"
               >
-                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 -left-[6px] top-2 shadow-[0_0_8px_rgba(255,59,31,0.6)]" aria-hidden="true"></div>
+                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
                 <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">{t("Artista Conceptual", "Concept Artist")}</h5>
                 <div className="text-xs uppercase tracking-wider text-amber-300 font-mono font-semibold mb-2 mt-1">
                   <a href="https://www.linkedin.com/company/nocturnia-studios/" target="_blank" rel="noopener noreferrer" className="hover:text-vampire-red transition-colors inline-block underline decoration-amber-300/40">
@@ -286,7 +286,7 @@ export default function Biography() {
               <div 
                 className="relative pl-6 border-l-2 border-white/15"
               >
-                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 -left-[6px] top-2 shadow-[0_0_8px_rgba(255,59,31,0.6)]" aria-hidden="true"></div>
+                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
                 <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">{t("Azafata de Eventos, AULA", "Event Hostess, AULA")}</h5>
                 <div className="text-xs uppercase tracking-wider text-amber-300 font-mono font-semibold mb-2 mt-1">
                   Lightbox Academy • {t("Mar 2023", "Mar 2023")}
@@ -311,7 +311,7 @@ export default function Biography() {
               <div 
                 className="relative pl-6 border-l-2 border-white/15"
               >
-                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 -left-[6px] top-2 shadow-[0_0_8px_rgba(255,59,31,0.6)]" aria-hidden="true"></div>
+                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
                 <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">
                   <a href="https://lboxacademy.es/" target="_blank" rel="noopener noreferrer" className="hover:text-vampire-red transition-colors underline decoration-white/30">
                     Lightbox Academy
@@ -331,7 +331,7 @@ export default function Biography() {
               <div 
                 className="relative pl-6 border-l-2 border-white/15"
               >
-                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 -left-[6px] top-2 shadow-[0_0_8px_rgba(255,59,31,0.6)]" aria-hidden="true"></div>
+                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
                 <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">{t("Grado en Bellas Artes", "Degree in Fine Arts")}</h5>
                 <div className="text-xs uppercase tracking-wider text-amber-300 font-mono font-semibold mb-2 mt-1">
                   Universidad de Granada • 2017 - 2021
@@ -360,9 +360,9 @@ export default function Biography() {
               <div 
                 className="relative pl-6 border-l-2 border-vampire-red/60 bg-white/[0.02] p-3 -ml-3 rounded-r-xl"
               >
-                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 -left-[6px] top-3 shadow-[0_0_10px_rgba(255,59,31,0.8)]" aria-hidden="true"></div>
+                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-3 shadow-[0_0_10px_rgba(184,197,168,0.8)]" aria-hidden="true"></div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#ff6e58] font-bold bg-vampire-red/15 px-2 py-0.5 rounded-sm border border-vampire-red/30">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#B8C5A8] font-bold bg-vampire-red/15 px-2 py-0.5 rounded-sm border border-vampire-red/30">
                     {t("PREMIO JOVEN", "YOUTH PRIZE")}
                   </span>
                   <span className="text-[11px] font-mono text-bone-muted">{t("Sep 2026", "Sep 2026")}</span>
@@ -393,7 +393,7 @@ export default function Biography() {
               <div 
                 className="relative pl-6 border-l-2 border-white/15 p-3 -ml-3 rounded-r-xl"
               >
-                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 -left-[6px] top-3 shadow-[0_0_8px_rgba(255,59,31,0.6)]" aria-hidden="true"></div>
+                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-3 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-[10px] font-mono uppercase tracking-widest text-amber-300 font-bold bg-amber-400/10 px-2 py-0.5 rounded-sm border border-amber-400/20">
                     {t("1º PREMIO", "1ST PRIZE")}

@@ -236,8 +236,8 @@ export const AnimatedSketchbook: React.FC<AnimatedSketchbookProps> = ({
           title={t("Cerrar y volver a la galería (Esc)", "Close and return to gallery (Esc)")}
         >
           <div className="w-8 h-8 sm:w-9 sm:h-9 relative flex items-center justify-center shrink-0">
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-md border border-white/20 rotate-45 transition-all duration-300 group-hover:bg-vampire-red group-hover:border-vampire-red group-hover:shadow-[0_0_15px_rgba(255,59,31,0.6)]"></div>
-            <ArrowLeft size={15} className="text-white relative z-10 group-hover:-translate-x-1 transition-transform duration-300" />
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-md border border-vampire-red/30 rotate-45 organic-diamond transition-all duration-300 group-hover:bg-vampire-red group-hover:border-vampire-red group-hover:shadow-[0_0_15px_rgba(184,197,168,0.6)]"></div>
+            <ArrowLeft size={15} className="text-vampire-red relative z-10 group-hover:text-black group-hover:-translate-x-1 transition-all duration-300" />
           </div>
           <span className="text-bone uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[11px] sm:text-xs font-serif font-bold group-hover:text-vampire-red transition-colors">
             {t('VOLVER', 'BACK')}
@@ -246,11 +246,11 @@ export const AnimatedSketchbook: React.FC<AnimatedSketchbookProps> = ({
 
         {/* Center: Title & Volume */}
         <div className="flex flex-col items-center text-center max-w-[50vw] sm:max-w-none">
-          <div className="flex items-center gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] uppercase font-mono tracking-[0.2em] text-white/50">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-[9px] sm:text-[10px] uppercase font-mono tracking-[0.2em] text-bone-muted">
             <BookOpen size={11} style={{ color: project.accentColor }} />
             <span className="truncate">{project.sketchbookVol}</span>
             <span>·</span>
-            <span className="text-white/80">{project.year}</span>
+            <span className="text-bone">{project.year}</span>
           </div>
           <h2 className="text-sm sm:text-base md:text-lg font-serif italic font-bold text-bone truncate max-w-[200px] sm:max-w-md">
             {t(project.titleEs, project.titleEn)}
@@ -276,7 +276,7 @@ export const AnimatedSketchbook: React.FC<AnimatedSketchbookProps> = ({
             onClick={() => setShowSpecsDrawer(prev => !prev)}
             className={`p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl border transition-all flex items-center gap-1.5 text-xs font-mono cursor-pointer ${
               showSpecsDrawer 
-                ? 'bg-vampire-red border-vampire-red text-white shadow-[0_0_15px_rgba(255,59,31,0.5)]' 
+                ? 'bg-vampire-red border-vampire-red text-black font-bold shadow-[0_0_15px_rgba(184,197,168,0.5)]' 
                 : 'border-white/10 bg-black/40 hover:bg-white/10 text-bone'
             }`}
             title={t("Ficha técnica completa", "Technical specs")}
@@ -299,8 +299,8 @@ export const AnimatedSketchbook: React.FC<AnimatedSketchbookProps> = ({
         disabled={currentSpread === 0}
         className={`flex fixed md:absolute left-1 sm:left-3 lg:left-8 top-1/2 -translate-y-1/2 z-50 w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full border items-center justify-center transition-all duration-300 shadow-2xl ${
           currentSpread === 0
-            ? 'opacity-20 border-white/10 text-white/30 cursor-not-allowed pointer-events-none'
-            : 'border-white/25 bg-black/90 hover:bg-vampire-red hover:border-vampire-red text-white cursor-pointer hover:scale-110 active:scale-95 shadow-[0_8px_30px_rgba(0,0,0,0.85)]'
+            ? 'opacity-20 border-white/10 text-bone-muted/30 cursor-not-allowed pointer-events-none'
+            : 'border-vampire-red/40 bg-black/90 hover:bg-vampire-red hover:border-vampire-red text-vampire-red hover:text-black cursor-pointer hover:scale-110 active:scale-95 shadow-[0_8px_30px_rgba(0,0,0,0.85)]'
         }`}
         aria-label={t("Página anterior", "Previous page")}
         title={currentSpread > 0 ? t("Página anterior (←)", "Previous page (←)") : undefined}
@@ -319,8 +319,8 @@ export const AnimatedSketchbook: React.FC<AnimatedSketchbookProps> = ({
         disabled={currentSpread >= totalSpreads - 1}
         className={`flex fixed md:absolute right-1 sm:right-3 lg:right-8 top-1/2 -translate-y-1/2 z-50 w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full border items-center justify-center transition-all duration-300 shadow-2xl ${
           currentSpread >= totalSpreads - 1
-            ? 'opacity-20 border-white/10 text-white/30 cursor-not-allowed pointer-events-none'
-            : 'border-white/25 bg-black/90 hover:bg-vampire-red hover:border-vampire-red text-white cursor-pointer hover:scale-110 active:scale-95 shadow-[0_8px_30px_rgba(0,0,0,0.85)]'
+            ? 'opacity-20 border-white/10 text-bone-muted/30 cursor-not-allowed pointer-events-none'
+            : 'border-vampire-red/40 bg-black/90 hover:bg-vampire-red hover:border-vampire-red text-vampire-red hover:text-black cursor-pointer hover:scale-110 active:scale-95 shadow-[0_8px_30px_rgba(0,0,0,0.85)]'
         }`}
         aria-label={t("Página siguiente", "Next page")}
         title={currentSpread < totalSpreads - 1 ? t("Página siguiente (→)", "Next page (→)") : undefined}
@@ -368,8 +368,8 @@ export const AnimatedSketchbook: React.FC<AnimatedSketchbookProps> = ({
               }}
               className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-serif transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                 currentSpread === idx
-                  ? 'bg-white/15 text-white font-bold border border-white/20 shadow-md'
-                  : 'text-white/40 hover:text-white hover:bg-white/5 border border-transparent'
+                  ? 'bg-vampire-red/20 text-vampire-red font-bold border border-vampire-red/40 shadow-md'
+                  : 'text-bone-muted/60 hover:text-vampire-red hover:bg-vampire-red/10 border border-transparent'
               }`}
             >
               <span 
@@ -382,12 +382,12 @@ export const AnimatedSketchbook: React.FC<AnimatedSketchbookProps> = ({
         </div>
 
         {/* Spread Steppers & Counter */}
-        <div className="flex items-center gap-2 sm:gap-4 text-xs font-mono text-white/50">
-          <div className="hidden xl:flex items-center gap-2 text-[10px] text-white/40">
+        <div className="flex items-center gap-2 sm:gap-4 text-xs font-mono text-bone-muted">
+          <div className="hidden xl:flex items-center gap-2 text-[10px] text-bone-muted/80">
             <span>{t("Usa las flechas ◀ ▶ o haz clic en las páginas para hojear", "Use arrows ◀ ▶ or click pages to flip")}</span>
           </div>
 
-          <div className="flex items-center gap-0.5 sm:gap-1 bg-black/60 border border-white/10 rounded-xl p-0.5 shadow-md">
+          <div className="flex items-center gap-0.5 sm:gap-1 bg-black/60 border border-vampire-red/25 rounded-xl p-0.5 shadow-md">
             <button
               type="button"
               onClick={() => {
@@ -396,7 +396,7 @@ export const AnimatedSketchbook: React.FC<AnimatedSketchbookProps> = ({
                 }
               }}
               disabled={currentSpread === 0}
-              className="p-1 sm:p-1.5 text-white/70 hover:text-white disabled:opacity-20 cursor-pointer disabled:pointer-events-none transition-colors"
+              className="p-1 sm:p-1.5 text-bone-muted hover:text-vampire-red disabled:opacity-20 cursor-pointer disabled:pointer-events-none transition-colors"
               aria-label={t("Anterior", "Prev")}
             >
               <ChevronLeft size={16} />
@@ -412,7 +412,7 @@ export const AnimatedSketchbook: React.FC<AnimatedSketchbookProps> = ({
                 }
               }}
               disabled={currentSpread >= totalSpreads - 1}
-              className="p-1 sm:p-1.5 text-white/70 hover:text-white disabled:opacity-20 cursor-pointer disabled:pointer-events-none transition-colors"
+              className="p-1 sm:p-1.5 text-bone-muted hover:text-vampire-red disabled:opacity-20 cursor-pointer disabled:pointer-events-none transition-colors"
               aria-label={t("Siguiente", "Next")}
             >
               <ChevronRight size={16} />
@@ -443,7 +443,7 @@ export const AnimatedSketchbook: React.FC<AnimatedSketchbookProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowSpecsDrawer(false)}
-                  className="p-1 rounded-lg hover:bg-white/10 text-white/60 hover:text-white cursor-pointer"
+                  className="p-1 rounded-lg hover:bg-vampire-red/20 text-bone-muted hover:text-vampire-red cursor-pointer transition-colors"
                 >
                   ✕
                 </button>
@@ -457,7 +457,7 @@ export const AnimatedSketchbook: React.FC<AnimatedSketchbookProps> = ({
                   <p className="font-serif italic font-bold text-xl text-bone">
                     {t(project.titleEs, project.titleEn)}
                   </p>
-                  <p className="text-xs text-white/60 font-mono mt-0.5">
+                  <p className="text-xs text-bone-muted font-mono mt-0.5">
                     {project.sketchbookVol} · {project.year}
                   </p>
                 </div>
@@ -475,10 +475,10 @@ export const AnimatedSketchbook: React.FC<AnimatedSketchbookProps> = ({
                   <h4 className="text-[10px] font-mono uppercase tracking-widest text-vampire-red font-bold mb-2">
                     {t('HERRAMIENTAS & TÉCNICA', 'TOOLS & TECHNIQUE')}
                   </h4>
-                  <div className="p-3.5 bg-black/40 rounded-xl border border-white/5 space-y-1.5 text-xs text-bone">
-                    <div><span className="text-white/40">Software: </span>{project.tools}</div>
-                    <div><span className="text-white/40">Rol: </span>{t(project.roleEs, project.roleEn)}</div>
-                    <div><span className="text-white/40">Categoría: </span>{t(project.categoryEs, project.categoryEn)}</div>
+                  <div className="p-3.5 bg-black/40 rounded-xl border border-vampire-red/15 space-y-1.5 text-xs text-bone">
+                    <div><span className="text-bone-muted/70">Software: </span>{project.tools}</div>
+                    <div><span className="text-bone-muted/70">Rol: </span>{t(project.roleEs, project.roleEn)}</div>
+                    <div><span className="text-bone-muted/70">Categoría: </span>{t(project.categoryEs, project.categoryEn)}</div>
                   </div>
                 </div>
 
@@ -490,10 +490,10 @@ export const AnimatedSketchbook: React.FC<AnimatedSketchbookProps> = ({
                     {project.palette.map((col, idx) => (
                       <div key={idx} className="flex flex-col items-center text-center">
                         <div 
-                          className="w-10 h-10 rounded-lg shadow-md border border-white/10 mb-1"
+                          className="w-10 h-10 rounded-lg shadow-md border border-vampire-red/20 mb-1"
                           style={{ backgroundColor: col.hex }}
                         />
-                        <span className="text-[8px] font-mono text-white/60">{col.hex}</span>
+                        <span className="text-[8px] font-mono text-bone-muted">{col.hex}</span>
                       </div>
                     ))}
                   </div>
@@ -501,7 +501,7 @@ export const AnimatedSketchbook: React.FC<AnimatedSketchbookProps> = ({
               </div>
             </div>
 
-            <div className="pt-6 border-t border-white/10 text-[10px] font-mono text-white/40 text-center">
+            <div className="pt-6 border-t border-vampire-red/20 text-[10px] font-mono text-bone-muted/70 text-center">
               MARINA MARTÍN PRIETO · ARCHIVO PRIVADO DE ESTUDIO
             </div>
           </motion.div>
@@ -524,7 +524,7 @@ export const AnimatedSketchbook: React.FC<AnimatedSketchbookProps> = ({
             <button
               type="button"
               onClick={() => setZoomedImage(null)}
-              className="absolute top-6 right-6 z-10 p-3 rounded-full bg-white/10 hover:bg-vampire-red text-white transition-colors cursor-pointer"
+              className="absolute top-6 right-6 z-10 p-3 rounded-full bg-black/80 hover:bg-vampire-red border border-vampire-red/30 text-vampire-red hover:text-black transition-colors cursor-pointer"
             >
               ✕
             </button>

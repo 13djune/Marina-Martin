@@ -43,8 +43,8 @@ export default function BackToTop() {
           className="fixed bottom-8 right-8 z-[80] w-12 h-12 flex items-center justify-center group cursor-none sm:cursor-pointer"
           aria-label={t("Volver arriba", "Back to top")}
         >
-          <div className="absolute inset-0 bg-vampire-bg/80 backdrop-blur-sm border border-vampire-red/30 rotate-45 transition-all duration-300 group-hover:bg-vampire-red group-hover:border-vampire-red group-hover:shadow-[0_0_15px_rgba(255,59,31,0.5)]"></div>
-          <ChevronUp size={20} className="text-vampire-red group-hover:text-white relative z-10 transition-colors duration-300" />
+          <div className="absolute inset-0 bg-vampire-bg/80 backdrop-blur-sm border border-vampire-red/30 rotate-45 organic-diamond transition-all duration-300 group-hover:bg-vampire-red group-hover:border-vampire-red group-hover:shadow-[0_0_15px_rgba(184,197,168,0.5)]"></div>
+          <ChevronUp size={20} className="text-vampire-red group-hover:text-black relative z-10 transition-colors duration-300" />
         </motion.button>
       )}
     </AnimatePresence>

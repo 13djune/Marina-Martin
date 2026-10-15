@@ -124,17 +124,17 @@ export default function Process() {
               "Every project is going to be different, but this is the usual structure that I like to follow as best practices."
             )}
           </p>
-          <div className="w-2 h-2 bg-vampire-red rotate-45 mx-auto mt-12"></div>
+          <div className="w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm mx-auto mt-12 shadow-[0_0_10px_rgba(184,197,168,0.5)]"></div>
         </div>
 
         <div className="relative">
           {/* Background timeline line */}
-          <div className="hidden md:block absolute top-[28px] left-[10%] w-[80%] h-[1px] bg-white/10"></div>
+          <div className="hidden md:block absolute top-[28px] left-[10%] w-[80%] h-[1px] bg-[#B8C5A8]/15"></div>
           
           {/* Animated fill line driven by GSAP */}
           <div 
             ref={timelineLineRef}
-            className="hidden md:block absolute top-[28px] left-[10%] w-[80%] h-[1px] bg-vampire-red shadow-[0_0_12px_rgba(255,59,31,0.6)] z-0 origin-left will-change-transform"
+            className="hidden md:block absolute top-[28px] left-[10%] w-[80%] h-[1px] bg-vampire-red shadow-[0_0_12px_rgba(184,197,168,0.6)] z-0 origin-left will-change-transform"
           />
 
           <div 
@@ -146,7 +146,7 @@ export default function Process() {
                 key={step.number}
                 className="flex flex-col items-center text-center group cursor-pointer"
               >
-                <div className="step-diamond w-14 h-14 bg-vampire-bg border border-white/20 rotate-45 flex items-center justify-center mb-10 transition-colors duration-500 group-hover:border-vampire-red relative overflow-hidden shadow-xl group-hover:shadow-[0_0_20px_rgba(255,59,31,0.3)] will-change-transform">
+                <div className="step-diamond w-14 h-14 bg-vampire-bg border border-vampire-red/30 rotate-45 organic-diamond flex items-center justify-center mb-10 transition-all duration-500 group-hover:border-vampire-red relative overflow-hidden shadow-xl group-hover:shadow-[0_0_20px_rgba(184,197,168,0.3)] will-change-transform">
                   <div className="absolute inset-0 bg-vampire-red/15 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
                   <span className="-rotate-45 text-bone-muted font-serif text-lg group-hover:text-vampire-red transition-colors duration-500 relative z-10">{step.number}</span>
                 </div>

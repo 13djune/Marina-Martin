@@ -68,7 +68,7 @@ export const galleryItems: Project[] = [
     sketchbookVol: "LIBRO I · EXP. 01",
     coverColor: "#221717",
     spineColor: "#150d0d",
-    accentColor: "#ff3b1f",
+    accentColor: "#B8C5A8",
     palette: [
       { nameEs: "Sangre Seca", nameEn: "Dried Blood", hex: "#5b1414" },
       { nameEs: "Carmesí Vivo", nameEn: "Vivid Crimson", hex: "#ff3b1f" },

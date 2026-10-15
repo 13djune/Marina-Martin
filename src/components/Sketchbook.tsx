@@ -66,112 +66,21 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
   const isTurningRef = useRef<boolean>(false);
   const hasAutoOpenedRef = useRef<boolean>(false);
 
-  // GSAP 3D mouse-following parallax effect for physical depth and tactile feel
+  // The book remains static in position as requested (no mouse tilt/parallax)
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-
-    const stageEl = stageRef.current;
     const parallaxEl = parallaxRef.current;
-    const shadowEl = shadowRef.current;
-    const sheenEl = sheenRef.current;
-    if (!stageEl || !parallaxEl) return;
-
-    gsap.set(parallaxEl, {
-      transformPerspective: 1800,
-      transformStyle: 'preserve-3d',
-    });
-
-    // GSAP quickTo for silky 60/120fps tracking
-    const rotXTo = gsap.quickTo(parallaxEl, 'rotationX', { duration: 0.65, ease: 'power2.out' });
-    const rotYTo = gsap.quickTo(parallaxEl, 'rotationY', { duration: 0.65, ease: 'power2.out' });
-    const rotZTo = gsap.quickTo(parallaxEl, 'rotation', { duration: 0.75, ease: 'power2.out' });
-    const xTo = gsap.quickTo(parallaxEl, 'x', { duration: 0.65, ease: 'power2.out' });
-    const yTo = gsap.quickTo(parallaxEl, 'y', { duration: 0.65, ease: 'power2.out' });
-    const zTo = gsap.quickTo(parallaxEl, 'z', { duration: 0.65, ease: 'power2.out' });
-
-    const shadowXTo = shadowEl ? gsap.quickTo(shadowEl, 'x', { duration: 0.75, ease: 'power2.out' }) : null;
-    const shadowYTo = shadowEl ? gsap.quickTo(shadowEl, 'y', { duration: 0.75, ease: 'power2.out' }) : null;
-    const shadowScaleTo = shadowEl ? gsap.quickTo(shadowEl, 'scaleX', { duration: 0.75, ease: 'power2.out' }) : null;
-
-    const sheenXTo = sheenEl ? gsap.quickTo(sheenEl, 'x', { duration: 0.6, ease: 'power2.out' }) : null;
-    const sheenYTo = sheenEl ? gsap.quickTo(sheenEl, 'y', { duration: 0.6, ease: 'power2.out' }) : null;
-    const sheenOpTo = sheenEl ? gsap.quickTo(sheenEl, 'opacity', { duration: 0.6, ease: 'power2.out' }) : null;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = stageEl.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const relX = (e.clientX - centerX) / (rect.width / 2);
-      const relY = (e.clientY - centerY) / (rect.height / 2);
-
-      const clampX = Math.max(-1.25, Math.min(1.25, relX));
-      const clampY = Math.max(-1.25, Math.min(1.25, relY));
-
-      // Delicate tactile 3D tilt & gentle translation
-      rotYTo(clampX * 8.5);
-      rotXTo(-clampY * 6.5);
-      rotZTo(clampX * 0.75);
-      xTo(clampX * 12);
-      yTo(clampY * 8);
-      zTo(10);
-
-      // Realistic counter-directional shadow physics
-      if (shadowXTo && shadowYTo) {
-        shadowXTo(-clampX * 22);
-        shadowYTo(-clampY * 14);
-      }
-      if (shadowScaleTo) {
-        shadowScaleTo(1 + Math.abs(clampX) * 0.06);
-      }
-
-      // Specular tactile ambient lighting sheen
-      if (sheenXTo && sheenYTo && sheenOpTo) {
-        sheenXTo(clampX * 45);
-        sheenYTo(clampY * 30);
-        sheenOpTo(0.18 + Math.abs(clampX) * 0.08);
-      }
-    };
-
-    const handleMouseLeave = () => {
-      gsap.to(parallaxEl, {
+    if (parallaxEl) {
+      gsap.set(parallaxEl, {
+        transformPerspective: 1800,
+        transformStyle: 'preserve-3d',
         rotationX: 0,
         rotationY: 0,
         rotation: 0,
         x: 0,
         y: 0,
         z: 0,
-        duration: 0.85,
-        ease: 'power3.out',
       });
-      if (shadowEl) {
-        gsap.to(shadowEl, {
-          x: 0,
-          y: 0,
-          scaleX: 1,
-          duration: 0.85,
-          ease: 'power3.out',
-        });
-      }
-      if (sheenEl) {
-        gsap.to(sheenEl, {
-          x: 0,
-          y: 0,
-          opacity: 0.08,
-          duration: 0.85,
-          ease: 'power3.out',
-        });
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    stageEl.addEventListener('mouseleave', handleMouseLeave);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      stageEl.removeEventListener('mouseleave', handleMouseLeave);
-      gsap.killTweensOf([parallaxEl, shadowEl, sheenEl].filter(Boolean));
-    };
+    }
   }, []);
 
   // Process images
@@ -449,7 +358,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
             className={`absolute -left-4 sm:-left-6 md:-left-7 top-1/2 -translate-y-1/2 z-[60] w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full border flex items-center justify-center transition-all duration-300 shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
               flippedCount === 0
                 ? 'opacity-0 pointer-events-none'
-                : 'border-white/30 bg-black/90 hover:bg-vampire-red hover:border-vampire-red text-bone hover:text-white cursor-pointer hover:scale-110 active:scale-95 shadow-[0_4px_25px_rgba(0,0,0,0.85)] backdrop-blur-md'
+                : 'border-white/30 bg-black/90 hover:bg-vampire-red hover:border-vampire-red text-bone hover:text-black cursor-pointer hover:scale-110 active:scale-95 shadow-[0_4px_25px_rgba(0,0,0,0.85)] backdrop-blur-md'
             }`}
             aria-label={t("Página anterior", "Previous page")}
             title={t("Página anterior (←)", "Previous page (←)")}
@@ -468,7 +377,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
             className={`absolute -right-4 sm:-right-6 md:-right-7 top-1/2 -translate-y-1/2 z-[60] w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full border flex items-center justify-center transition-all duration-300 shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
               flippedCount >= totalLeaves
                 ? 'opacity-0 pointer-events-none'
-                : 'border-white/30 bg-black/90 hover:bg-vampire-red hover:border-vampire-red text-bone hover:text-white cursor-pointer hover:scale-110 active:scale-95 shadow-[0_4px_25px_rgba(0,0,0,0.85)] backdrop-blur-md'
+                : 'border-white/30 bg-black/90 hover:bg-vampire-red hover:border-vampire-red text-bone hover:text-black cursor-pointer hover:scale-110 active:scale-95 shadow-[0_4px_25px_rgba(0,0,0,0.85)] backdrop-blur-md'
             }`}
             aria-label={t("Página siguiente", "Next page")}
             title={t("Página siguiente (→)", "Next page (→)")}
@@ -712,7 +621,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                   if (onOpenZoom) onOpenZoom(project.imageUrl);
                   else if (onOpenDetail) onOpenDetail();
                 }}
-                className="no-flip absolute bottom-2.5 right-2.5 min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-none bg-black/85 hover:bg-vampire-red text-white text-xs font-mono font-bold flex items-center gap-1.5 transition-all shadow-lg border border-white/20 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                className="no-flip absolute bottom-2.5 right-2.5 min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-none bg-black/85 hover:bg-vampire-red text-vampire-red hover:text-black text-xs font-mono font-bold flex items-center gap-1.5 transition-all shadow-lg border border-vampire-red/30 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
                 aria-label={t("Ver lámina en pantalla completa", "Fullscreen plate")}
                 title={t("Ver lámina en pantalla completa", "Fullscreen plate")}
               >
@@ -884,9 +793,9 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                     <span>0% — 100%</span>
                   </div>
                   <div className="grid grid-cols-5 h-7 sm:h-8 rounded-none overflow-hidden border border-[#2b2b2b]/30 shadow-xs mb-1.5">
-                    <div className="bg-[#0e0e0e] flex items-center justify-center text-[9px] font-mono text-white/90 font-bold">0%</div>
-                    <div className="bg-[#383838] flex items-center justify-center text-[9px] font-mono text-white/90 font-bold">25%</div>
-                    <div className="bg-[#6c6c6c] flex items-center justify-center text-[9px] font-mono text-white/90 font-bold">50%</div>
+                    <div className="bg-[#0e0e0e] flex items-center justify-center text-[9px] font-mono text-bone font-bold">0%</div>
+                    <div className="bg-[#383838] flex items-center justify-center text-[9px] font-mono text-bone font-bold">25%</div>
+                    <div className="bg-[#6c6c6c] flex items-center justify-center text-[9px] font-mono text-bone font-bold">50%</div>
                     <div className="bg-[#b0b0b0] flex items-center justify-center text-[9px] font-mono text-[#1c1917] font-bold">75%</div>
                     <div className="bg-[#f5f5f5] flex items-center justify-center text-[9px] font-mono text-[#1c1917] font-bold">100%</div>
                   </div>
@@ -978,7 +887,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                   e.stopPropagation();
                   if (onOpenZoom) onOpenZoom(secondaryImage);
                 }}
-                className="no-flip absolute bottom-2.5 right-2.5 min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-none bg-black/85 hover:bg-vampire-red text-white text-xs font-mono font-bold flex items-center gap-1.5 transition-all shadow-md border border-white/20 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                className="no-flip absolute bottom-2.5 right-2.5 min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-none bg-black/85 hover:bg-vampire-red text-vampire-red hover:text-black text-xs font-mono font-bold flex items-center gap-1.5 transition-all shadow-md border border-vampire-red/30 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
                 aria-label={t("Ver lámina en pantalla completa", "Fullscreen")}
                 title={t("Ver lámina en pantalla completa", "Fullscreen")}
               >
@@ -1058,7 +967,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                 </div>
 
                 <div className="mt-3 mb-2">
-                  <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-[#ff3b1f] font-bold block mb-0.5">
+                  <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-[#165e38] font-bold block mb-0.5">
                     {t(project.categoryEs, project.categoryEn)} · {project.year}
                   </span>
                   <h3 className="font-serif italic font-bold text-lg sm:text-xl md:text-2xl text-[#1c1917] truncate">
@@ -1197,7 +1106,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                   e.stopPropagation();
                   if (onOpenZoom) onOpenZoom(sketchImage);
                 }}
-                className="no-flip absolute bottom-2.5 right-2.5 min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-none bg-black/85 hover:bg-vampire-red text-white text-xs font-mono font-bold flex items-center gap-1.5 transition-all shadow-md border border-white/20 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                className="no-flip absolute bottom-2.5 right-2.5 min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-none bg-black/85 hover:bg-vampire-red text-vampire-red hover:text-black text-xs font-mono font-bold flex items-center gap-1.5 transition-all shadow-md border border-vampire-red/30 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
                 aria-label={t("Ver boceto en pantalla completa", "Fullscreen sketch")}
                 title={t("Ver boceto en pantalla completa", "Fullscreen sketch")}
               >
@@ -1212,7 +1121,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.2 }}
-                    className="no-flip absolute bottom-2 left-2 right-16 p-2.5 rounded-none bg-black/95 backdrop-blur-md text-white text-xs border border-amber-400/40 shadow-2xl z-20" 
+                    className="no-flip absolute bottom-2 left-2 right-16 p-2.5 rounded-none bg-black/95 backdrop-blur-md text-bone text-xs border border-amber-400/40 shadow-2xl z-20" 
                     role="region" 
                     aria-label={t(activeHotspot.titleEs, activeHotspot.titleEn)}
                   >
@@ -1221,13 +1130,13 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                       <button 
                         type="button" 
                         onClick={() => setActiveHotspot(null)} 
-                        className="w-5 h-5 flex items-center justify-center text-white/80 hover:text-white cursor-pointer"
+                        className="w-5 h-5 flex items-center justify-center text-bone-muted hover:text-vampire-red cursor-pointer transition-colors"
                         aria-label={t("Cerrar nota", "Close note")}
                       >
                         ✕
                       </button>
                     </div>
-                    <p className="font-serif italic text-white/95 text-[11px] leading-tight line-clamp-2">{t(activeHotspot.descriptionEs, activeHotspot.descriptionEn)}</p>
+                    <p className="font-serif italic text-bone text-[11px] leading-tight line-clamp-2">{t(activeHotspot.descriptionEs, activeHotspot.descriptionEn)}</p>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -1311,7 +1220,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                 backgroundImage: 'linear-gradient(to right, rgba(0,0,0,0.6), rgba(255,255,255,0.1) 50%, rgba(0,0,0,0.5))' 
               }}
             >
-              <div className="transform -rotate-90 whitespace-nowrap text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-white/80 font-serif font-bold pointer-events-none">
+              <div className="transform -rotate-90 whitespace-nowrap text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-bone-muted font-serif font-bold pointer-events-none">
                 <span>{project.sketchbookVol}</span>
               </div>
             </div>
@@ -1344,8 +1253,8 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
 
             {/* Cover Footer & Artist */}
             <div className="relative z-10 pl-10 sm:pl-14 pr-2 sm:pr-4 pb-1 sm:pb-2">
-              <div className="text-[10px] sm:text-xs font-mono tracking-[0.2em] uppercase text-[#ff6e58] font-bold mb-1.5 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-none bg-[#ff6e58]" aria-hidden="true" />
+              <div className="text-[10px] sm:text-xs font-mono tracking-[0.2em] uppercase text-[#B8C5A8] font-bold mb-1.5 flex items-center gap-1.5">
+                <span className="w-2 h-2 rotate-45 organic-diamond-sm bg-[#B8C5A8] shadow-[0_0_6px_rgba(184,197,168,0.7)]" aria-hidden="true" />
                 <span>{t(project.categoryEs, project.categoryEn)}</span>
               </div>
               <h3 className="font-serif italic font-bold text-base sm:text-xl md:text-2xl text-bone leading-tight drop-shadow-sm mb-2">
@@ -1353,7 +1262,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
               </h3>
               <div className="pt-2 border-t border-white/20 flex items-center justify-between text-xs sm:text-sm font-mono text-bone-muted">
                 <span className="tracking-wider">MARINA MARTÍN PRIETO</span>
-                <span className="text-[#ff6e58] font-bold flex items-center gap-1">
+                <span className="text-[#B8C5A8] font-bold flex items-center gap-1">
                   {t("ABRIR", "OPEN")} ➔
                 </span>
               </div>
@@ -1398,7 +1307,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
 
                 {/* Title & Concept Header */}
                 <div className="mt-3 mb-2">
-                  <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-[#ff3b1f] font-bold block mb-0.5">
+                  <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-[#165e38] font-bold block mb-0.5">
                     {t("NOTAS DE TALLER & GÉNESIS", "STUDIO NOTES & GENESIS")}
                   </span>
                   <h4 className="font-serif italic font-bold text-lg sm:text-xl text-[#1c1917]">
@@ -1416,7 +1325,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                     containerClassName="w-full h-full"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-                  <span className="absolute bottom-1.5 right-2.5 text-[9px] font-mono text-white/95 font-bold">
+                  <span className="absolute bottom-1.5 right-2.5 text-[9px] font-mono text-bone font-bold">
                     REF. SK-001 · MMP
                   </span>
                 </div>

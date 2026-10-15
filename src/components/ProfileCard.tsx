@@ -29,8 +29,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   showUserInfo = true,
   enableTilt = true,
   behindGlowEnabled = true,
-  behindGlowColor = 'rgba(255, 59, 31, 0.22)',
-  innerGradient = 'linear-gradient(145deg, rgba(255, 59, 31, 0.12) 0%, rgba(20, 24, 21, 0.95) 100%)',
+  behindGlowColor = 'rgba(62, 232, 143, 0.22)',
+  innerGradient = 'linear-gradient(145deg, rgba(62, 232, 143, 0.12) 0%, rgba(20, 24, 21, 0.95) 100%)',
   className = '',
   onContactClick,
 }) => {
@@ -86,7 +86,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
         <div
           className="absolute -inset-4 sm:-inset-6 pointer-events-none rounded-[36px] transition-opacity duration-500"
           style={{
-            background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, ${behindGlowColor} 0%, rgba(255, 59, 31, 0.05) 45%, transparent 70%)`,
+            background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, ${behindGlowColor} 0%, rgba(62, 232, 143, 0.05) 45%, transparent 70%)`,
             filter: 'blur(38px)',
             opacity: isHovered ? 0.95 : 0.65,
           }}
@@ -100,7 +100,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
         onPointerMove={handlePointerMove}
         onPointerEnter={handlePointerEnter}
         onPointerLeave={handlePointerLeave}
-        className="relative w-full aspect-[0.72] rounded-[28px] overflow-hidden border border-white/15 bg-[#0e1110] shadow-[0_24px_50px_-12px_rgba(0,0,0,0.9),0_0_20px_rgba(255,59,31,0.15)] cursor-pointer"
+        className="relative w-full aspect-[0.72] rounded-[28px] overflow-hidden border border-white/15 bg-[#0e1110] shadow-[0_24px_50px_-12px_rgba(0,0,0,0.9),0_0_20px_rgba(184,197,168,0.15)] cursor-pointer"
         style={{
           transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(${isHovered ? 1.02 : 1}, ${isHovered ? 1.02 : 1}, 1)`,
           transition: isHovered ? 'transform 0.08s ease-out' : 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -142,7 +142,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
         <div
           className="absolute inset-0 pointer-events-none z-[2] mix-blend-color-dodge transition-opacity duration-500"
           style={{
-            background: `linear-gradient(${115 + rotateY * 1.5}deg, transparent 20%, rgba(255, 110, 88, 0.12) 36%, rgba(255, 59, 31, 0.18) 46%, rgba(96, 165, 250, 0.14) 56%, rgba(168, 85, 247, 0.12) 66%, transparent 82%)`,
+            background: `linear-gradient(${115 + rotateY * 1.5}deg, transparent 20%, rgba(62, 232, 143, 0.12) 36%, rgba(38, 186, 108, 0.18) 46%, rgba(96, 165, 250, 0.14) 56%, rgba(168, 85, 247, 0.12) 66%, transparent 82%)`,
             opacity: isHovered ? 0.85 : 0.35,
           }}
           aria-hidden="true"
@@ -192,7 +192,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
               </div>
 
               <div className="flex flex-col min-w-0">
-                <span className="text-white text-xs sm:text-sm font-sans font-bold truncate leading-tight">
+                <span className="text-bone text-xs sm:text-sm font-sans font-bold truncate leading-tight">
                   @{handle}
                 </span>
                 <span className="text-[#4ade80] text-[10px] sm:text-[11px] font-sans font-medium flex items-center gap-1 leading-tight mt-0.5">
@@ -209,7 +209,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                 e.stopPropagation();
                 onContactClick?.();
               }}
-              className="min-h-[44px] min-w-[44px] px-3 sm:px-3.5 py-2 rounded-xl text-[11px] sm:text-xs font-mono uppercase tracking-wider font-bold text-white bg-vampire-red/25 hover:bg-vampire-red border border-vampire-red/60 hover:border-vampire-red transition-all duration-300 cursor-pointer shadow-md hover:shadow-[0_0_15px_rgba(255,59,31,0.6)] hover:scale-105 active:scale-95 shrink-0 ml-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              className="min-h-[44px] min-w-[44px] px-3 sm:px-3.5 py-2 rounded-xl text-[11px] sm:text-xs font-mono uppercase tracking-wider font-bold text-bone hover:text-black bg-vampire-red/25 hover:bg-vampire-red border border-vampire-red/60 hover:border-vampire-red transition-all duration-300 cursor-pointer shadow-md hover:shadow-[0_0_15px_rgba(184,197,168,0.6)] hover:scale-105 active:scale-95 shrink-0 ml-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
               aria-label={`${contactText}: Marina Martín Prieto`}
             >
               {contactText}

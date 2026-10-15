@@ -4,9 +4,9 @@ export default function Footer() {
   const { t } = useLanguage();
 
   return (
-    <footer className="bg-[#0a0a0a] px-6 border-t border-white/10 text-center relative overflow-hidden transition-all duration-700 py-10 opacity-100">
+    <footer className="bg-[#4a2635] px-6 border-t border-[#B8C5A8]/20 text-center relative overflow-hidden transition-all duration-700 py-10 opacity-100">
       {/* Background glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-40 bg-vampire-red/5 blur-[100px] pointer-events-none" aria-hidden="true" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-40 bg-[#B8C5A8]/5 blur-[100px] pointer-events-none" aria-hidden="true" />
 
       <div className="max-w-4xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-center text-xs font-mono uppercase tracking-[0.25em] text-bone-muted gap-4 md:gap-0 font-medium">
