@@ -257,23 +257,12 @@ export default function Biography() {
                 <div className="text-xs uppercase tracking-wider text-amber-300 font-mono font-semibold mb-2 mt-1">
                   {t("Autónoma", "Freelance")} • {t("2022 - Actualidad", "2022 - Present")}
                 </div>
-                <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans mb-3">
+                <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
                   {t(
                     <>Trabajo independiente y encargos artísticos personalizados. Creación y desarrollo de <strong className="text-bone font-semibold">ilustraciones para portadas de libros</strong>, diseño visual e ilustraciones para una <strong className="text-bone font-semibold">asociación sin ánimo de lucro</strong>, y gestión continua de <strong className="text-bone font-semibold">comisiones</strong> artísticas para clientes internacionales.</>,
                     <>Independent artwork and custom artistic assignments. Creation and development of <strong className="text-bone font-semibold">book cover illustrations</strong>, visual design and illustrations for a <strong className="text-bone font-semibold">non-profit association</strong>, and ongoing management of custom art <strong className="text-bone font-semibold">commissions</strong> for international clients.</>
                   )}
                 </p>
-                <div className="flex flex-wrap gap-1.5 pt-0.5">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-amber-300/90 bg-amber-400/10 px-2 py-0.5 rounded-sm border border-amber-400/20 font-semibold">
-                    {t("Portadas de libros", "Book covers")}
-                  </span>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#ff6e58] bg-vampire-red/10 px-2 py-0.5 rounded-sm border border-vampire-red/25 font-semibold">
-                    {t("Asociación sin ánimo de lucro", "Non-profit association")}
-                  </span>
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-bone-muted bg-white/5 px-2 py-0.5 rounded-sm border border-white/10 font-semibold">
-                    {t("Comisiones", "Commissions")}
-                  </span>
-                </div>
               </div>
 
               <div 
