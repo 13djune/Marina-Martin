@@ -180,7 +180,7 @@ export default function CustomCursor() {
       {/* Primary Inner Core Fluid Dot */}
       <div
         ref={dotRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[1000000] hidden sm:block will-change-transform transition-[width,height,background-color,border-radius,opacity] duration-200 ${
+        className={`fixed top-0 left-0 pointer-events-none z-[100] hidden md:block will-change-transform transition-[width,height,background-color,border-radius,opacity] duration-200 ${
           isHovering
             ? 'w-2 h-2 bg-[#e8b4b8] rounded-full opacity-90'
             : 'w-3 h-3 bg-[#B8C5A8] shadow-[0_0_10px_rgba(184,197,168,0.85)] rounded-[60%_40%_52%_48%_/_50%_50%_50%_50%]'
@@ -193,7 +193,7 @@ export default function CustomCursor() {
       {/* Secondary Outer Organic Aura Ring */}
       <div
         ref={trailRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[999999] hidden sm:block will-change-transform transition-[width,height,border-color,border-radius,background-color,opacity] duration-250 ${
+        className={`fixed top-0 left-0 pointer-events-none z-[100] hidden md:block will-change-transform transition-[width,height,border-color,border-radius,background-color,opacity] duration-250 ${
           isHovering
             ? 'w-12 h-12 border-1.5 border-[#e8b4b8] bg-[#e8b4b8]/10 backdrop-blur-[1px] opacity-95 rounded-[46%_54%_52%_48%_/_50%_48%_52%_50%]'
             : 'w-8 h-8 border border-[#B8C5A8]/60 shadow-[0_0_12px_rgba(184,197,168,0.3)] opacity-70 rounded-[58%_42%_52%_48%_/_48%_52%_48%_52%]'

@@ -91,7 +91,7 @@ export default function ProjectDetail({ project, onClose }: ProjectDetailProps) 
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
-      className="fixed inset-0 z-[999999] overflow-hidden select-none bg-[#090b0a]/96 backdrop-blur-2xl text-bone flex flex-col justify-between cursor-pointer"
+      className="fixed inset-0 z-[90] overflow-hidden select-none bg-[#090b0a]/96 backdrop-blur-2xl text-bone flex flex-col justify-between cursor-pointer"
       data-lenis-prevent="true"
       onClick={handleBackdropClick}
     >
@@ -113,7 +113,7 @@ export default function ProjectDetail({ project, onClose }: ProjectDetailProps) 
 
       {/* Top Header Toolbar */}
       <header 
-        className="relative z-40 w-full px-4 sm:px-6 md:px-8 py-2.5 flex items-center justify-between border-b border-white/10 bg-black/70 backdrop-blur-md cursor-default"
+        className="relative z-40 w-full px-4 sm:px-6 md:px-8 py-2.5 pt-[max(env(safe-area-inset-top),0.75rem)] flex items-center justify-between border-b border-white/10 bg-black/70 backdrop-blur-md cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Left: Volver Button - Min 44x44px Touch Target for WCAG AAA */}

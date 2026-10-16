@@ -40,7 +40,7 @@ export default function BackToTop() {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-[80] w-12 h-12 flex items-center justify-center group cursor-none sm:cursor-pointer"
+          className="fixed bottom-8 right-8 z-[70] w-12 h-12 flex items-center justify-center group cursor-none sm:cursor-pointer"
           aria-label={t("Volver arriba", "Back to top")}
         >
           <div className="absolute inset-0 bg-vampire-bg/80 backdrop-blur-sm border border-vampire-red/30 rotate-45 organic-diamond transition-all duration-300 group-hover:bg-vampire-red group-hover:border-vampire-red group-hover:shadow-[0_0_15px_rgba(184,197,168,0.5)]"></div>

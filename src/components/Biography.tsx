@@ -607,7 +607,7 @@ export default function Biography() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             onClick={() => setExpandedAwardImage(null)}
-            className="fixed inset-0 z-[999999] bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 md:p-8 cursor-zoom-out"
+            className="fixed inset-0 z-[90] bg-black/90 backdrop-blur-md flex flex-col justify-start sm:justify-center items-center overflow-y-auto p-3 sm:p-6 md:p-8 cursor-zoom-out pt-[max(env(safe-area-inset-top),1.25rem)] pb-[max(env(safe-area-inset-bottom),1.25rem)]"
             role="dialog"
             aria-modal="true"
           >
@@ -617,24 +617,24 @@ export default function Biography() {
               exit={{ scale: 0.94, opacity: 0, y: 15 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-4xl w-full max-h-[90vh] glass-panel rounded-3xl p-4 sm:p-6 border border-white/20 shadow-[0_25px_70px_rgba(0,0,0,0.9)] flex flex-col items-center cursor-default overflow-hidden"
+              className="my-auto relative max-w-4xl w-full max-h-[calc(100dvh-2.5rem)] glass-panel rounded-2xl sm:rounded-3xl p-3 sm:p-6 border border-white/20 shadow-[0_25px_70px_rgba(0,0,0,0.9)] flex flex-col items-center cursor-default overflow-hidden shrink-0"
             >
               {/* Close button */}
               <button
                 type="button"
                 onClick={() => setExpandedAwardImage(null)}
-                className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/[0.08] hover:bg-[#e8b4b8] border border-white/20 text-bone hover:text-black flex items-center justify-center transition-all duration-200 cursor-pointer shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8b4b8]"
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-10 h-10 rounded-full bg-black/70 hover:bg-[#e8b4b8] border border-white/20 text-bone hover:text-black flex items-center justify-center transition-all duration-200 cursor-pointer shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8b4b8]"
                 title={t("Cerrar ampliación (Esc)", "Close image (Esc)")}
               >
                 <X size={20} />
               </button>
 
               {/* Large Image */}
-              <div className="relative w-full max-h-[68vh] rounded-2xl overflow-hidden border border-white/10 bg-black/50 flex items-center justify-center">
+              <div className="relative w-full max-h-[52vh] sm:max-h-[64vh] rounded-xl sm:rounded-2xl overflow-hidden border border-white/10 bg-black/60 flex items-center justify-center">
                 <img
                   src={expandedAwardImage.url}
                   alt={t(expandedAwardImage.titleEs, expandedAwardImage.titleEn)}
-                  className="w-full h-full max-h-[68vh] object-contain rounded-2xl"
+                  className="w-full h-full max-h-[52vh] sm:max-h-[64vh] object-contain rounded-xl sm:rounded-2xl"
                 />
               </div>
 

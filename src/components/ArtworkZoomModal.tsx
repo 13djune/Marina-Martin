@@ -218,14 +218,14 @@ export const ArtworkZoomModal: React.FC<ArtworkZoomModalProps> = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.25 }}
-      className="fixed inset-0 z-[9999999] bg-black/96 backdrop-blur-3xl flex flex-col justify-between overflow-hidden select-none"
+      className="fixed inset-0 z-[95] bg-black/96 backdrop-blur-3xl flex flex-col justify-between overflow-hidden select-none"
       onClick={handleBackdropClick}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
     >
       {/* Top Floating Control Bar */}
       <header 
-        className="relative z-50 w-full px-4 sm:px-6 py-3 flex items-center justify-between border-b border-white/10 bg-black/70 backdrop-blur-xl shrink-0"
+        className="relative z-50 w-full px-4 sm:px-6 py-3 pt-[max(env(safe-area-inset-top),0.75rem)] flex items-center justify-between border-b border-white/10 bg-black/70 backdrop-blur-xl shrink-0"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Left: Project title & metadata info */}
