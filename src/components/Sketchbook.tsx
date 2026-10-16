@@ -506,8 +506,8 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
             <div className="absolute inset-2 sm:inset-3 rounded-none border border-white/[0.08] pointer-events-none z-10" />
 
             {/* Traditional Corner Metal Accents */}
-            <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-amber-300/40 rounded-none pointer-events-none z-20" aria-hidden="true" />
-            <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-amber-300/40 rounded-none pointer-events-none z-20" aria-hidden="true" />
+            <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-[#B8C5A8]/40 rounded-none pointer-events-none z-20" aria-hidden="true" />
+            <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-[#B8C5A8]/40 rounded-none pointer-events-none z-20" aria-hidden="true" />
             {/* Subtle Natural Landing Shading */}
             <motion.div
               className="pointer-events-none absolute inset-0 z-30"
@@ -1090,11 +1090,11 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                     e.stopPropagation();
                     setActiveHotspot(hs);
                   }}
-                  className="no-flip absolute w-11 h-11 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer group/hs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+                  className="no-flip absolute w-11 h-11 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer group/hs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
                   style={{ left: `${hs.x}%`, top: `${hs.y}%` }}
                   aria-label={`${t("Anotación técnica:", "Technical note:")} ${t(hs.titleEs, hs.titleEn)}`}
                 >
-                  <span className="w-6 h-6 rounded-none border-2 border-amber-300 bg-black/90 text-amber-300 flex items-center justify-center text-xs font-bold shadow-xl group-hover/hs:scale-125 transition-transform">
+                  <span className="w-6 h-6 rounded-none border-2 border-[#B8C5A8] bg-black/90 text-[#B8C5A8] flex items-center justify-center text-xs font-bold shadow-xl group-hover/hs:scale-125 transition-transform">
                     ✦
                   </span>
                 </button>
@@ -1121,11 +1121,11 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.2 }}
-                    className="no-flip absolute bottom-2 left-2 right-16 p-2.5 rounded-none bg-black/95 backdrop-blur-md text-bone text-xs border border-amber-400/40 shadow-2xl z-20" 
+                    className="no-flip absolute bottom-2 left-2 right-16 p-2.5 rounded-none bg-black/95 backdrop-blur-md text-bone text-xs border border-[#B8C5A8]/40 shadow-2xl z-20" 
                     role="region" 
                     aria-label={t(activeHotspot.titleEs, activeHotspot.titleEn)}
                   >
-                    <div className="flex items-center justify-between text-amber-300 font-bold mb-0.5 text-[11px]">
+                    <div className="flex items-center justify-between text-[#B8C5A8] font-bold mb-0.5 text-[11px]">
                       <span>✦ {t(activeHotspot.titleEs, activeHotspot.titleEn)}</span>
                       <button 
                         type="button" 
@@ -1195,8 +1195,8 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
             <div className="absolute inset-2 sm:inset-3 rounded-none border border-white/[0.08] pointer-events-none z-10" />
 
             {/* Traditional Corner Metal Accents */}
-            <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-amber-300/40 rounded-none pointer-events-none z-20" aria-hidden="true" />
-            <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-amber-300/40 rounded-none pointer-events-none z-20" aria-hidden="true" />
+            <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-[#B8C5A8]/40 rounded-none pointer-events-none z-20" aria-hidden="true" />
+            <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-[#B8C5A8]/40 rounded-none pointer-events-none z-20" aria-hidden="true" />
             {/* Subtle Natural Curvature Shadow on Turning Cover */}
             <motion.div
               className="pointer-events-none absolute inset-0 z-30"

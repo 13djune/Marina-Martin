@@ -120,8 +120,8 @@ export const SketchbookCoverCard: React.FC<SketchbookCoverCardProps> = ({ projec
           <div className="absolute inset-2.5 rounded-none border border-white/[0.08] pointer-events-none z-10" />
 
           {/* Traditional Brass Corner Protectors (Crisp Square Corners) */}
-          <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-amber-300/40 rounded-none pointer-events-none z-20" aria-hidden="true" />
-          <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-amber-300/40 rounded-none pointer-events-none z-20" aria-hidden="true" />
+          <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-[#B8C5A8]/40 rounded-none pointer-events-none z-20" aria-hidden="true" />
+          <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-[#B8C5A8]/40 rounded-none pointer-events-none z-20" aria-hidden="true" />
 
           {/* Left Book Spine (Encuadernación tradicional de libro cuadrado) */}
           <div 

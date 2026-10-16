@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 /**
  * BotanicalBackground
@@ -10,7 +10,7 @@ import React, { useEffect, useRef, useState } from 'react';
  */
 export default function BotanicalBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const artworkRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let animationFrameId: number;
@@ -21,14 +21,16 @@ export default function BotanicalBackground() {
 
     const handleMouseMove = (e: MouseEvent) => {
       const { innerWidth, innerHeight } = window;
-      targetX = (e.clientX / innerWidth - 0.5) * 20;
-      targetY = (e.clientY / innerHeight - 0.5) * 15;
+      targetX = (e.clientX / innerWidth - 0.5) * 16;
+      targetY = (e.clientY / innerHeight - 0.5) * 12;
     };
 
     const animate = () => {
-      currentX += (targetX - currentX) * 0.05;
-      currentY += (targetY - currentY) * 0.05;
-      setMousePos({ x: currentX, y: currentY });
+      currentX += (targetX - currentX) * 0.04;
+      currentY += (targetY - currentY) * 0.04;
+      if (artworkRef.current) {
+        artworkRef.current.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0px) scale(1.02)`;
+      }
       animationFrameId = requestAnimationFrame(animate);
     };
 
@@ -58,9 +60,10 @@ export default function BotanicalBackground() {
 
       {/* 2. Central High-Detail Chiaroscuro Botanical Artwork */}
       <div 
-        className="absolute inset-0 flex items-center justify-center transition-transform duration-700 ease-out will-change-transform"
+        ref={artworkRef}
+        className="absolute inset-0 flex items-center justify-center will-change-transform"
         style={{
-          transform: `translate3d(${mousePos.x}px, ${mousePos.y}px, 0px) scale(1.02)`,
+          transform: 'translate3d(0px, 0px, 0px) scale(1.02)',
         }}
       >
         <svg 

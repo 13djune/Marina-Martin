@@ -29,8 +29,8 @@ interface SideRaysProps {
  */
 export const SideRays: React.FC<SideRaysProps> = ({
   speed = 2.5,
-  rayColor1 = '#EAB308',
-  rayColor2 = '#96c8ff',
+  rayColor1 = '#B8C5A8',
+  rayColor2 = '#24301d',
   intensity = 2,
   spread = 2,
   origin = 'top-right',

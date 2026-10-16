@@ -703,7 +703,7 @@ export const PageFlipBook: React.FC<PageFlipBookProps> = ({
                         e.stopPropagation();
                         setActiveHotspot(hs);
                       }}
-                      className="no-flip absolute w-5 h-5 -translate-x-1/2 -translate-y-1/2 rounded-none border-2 border-amber-400 bg-black/80 text-amber-300 flex items-center justify-center text-[10px] font-bold shadow-lg hover:scale-125 transition-transform cursor-pointer"
+                      className="no-flip absolute w-5 h-5 -translate-x-1/2 -translate-y-1/2 rounded-none border-2 border-[#B8C5A8] bg-black/80 text-[#B8C5A8] flex items-center justify-center text-[10px] font-bold shadow-lg hover:scale-125 transition-transform cursor-pointer"
                       style={{ left: `${hs.x}%`, top: `${hs.y}%` }}
                       title={t(hs.titleEs, hs.titleEn)}
                     >
@@ -728,8 +728,8 @@ export const PageFlipBook: React.FC<PageFlipBookProps> = ({
 
                 {/* Hotspot Drawer / Caption */}
                 {activeHotspot ? (
-                  <div className="p-2 rounded-none bg-black/90 text-bone text-[9px] sm:text-[10px] border border-amber-400/40 animate-in fade-in duration-200">
-                    <div className="flex items-center justify-between text-amber-400 font-bold mb-0.5">
+                  <div className="p-2 rounded-none bg-black/90 text-bone text-[9px] sm:text-[10px] border border-[#B8C5A8]/40 animate-in fade-in duration-200">
+                    <div className="flex items-center justify-between text-[#B8C5A8] font-bold mb-0.5">
                       <span>✦ {t(activeHotspot.titleEs, activeHotspot.titleEn)}</span>
                       <button 
                         type="button" 

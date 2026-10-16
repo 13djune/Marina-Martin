@@ -1,11 +1,5 @@
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { motion } from 'motion/react';
 import { useLanguage } from '../LanguageContext';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const processSteps = [
   {
@@ -47,122 +41,88 @@ const processSteps = [
 
 export default function Process() {
   const { t } = useLanguage();
-  const sectionRef = useRef<HTMLElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const timelineLineRef = useRef<HTMLDivElement>(null);
-  const stepsContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
-      });
-
-      // 1. Header entrance
-      tl.fromTo(
-        headerRef.current,
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }
-      )
-      // 2. Timeline horizontal line fill
-      .fromTo(
-        timelineLineRef.current,
-        { scaleX: 0 },
-        { scaleX: 1, duration: 1.2, ease: 'power2.inOut' },
-        '-=0.5'
-      );
-
-      // 3. Staggered Step diamonds and text cards
-      if (stepsContainerRef.current) {
-        const stepElements = Array.from(stepsContainerRef.current.children) as HTMLElement[];
-        stepElements.forEach((stepEl, idx) => {
-          const diamond = stepEl.querySelector('.step-diamond');
-          const textElements = stepEl.querySelectorAll('.step-text');
-
-          tl.fromTo(
-            diamond,
-            { scale: 0, rotation: 0, opacity: 0 },
-            { scale: 1, rotation: 45, opacity: 1, duration: 0.65, ease: 'back.out(2)' },
-            `-=${idx === 0 ? 0.9 : 0.45}`
-          )
-          .fromTo(
-            textElements,
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', stagger: 0.08 },
-            '-=0.4'
-          );
-        });
-      }
-    }, section);
-
-    return () => ctx.revert();
-  }, []);
 
   return (
-    <section 
-      ref={sectionRef}
-      className="py-24 px-6 md:px-12 bg-vampire-bg relative z-10 text-bone overflow-hidden"
+    <motion.section 
+      id="process"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.12 }}
+      transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+      className="py-24 px-6 md:px-12 bg-vampire-bg relative z-10 text-bone overflow-hidden border-t border-white/5"
     >
       <div className="max-w-7xl mx-auto text-center">
-        <div
-          ref={headerRef}
-          className="mb-20 will-change-transform"
+        {/* Header with Framer Motion Fade-in and subtle vertical motion */}
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-20"
         >
-          <h2 className="text-5xl md:text-6xl font-serif font-black uppercase mb-6 tracking-widest text-bone">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-[11px] font-mono uppercase tracking-widest text-[#e8b4b8] mb-4">
+            <span>04</span>
+            <span className="w-1 h-1 rounded-full bg-[#e8b4b8]" />
+            <span>{t("METODOLOGÍA CREATIVA", "CREATIVE WORKFLOW")}</span>
+          </div>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-black uppercase mb-6 tracking-widest text-bone">
             {t("PROCESO", "PROCESS")}
           </h2>
-          <p className="text-lg md:text-xl font-serif max-w-3xl mx-auto text-bone-muted font-light">
+          <p className="text-base sm:text-lg md:text-xl font-serif max-w-3xl mx-auto text-bone-muted font-light leading-relaxed">
             {t(
               "Cada proyecto va a ser diferente, pero esta es la estructura habitual que me gusta seguir como mejores prácticas.",
               "Every project is going to be different, but this is the usual structure that I like to follow as best practices."
             )}
           </p>
-          <div className="w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm mx-auto mt-12 shadow-[0_0_10px_rgba(184,197,168,0.5)]"></div>
-        </div>
+          <div className="w-2.5 h-2.5 bg-[#e8b4b8] rotate-45 organic-diamond-sm mx-auto mt-10 shadow-[0_0_12px_rgba(232,180,184,0.7)]" aria-hidden="true"></div>
+        </motion.div>
 
-        <div className="relative">
+        {/* Timeline & Steps with Framer Motion scroll entrance */}
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.85, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="relative"
+        >
           {/* Background timeline line */}
-          <div className="hidden md:block absolute top-[28px] left-[10%] w-[80%] h-[1px] bg-[#B8C5A8]/15"></div>
+          <div className="hidden md:block absolute top-[28px] left-[10%] w-[80%] h-[1px] bg-white/15"></div>
           
-          {/* Animated fill line driven by GSAP */}
-          <div 
-            ref={timelineLineRef}
-            className="hidden md:block absolute top-[28px] left-[10%] w-[80%] h-[1px] bg-vampire-red shadow-[0_0_12px_rgba(184,197,168,0.6)] z-0 origin-left will-change-transform"
+          {/* Animated fill line driven by Framer Motion */}
+          <motion.div 
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 1.1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="hidden md:block absolute top-[28px] left-[10%] w-[80%] h-[1px] bg-gradient-to-r from-[#e8b4b8] via-[#B8C5A8] to-[#e8b4b8] shadow-[0_0_14px_rgba(232,180,184,0.6)] z-0 origin-left"
           />
 
-          <div 
-            ref={stepsContainerRef}
-            className="grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-6 relative z-10"
-          >
-            {processSteps.map((step) => (
-              <div
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-6 relative z-10">
+            {processSteps.map((step, idx) => (
+              <motion.div
                 key={step.number}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.7, delay: 0.2 + idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 className="flex flex-col items-center text-center group cursor-pointer"
               >
-                <div className="step-diamond w-14 h-14 bg-vampire-bg border border-vampire-red/30 rotate-45 organic-diamond flex items-center justify-center mb-10 transition-all duration-500 group-hover:border-vampire-red relative overflow-hidden shadow-xl group-hover:shadow-[0_0_20px_rgba(184,197,168,0.3)] will-change-transform">
-                  <div className="absolute inset-0 bg-vampire-red/15 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                  <span className="-rotate-45 text-bone-muted font-serif text-lg group-hover:text-vampire-red transition-colors duration-500 relative z-10">{step.number}</span>
+                <div className="step-diamond w-14 h-14 bg-[#2a1723]/80 border border-white/20 rotate-45 organic-diamond flex items-center justify-center mb-8 transition-all duration-500 group-hover:border-[#e8b4b8] group-hover:bg-[#e8b4b8]/15 relative overflow-hidden shadow-xl group-hover:shadow-[0_0_20px_rgba(232,180,184,0.4)] group-hover:scale-110">
+                  <span className="-rotate-45 text-bone font-serif text-lg group-hover:text-[#e8b4b8] transition-colors duration-500 relative z-10 font-bold">{step.number}</span>
                 </div>
                 
-                <h3 className="step-text text-2xl font-serif mb-4 text-bone tracking-wider uppercase italic group-hover:text-vampire-red transition-colors duration-500 will-change-transform">
+                <h3 className="step-text text-lg sm:text-xl font-serif mb-3 text-bone tracking-wider uppercase italic group-hover:text-[#e8b4b8] transition-colors duration-500">
                   {t(step.titleEs, step.titleEn)}
                 </h3>
                 
-                <p className="step-text text-sm leading-relaxed text-bone-muted font-light max-w-[250px] will-change-transform">
+                <p className="step-text text-xs sm:text-sm leading-relaxed text-bone-muted font-light max-w-[240px]">
                   {t(step.descEs, step.descEn)}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }

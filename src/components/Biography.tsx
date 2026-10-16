@@ -1,23 +1,39 @@
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useRef, useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../LanguageContext';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts';
-import { Download, FileText, ArrowDown, Briefcase, GraduationCap, Trophy } from 'lucide-react';
+import { Download, FileText, ArrowDown, Briefcase, GraduationCap, Trophy, Sparkles, Award, Languages, BookOpen, Palette, Camera, ZoomIn, X } from 'lucide-react';
 import ProfileCard from './ProfileCard';
 import { downloadCV, downloadPortfolio } from '../utils/downloadHelpers';
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
 export default function Biography() {
   const { t } = useLanguage();
-  const sectionRef = useRef<HTMLElement>(null);
-  const profileCardRef = useRef<HTMLDivElement>(null);
-  const bioContentRef = useRef<HTMLDivElement>(null);
   const chartWrapperRef = useRef<HTMLDivElement>(null);
-  const columnsRef = useRef<HTMLDivElement>(null);
+  const [expandedAwardImage, setExpandedAwardImage] = useState<{
+    url: string;
+    titleEs: string;
+    titleEn: string;
+    subtitleEs: string;
+    subtitleEn: string;
+  } | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setExpandedAwardImage(null);
+      }
+    };
+    if (expandedAwardImage) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [expandedAwardImage]);
 
   const skillsData = [
     { subject: 'Photoshop', A: 95, fullMark: 100 },
@@ -28,75 +44,26 @@ export default function Biography() {
     { subject: 'Procreate', A: 95, fullMark: 100 },
   ];
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const ctx = gsap.context(() => {
-      // 1. Top Section Intro: Profile Card & Bio Content
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
-      });
-
-      tl.fromTo(
-        profileCardRef.current,
-        { x: -50, opacity: 0, rotateY: 10, transformPerspective: 1000 },
-        { x: 0, opacity: 1, rotateY: 0, duration: 1.1, ease: 'power3.out' }
-      )
-      .fromTo(
-        bioContentRef.current,
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.9, ease: 'power2.out' },
-        '-=0.7'
-      )
-      .fromTo(
-        chartWrapperRef.current,
-        { scale: 0.85, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.4)' },
-        '-=0.4'
-      );
-
-      // 2. Resume / Experience Columns Stagger
-      if (columnsRef.current) {
-        gsap.fromTo(
-          columnsRef.current.children,
-          { y: 50, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.85,
-            stagger: 0.18,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: columnsRef.current,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          }
-        );
-      }
-    }, section);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section 
-      ref={sectionRef}
+    <motion.section 
       id="about" 
-      className="py-24 px-6 md:px-12 bg-vampire-bg relative z-10 border-t border-white/5"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.08 }}
+      transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+      className="py-24 px-6 md:px-12 bg-vampire-bg relative z-10 border-t border-white/5 text-bone overflow-hidden"
     >
       <div className="max-w-7xl mx-auto">
+        {/* Top Section Intro: Profile Card & Bio Content with Framer Motion Entrance */}
         <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-24 mb-24">
           
-          {/* Image Side */}
-          <div 
-            ref={profileCardRef}
-            className="w-full md:w-5/12 relative will-change-transform"
+          {/* Image Side with Framer Motion Fade-in and subtle vertical motion */}
+          <motion.div 
+            initial={{ opacity: 0, y: 35 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full md:w-5/12 relative"
           >
             <div className="w-full flex justify-center">
               <ProfileCard
@@ -123,15 +90,18 @@ export default function Biography() {
             </div>
             
             <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-vampire-red/20 blur-3xl rounded-full z-[-1]"></div>
-          </div>
+          </motion.div>
 
-          {/* Text Side */}
-          <div className="w-full md:w-7/12 flex flex-col justify-center">
-            <div
-              ref={bioContentRef}
-              className="pt-6 will-change-transform"
-            >
-              <h3 className="text-xs uppercase tracking-widest text-vampire-red mb-3 font-sans font-bold">
+          {/* Text Side with Framer Motion Fade-in and vertical movement */}
+          <motion.div 
+            initial={{ opacity: 0, y: 35 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.85, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full md:w-7/12 flex flex-col justify-center"
+          >
+            <div className="pt-6">
+              <h3 className="text-xs uppercase tracking-widest text-[#e8b4b8] mb-3 font-sans font-bold">
                 {t("Sobre la Artista", "About the Artist")}
               </h3>
               
@@ -152,68 +122,77 @@ export default function Biography() {
                 </p>
               </div>
 
-              <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div className="space-y-10">
-                  <div>
-                    <span className="block text-xl font-serif text-[#B8C5A8] mb-1 font-bold">{t("Concept Art", "Concept Art")}</span>
-                    <span className="text-xs uppercase tracking-[0.3em] font-sans text-bone-muted font-semibold">
-                      {t("Entornos & Props", "Environments & Props")}
-                    </span>
+              {/* Glassmorphic Skills & Specializations Card */}
+              <div className="mt-10 glass-card p-6 sm:p-8 rounded-3xl relative overflow-hidden">
+                {/* Physical Glass Specular Reflections */}
+                <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" aria-hidden="true" />
+                <div className="absolute -top-[100%] -left-[50%] w-[200%] h-[200%] pointer-events-none rotate-12 bg-gradient-to-b from-white/[0.07] via-transparent to-transparent z-0" aria-hidden="true" />
+                <div className="absolute top-0 right-0 w-44 h-44 bg-[#e8b4b8]/8 rounded-full blur-2xl pointer-events-none" aria-hidden="true" />
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center relative z-10">
+                  <div className="space-y-7">
+                    <div>
+                      <span className="block text-xl font-serif text-[#B8C5A8] mb-1 font-bold">{t("Concept Art", "Concept Art")}</span>
+                      <span className="text-xs uppercase tracking-[0.3em] font-sans text-bone-muted font-semibold">
+                        {t("Entornos & Props", "Environments & Props")}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="block text-xl font-serif text-[#B8C5A8] mb-1 font-bold">{t("Ilustración", "Illustration")}</span>
+                      <span className="text-xs uppercase tracking-[0.3em] font-sans text-bone-muted font-semibold">
+                        {t("Luz & Color", "Light & Color")}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="block text-xl font-serif text-[#B8C5A8] mb-1 font-bold">{t("Desarrollo Visual", "Visual Development")}</span>
+                      <span className="text-xs uppercase tracking-[0.3em] font-sans text-bone-muted font-semibold">
+                        {t("Narrativa visual", "Visual storytelling")}
+                      </span>
+                    </div>
                   </div>
-                  <div>
-                    <span className="block text-xl font-serif text-[#B8C5A8] mb-1 font-bold">{t("Ilustración", "Illustration")}</span>
-                    <span className="text-xs uppercase tracking-[0.3em] font-sans text-bone-muted font-semibold">
-                      {t("Luz & Color", "Light & Color")}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="block text-xl font-serif text-[#B8C5A8] mb-1 font-bold">{t("Desarrollo Visual", "Visual Development")}</span>
-                    <span className="text-xs uppercase tracking-[0.3em] font-sans text-bone-muted font-semibold">
-                      {t("Narrativa visual", "Visual storytelling")}
-                    </span>
-                  </div>
-                </div>
 
-                <div ref={chartWrapperRef} className="h-[250px] w-full will-change-transform">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart cx="50%" cy="50%" outerRadius="70%" data={skillsData}>
-                      <PolarGrid stroke="rgba(184, 197, 168, 0.2)" />
-                      <PolarAngleAxis dataKey="subject" tick={{ fill: '#B8C5A8', fontSize: 11, fontFamily: 'sans-serif', fontWeight: 600 }} />
-                      <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                      <RechartsTooltip 
-                        contentStyle={{ backgroundColor: 'rgba(105, 61, 78, 0.95)', borderColor: '#B8C5A8', color: '#B8C5A8' }}
-                        itemStyle={{ color: '#B8C5A8' }}
-                      />
-                      <Radar name="Skills" dataKey="A" stroke="#B8C5A8" fill="#B8C5A8" fillOpacity={0.35} />
-                    </RadarChart>
-                  </ResponsiveContainer>
+                  <div ref={chartWrapperRef} className="h-[240px] w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <RadarChart cx="50%" cy="50%" outerRadius="70%" data={skillsData}>
+                        <PolarGrid stroke="rgba(184, 197, 168, 0.2)" />
+                        <PolarAngleAxis dataKey="subject" tick={{ fill: '#B8C5A8', fontSize: 11, fontFamily: 'sans-serif', fontWeight: 600 }} />
+                        <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                        <RechartsTooltip 
+                          contentStyle={{ backgroundColor: 'rgba(34, 18, 27, 0.95)', borderColor: '#e8b4b8', color: '#B8C5A8', borderRadius: '12px' }}
+                          itemStyle={{ color: '#B8C5A8' }}
+                        />
+                        <Radar name="Skills" dataKey="A" stroke="#e8b4b8" fill="#e8b4b8" fillOpacity={0.25} />
+                      </RadarChart>
+                    </ResponsiveContainer>
+                  </div>
                 </div>
               </div>
               
-              <div className="mt-12 flex flex-wrap gap-4 items-center">
-                {/* 1. Descargar CV - Min 44x44px for WCAG AAA */}
+              {/* Frosted Glass Action Buttons */}
+              <div className="mt-8 flex flex-wrap gap-4 items-center">
+                {/* 1. Descargar CV */}
                 <button 
                   type="button"
                   onClick={downloadCV}
-                  className="inline-flex items-center gap-2.5 border-2 border-vampire-red/40 hover:border-vampire-red bg-black/60 hover:bg-vampire-red/10 text-bone hover:text-vampire-red text-xs uppercase tracking-[0.2em] px-6 py-3.5 font-bold transition-all duration-300 rounded-sm cursor-pointer shadow-md hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
+                  className="inline-flex items-center gap-2.5 border border-white/20 hover:border-[#e8b4b8] bg-white/[0.05] hover:bg-[#e8b4b8]/10 backdrop-blur-md text-bone hover:text-[#e8b4b8] text-xs uppercase tracking-[0.2em] px-6 py-3.5 font-bold transition-all duration-300 rounded-xl cursor-pointer shadow-lg hover:shadow-[0_0_20px_rgba(232,180,184,0.25)] hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
                   title={t("Descargar Curriculum Vitae en PDF", "Download Resume PDF")}
                 >
-                  <Download size={16} className="text-[#B8C5A8] group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
+                  <Download size={16} className="text-[#B8C5A8] group-hover:text-[#e8b4b8] group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
                   <span>{t("DESCARGAR CV", "DOWNLOAD CV")}</span>
                 </button>
 
-                {/* 2. Descargar Portfolio - Min 44x44px for WCAG AAA */}
+                {/* 2. Descargar Portfolio */}
                 <button 
                   type="button"
                   onClick={downloadPortfolio}
-                  className="inline-flex items-center gap-2.5 border-2 border-vampire-red/40 hover:border-[#B8C5A8] bg-black/60 hover:bg-[#B8C5A8]/10 text-bone hover:text-[#B8C5A8] text-xs uppercase tracking-[0.2em] px-6 py-3.5 font-bold transition-all duration-300 rounded-sm cursor-pointer shadow-md hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
+                  className="inline-flex items-center gap-2.5 border border-white/20 hover:border-[#e8b4b8] bg-white/[0.05] hover:bg-[#e8b4b8]/10 backdrop-blur-md text-bone hover:text-[#e8b4b8] text-xs uppercase tracking-[0.2em] px-6 py-3.5 font-bold transition-all duration-300 rounded-xl cursor-pointer shadow-lg hover:shadow-[0_0_20px_rgba(232,180,184,0.25)] hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
                   title={t("Descargar Dossier de Portfolio en PDF", "Download Portfolio Dossier PDF")}
                 >
-                  <FileText size={16} className="text-[#B8C5A8] group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
+                  <FileText size={16} className="text-[#B8C5A8] group-hover:text-[#e8b4b8] group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
                   <span>{t("DESCARGAR PORTFOLIO", "DOWNLOAD PORTFOLIO")}</span>
                 </button>
 
-                {/* 3. Trabaja Conmigo - Min 44x44px for WCAG AAA (11.68:1 contrast with text-black) */}
+                {/* 3. Trabaja Conmigo */}
                 <a
                   href="#contact"
                   onClick={(e) => {
@@ -225,7 +204,7 @@ export default function Biography() {
                       window.location.hash = '#contact';
                     }
                   }}
-                  className="inline-flex items-center gap-2.5 bg-vampire-red hover:bg-vampire-red-dark text-black text-xs uppercase tracking-[0.2em] px-7 py-3.5 font-black transition-all duration-300 rounded-sm cursor-pointer shadow-lg hover:shadow-[0_0_20px_rgba(184,197,168,0.5)] hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  className="inline-flex items-center gap-2.5 bg-vampire-red hover:bg-[#e8b4b8] text-black text-xs uppercase tracking-[0.2em] px-7 py-3.5 font-black transition-all duration-300 rounded-xl cursor-pointer shadow-lg hover:shadow-[0_0_25px_rgba(232,180,184,0.5)] hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                   title={t("Ir a la sección de contacto", "Scroll to contact section")}
                 >
                   <span>{t("TRABAJA CONMIGO", "WORK WITH ME")}</span>
@@ -233,197 +212,454 @@ export default function Biography() {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Resume / Experience Section (Harmoniously Balanced 3x2 Grid) */}
-        <div ref={columnsRef} className="pt-16 border-t border-white/10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
-          {/* Column 1: Experiencia */}
-          <div className="flex flex-col will-change-transform">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-8 rounded-lg bg-vampire-red/10 border border-vampire-red/30 flex items-center justify-center text-vampire-red shrink-0" aria-hidden="true">
-                <Briefcase size={16} />
+        {/* Resume / Experience Section: Master Curated 2-Tier Balanced Layout */}
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.08 }}
+          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+          className="pt-16 border-t border-white/10 space-y-12"
+        >
+          {/* Section Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-[11px] font-mono uppercase tracking-widest text-[#e8b4b8] mb-3">
+                <Sparkles size={12} className="text-[#e8b4b8]" />
+                <span>{t("TRAYECTORIA & CURRÍCULUM", "CAREER & RESUME")}</span>
               </div>
-              <h4 className="text-xl font-serif text-bone font-bold italic">{t("Experiencia", "Experience")}</h4>
+              <h3 className="text-3xl sm:text-4xl font-serif text-bone font-bold italic">
+                {t("Experiencia, Formación y Logros", "Experience, Education & Milestones")}
+              </h3>
             </div>
-            
-            <div className="space-y-8 flex-1">
-              {/* Nueva experiencia: Ilustradora Freelance (2022 - Actualidad) */}
-              <div 
-                className="relative pl-6 border-l-2 border-white/15"
-              >
-                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
-                <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">{t("Ilustradora Freelance", "Freelance Illustrator")}</h5>
-                <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2 mt-1">
-                  {t("Autónoma", "Freelance")} • {t("2022 - Actualidad", "2022 - Present")}
+            <p className="text-xs sm:text-sm font-sans text-bone-muted max-w-md font-light leading-relaxed">
+              {t(
+                "Recorrido profesional combinando fundamentos plásticos tradicionales de Bellas Artes con producción digital avanzada para cine y medios audiovisuales.",
+                "Professional path combining traditional Fine Arts plastic foundations with advanced digital production for cinema and audiovisual media."
+              )}
+            </p>
+          </div>
+
+          {/* Tier 1: Experiencia Profesional (3 Full-Width Cards in Grid) */}
+          <div>
+            <div className="flex items-center gap-2.5 mb-6">
+              <div className="w-8 h-8 rounded-lg bg-white/[0.08] border border-white/20 backdrop-blur-md flex items-center justify-center text-[#e8b4b8] shadow-sm shrink-0">
+                <Briefcase size={15} />
+              </div>
+              <h4 className="text-xl font-serif text-bone font-bold italic">{t("Experiencia Profesional", "Professional Experience")}</h4>
+              <span className="text-[11px] font-mono uppercase tracking-widest text-[#B8C5A8]/70 ml-2">
+                {t("3 Roles de Producción", "3 Production Roles")}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+              {/* Job 1: Ilustradora Freelance */}
+              <div className="glass-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group hover:border-[#e8b4b8]/40 transition-all duration-300">
+                <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/50 to-transparent pointer-events-none z-20" aria-hidden="true" />
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#e8b4b8] font-bold bg-[#e8b4b8]/15 px-2.5 py-0.5 rounded-full border border-[#e8b4b8]/30">
+                      {t("ACTUALIDAD", "PRESENT")}
+                    </span>
+                    <span className="text-xs font-mono text-[#B8C5A8]">{t("2022 - Actualidad", "2022 - Present")}</span>
+                  </div>
+                  <h5 className="text-lg font-bold text-bone leading-snug mb-1">{t("Ilustradora Freelance", "Freelance Illustrator")}</h5>
+                  <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-3">
+                    {t("Autónoma", "Freelance")}
+                  </div>
+                  <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans mb-5">
+                    {t(
+                      <>Trabajo independiente y encargos personalizados. Creación de <strong className="text-bone font-semibold">ilustraciones para portadas de libros</strong>, diseño visual para una <strong className="text-bone font-semibold">asociación sin ánimo de lucro</strong> y gestión continua de comisiones artísticas internacionales.</>,
+                      <>Independent artwork and custom assignments. Creation of <strong className="text-bone font-semibold">book cover illustrations</strong>, visual design for a <strong className="text-bone font-semibold">non-profit association</strong>, and ongoing management of international art commissions.</>
+                    )}
+                  </p>
                 </div>
-                <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
-                  {t(
-                    <>Trabajo independiente y encargos artísticos personalizados. Creación y desarrollo de <strong className="text-bone font-semibold">ilustraciones para portadas de libros</strong>, diseño visual e ilustraciones para una <strong className="text-bone font-semibold">asociación sin ánimo de lucro</strong>, y gestión continua de <strong className="text-bone font-semibold">comisiones</strong> artísticas para clientes internacionales.</>,
-                    <>Independent artwork and custom artistic assignments. Creation and development of <strong className="text-bone font-semibold">book cover illustrations</strong>, visual design and illustrations for a <strong className="text-bone font-semibold">non-profit association</strong>, and ongoing management of custom art <strong className="text-bone font-semibold">commissions</strong> for international clients.</>
-                  )}
-                </p>
+                <div className="flex flex-wrap gap-1.5 pt-3 border-t border-white/10 relative z-10">
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Portadas de Libros</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Ilustración Editorial</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Comisiones</span>
+                </div>
               </div>
 
-              <div 
-                className="relative pl-6 border-l-2 border-white/15"
-              >
-                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
-                <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">{t("Artista Conceptual", "Concept Artist")}</h5>
-                <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2 mt-1">
-                  <a href="https://www.linkedin.com/company/nocturnia-studios/" target="_blank" rel="noopener noreferrer" className="hover:text-vampire-red transition-colors inline-block underline decoration-[#B8C5A8]/40">
-                    Nocturnia Studios
-                  </a> • {t("Ago 2023 - Actualidad", "Aug 2023 - Present")}
+              {/* Job 2: Artista Conceptual - Nocturnia Studios */}
+              <div className="glass-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group hover:border-[#e8b4b8]/40 transition-all duration-300">
+                <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/50 to-transparent pointer-events-none z-20" aria-hidden="true" />
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#e8b4b8] font-bold bg-[#e8b4b8]/15 px-2.5 py-0.5 rounded-full border border-[#e8b4b8]/30">
+                      {t("ACTUALIDAD", "PRESENT")}
+                    </span>
+                    <span className="text-xs font-mono text-[#B8C5A8]">{t("Ago 2023 - Actualidad", "Aug 2023 - Present")}</span>
+                  </div>
+                  <h5 className="text-lg font-bold text-bone leading-snug mb-1">{t("Artista Conceptual", "Concept Artist")}</h5>
+                  <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-3">
+                    <a 
+                      href="https://www.linkedin.com/company/nocturnia-studios/" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-[#e8b4b8] hover:text-[#fce4e6] font-semibold transition-colors underline decoration-[#e8b4b8]/50"
+                    >
+                      Nocturnia Studios ↗
+                    </a>
+                  </div>
+                  <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans mb-5">
+                    {t(
+                      <>Trabajo autónomo en remoto. Diseño y desarrollo visual de <strong className="text-bone font-semibold">fondos, entornos y personajes</strong> utilizando <strong className="text-bone font-semibold">Adobe Photoshop</strong> para proyectos cinematográficos.</>,
+                      <>Freelance remote work. Design and visual development of <strong className="text-bone font-semibold">backgrounds, environments and characters</strong> using <strong className="text-bone font-semibold">Adobe Photoshop</strong> for cinematic projects.</>
+                    )}
+                  </p>
                 </div>
-                <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
-                  {t(
-                    <>Trabajo autónomo en remoto. Diseño de <strong className="text-bone font-semibold">fondos, entornos y personajes</strong> utilizando <strong className="text-bone font-semibold">Adobe Photoshop</strong> y herramientas de desarrollo visual.</>,
-                    <>Freelance remote work. Design of <strong className="text-bone font-semibold">backgrounds, environments and characters</strong> using <strong className="text-bone font-semibold">Adobe Photoshop</strong> and visual development tools.</>
-                  )}
-                </p>
+                <div className="flex flex-wrap gap-1.5 pt-3 border-t border-white/10 relative z-10">
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Concept Art</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-[#e8b4b8]/10 text-[#e8b4b8] border border-[#e8b4b8]/25 font-bold">Personajes</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Entornos & Props</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Photoshop</span>
+                </div>
               </div>
-              
-              <div 
-                className="relative pl-6 border-l-2 border-white/15"
-              >
-                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
-                <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">{t("Azafata de Eventos, AULA", "Event Hostess, AULA")}</h5>
-                <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2 mt-1">
-                  Lightbox Academy • {t("Mar 2023", "Mar 2023")}
+
+              {/* Job 3: Azafata de Eventos, AULA */}
+              <div className="glass-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group hover:border-[#e8b4b8]/40 transition-all duration-300">
+                <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/50 to-transparent pointer-events-none z-20" aria-hidden="true" />
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#B8C5A8] font-bold bg-white/[0.08] px-2.5 py-0.5 rounded-full border border-white/10">
+                      {t("MADRID", "MADRID")}
+                    </span>
+                    <span className="text-xs font-mono text-[#B8C5A8]">{t("Mar 2023", "Mar 2023")}</span>
+                  </div>
+                  <h5 className="text-lg font-bold text-bone leading-snug mb-1">{t("Azafata de Eventos, AULA", "Event Hostess, AULA")}</h5>
+                  <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-3">
+                    Lightbox Academy • Madrid
+                  </div>
+                  <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans mb-5">
+                    {t(
+                      "Contrato de prácticas en Madrid. Asistencia y representación académica en el Salón Internacional del Estudiante y la Oferta Educativa (AULA), asesorando y orientando a futuros estudiantes de artes digitales.",
+                      "Internship in Madrid. Attendance and academic representation at the International Educational Opportunities Exhibition (AULA), advising future digital art students."
+                    )}
+                  </p>
                 </div>
-                <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
-                  {t("Contrato de prácticas en Madrid. Asistencia y representación académica en el Salón Internacional del Estudiante y la Oferta Educativa.", "Internship in Madrid. Attendance and academic representation at the International Educational Opportunities Exhibition.")}
-                </p>
+                <div className="flex flex-wrap gap-1.5 pt-3 border-t border-white/10 relative z-10">
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Representación</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Orientación Artística</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">AULA Madrid</span>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Column 2: Educación */}
-          <div className="flex flex-col will-change-transform">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-8 rounded-lg bg-vampire-red/10 border border-vampire-red/30 flex items-center justify-center text-vampire-red shrink-0" aria-hidden="true">
-                <GraduationCap size={16} />
+          {/* Tier 2: Dual Pillars Grid (Educación & Reconocimientos Side-by-Side with Harmonious Height) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-stretch">
+            {/* Column Left: Educación & Formación Superior (Rich & Complete - No Void) */}
+            <div className="glass-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group">
+              <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" aria-hidden="true" />
+              <div className="absolute -top-[100%] -left-[50%] w-[200%] h-[200%] pointer-events-none rotate-12 bg-gradient-to-b from-white/[0.07] via-transparent to-transparent z-0" aria-hidden="true" />
+              <div className="absolute top-0 right-0 w-36 h-36 bg-[#e8b4b8]/8 rounded-full blur-2xl pointer-events-none group-hover:bg-[#e8b4b8]/15 transition-colors" aria-hidden="true" />
+
+              <div className="relative z-10 space-y-7">
+                <div className="flex items-center gap-3 border-b border-white/10 pb-4">
+                  <div className="w-10 h-10 rounded-xl bg-white/[0.08] border border-white/20 backdrop-blur-md flex items-center justify-center text-[#e8b4b8] shadow-sm shrink-0">
+                    <GraduationCap size={18} />
+                  </div>
+                  <div>
+                    <h4 className="text-xl sm:text-2xl font-serif text-bone font-bold italic">{t("Educación & Formación", "Education & Training")}</h4>
+                    <span className="text-[11px] font-mono uppercase tracking-widest text-[#B8C5A8]/70">
+                      {t("Base Académica Superior & Bellas Artes", "Higher Education & Fine Arts")}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Degree 1: Lightbox Academy */}
+                <div className="relative pl-6 border-l-2 border-[#e8b4b8]/40">
+                  <div className="absolute w-2.5 h-2.5 bg-[#e8b4b8] rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(232,180,184,0.7)]" aria-hidden="true" />
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">
+                      <a 
+                        href="https://lboxacademy.es/" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-[#e8b4b8] hover:text-[#fce4e6] font-semibold transition-colors underline decoration-[#e8b4b8]/50"
+                      >
+                        Lightbox Academy ↗
+                      </a>
+                    </h5>
+                    <span className="text-xs font-mono text-[#B8C5A8]">2023 · Madrid</span>
+                  </div>
+                  <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2">
+                    {t("Máster / Especialización en Concept Art", "Master / Specialization in Concept Art")}
+                  </div>
+                  <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
+                    {t(
+                      <>Especialización en desarrollo visual: <strong className="text-bone font-semibold">diseño de personajes, entornos y atrezo</strong>, ilustración digital, <strong className="text-bone font-semibold">teoría del color e iluminación cinematográfica</strong>.</>,
+                      <>Visual development specialization: <strong className="text-bone font-semibold">character design, environments and props</strong>, digital illustration, <strong className="text-bone font-semibold">color theory and cinematic lighting</strong>.</>
+                    )}
+                  </p>
+                </div>
+
+                {/* Degree 2: Universidad de Granada */}
+                <div className="relative pl-6 border-l-2 border-[#e8b4b8]/40">
+                  <div className="absolute w-2.5 h-2.5 bg-[#e8b4b8] rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(232,180,184,0.7)]" aria-hidden="true" />
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">{t("Grado en Bellas Artes", "Degree in Fine Arts")}</h5>
+                    <span className="text-xs font-mono text-[#B8C5A8]">2017 - 2021 · Granada</span>
+                  </div>
+                  <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2">
+                    Universidad de Granada
+                  </div>
+                  <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
+                    {t(
+                      <>Cuatro años de formación plástica integral: <strong className="text-bone font-semibold">dibujo del natural, pintura al óleo y acrílico, anatomía artística</strong>, pensamiento visual crítico y composición clásica.</>,
+                      <>Four years of comprehensive plastic training: <strong className="text-bone font-semibold">life drawing, oil & acrylic painting, artistic anatomy</strong>, critical visual thinking and classical composition.</>
+                    )}
+                  </p>
+                </div>
+
+                {/* Sub-block: Idiomas & Comunicación Global */}
+                <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-4">
+                  <div className="flex items-center gap-2.5">
+                    <Languages size={15} className="text-[#e8b4b8]" />
+                    <div>
+                      <span className="block text-xs font-mono uppercase tracking-widest text-[#e8b4b8] font-bold">
+                        {t("Idiomas de Trabajo", "Working Languages")}
+                      </span>
+                      <span className="text-xs text-bone-muted font-sans">
+                        {t("Comunicación y coordinación fluida", "Fluent communication and coordination")}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-xs font-sans px-2.5 py-1 rounded-lg bg-white/[0.05] border border-white/10 text-bone">
+                      <strong className="text-[#e8b4b8]">Español:</strong> {t("Nativo", "Native")}
+                    </span>
+                    <span className="text-xs font-sans px-2.5 py-1 rounded-lg bg-white/[0.05] border border-white/10 text-bone">
+                      <strong className="text-[#e8b4b8]">English:</strong> B2 {t("Profesional", "Professional")}
+                    </span>
+                    <span className="text-xs font-sans px-2.5 py-1 rounded-lg bg-[#e8b4b8]/10 border border-[#e8b4b8]/30 text-bone">
+                      <strong className="text-[#e8b4b8]">{t("Japonés", "Japanese")}:</strong> N5
+                    </span>
+                  </div>
+                </div>
               </div>
-              <h4 className="text-xl font-serif text-bone font-bold italic">{t("Educación", "Education")}</h4>
             </div>
-            
-            <div className="space-y-8 flex-1">
-              <div 
-                className="relative pl-6 border-l-2 border-white/15"
-              >
-                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
-                <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">
-                  <a href="https://lboxacademy.es/" target="_blank" rel="noopener noreferrer" className="hover:text-vampire-red transition-colors underline decoration-white/30">
-                    Lightbox Academy
-                  </a>
-                </h5>
-                <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2 mt-1">
-                  2023 · {t("Madrid, España", "Madrid, Spain")}
+
+            {/* Column Right: Reconocimientos & Premios Oficiales */}
+            <div className="glass-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group">
+              <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" aria-hidden="true" />
+              <div className="absolute -top-[100%] -left-[50%] w-[200%] h-[200%] pointer-events-none rotate-12 bg-gradient-to-b from-white/[0.07] via-transparent to-transparent z-0" aria-hidden="true" />
+              <div className="absolute top-0 right-0 w-36 h-36 bg-[#e8b4b8]/8 rounded-full blur-2xl pointer-events-none group-hover:bg-[#e8b4b8]/15 transition-colors" aria-hidden="true" />
+
+              <div className="relative z-10 space-y-7">
+                <div className="flex items-center gap-3 border-b border-white/10 pb-4">
+                  <div className="w-10 h-10 rounded-xl bg-white/[0.08] border border-white/20 backdrop-blur-md flex items-center justify-center text-[#e8b4b8] shadow-sm shrink-0">
+                    <Trophy size={18} />
+                  </div>
+                  <div>
+                    <h4 className="text-xl sm:text-2xl font-serif text-bone font-bold italic">{t("Reconocimientos & Premios", "Awards & Honors")}</h4>
+                    <span className="text-[11px] font-mono uppercase tracking-widest text-[#B8C5A8]/70">
+                      {t("2 Galardones Artísticos Oficiales", "2 Official Artistic Awards")}
+                    </span>
+                  </div>
                 </div>
-                <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
-                  {t(
-                    <><strong className="text-bone font-semibold">Concept Art</strong>, diseño de personajes, entornos, atrezo, ilustración digital, <strong className="text-bone font-semibold">teoría del color y composición</strong>.</>,
-                    <><strong className="text-bone font-semibold">Concept Art</strong>, character design, environments, props, digital illustration, <strong className="text-bone font-semibold">color theory and composition</strong>.</>
-                  )}
-                </p>
-              </div>
-              
-              <div 
-                className="relative pl-6 border-l-2 border-white/15"
-              >
-                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
-                <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">{t("Grado en Bellas Artes", "Degree in Fine Arts")}</h5>
-                <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2 mt-1">
-                  Universidad de Granada • 2017 - 2021
+
+                {/* Premio 1: Certamen Caja Rural Granada 2026 */}
+                <div className="relative pl-6 border-l-2 border-[#e8b4b8]/40 bg-white/[0.03] p-4 sm:p-5 -ml-3 rounded-2xl border border-white/10 space-y-3">
+                  <div className="absolute w-2.5 h-2.5 bg-[#e8b4b8] rotate-45 organic-diamond-sm -left-[6px] top-4 shadow-[0_0_10px_rgba(232,180,184,0.8)]" aria-hidden="true" />
+                  
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#e8b4b8] font-bold bg-[#e8b4b8]/15 px-2.5 py-0.5 rounded-full border border-[#e8b4b8]/30 flex items-center gap-1">
+                      <Award size={11} /> {t("PREMIO JOVEN", "YOUTH PRIZE")}
+                    </span>
+                    <span className="text-xs font-mono text-bone-muted">{t("Sep 2026", "Sep 2026")}</span>
+                  </div>
+
+                  {/* Disposición al lado del texto */}
+                  <div className="flex flex-col sm:flex-row gap-4 items-start justify-between">
+                    <div className="flex-1 space-y-1.5">
+                      <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">
+                        {t("Certamen de Pintura Rápida 2026", "2026 Quick Painting Contest")}
+                      </h5>
+                      <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold">
+                        <a 
+                          href="https://fundacioncrg.com/fundacion-caja-rural-granada-entrega-el-primer-premio-de-su-xviii-certamen-de-pintura-rapida-a-pepe-bonano/" 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-[#e8b4b8] hover:text-[#fce4e6] font-semibold transition-colors inline-block underline decoration-[#e8b4b8]/50"
+                          title={t("Ver enlace oficial en Fundación Caja Rural Granada", "View official link at Fundación Caja Rural Granada")}
+                        >
+                          Fundación Caja Rural Granada ↗
+                        </a> · {t("Obra:", "Artwork:")} <span className="italic text-bone">«Plaza Berrocal»</span>
+                      </div>
+                      <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans pt-1">
+                        {t(
+                          <>Ganadora del <strong className="text-bone font-semibold">Premio Joven</strong> con mi cuadro <strong className="text-bone font-semibold">«Plaza Berrocal»</strong>, capturando la luz, la memoria y la atmósfera de mi infancia en <strong className="text-bone font-semibold">Granada</strong>.</>,
+                          <>Winner of the <strong className="text-bone font-semibold">Youth Prize</strong> with my painting <strong className="text-bone font-semibold">«Plaza Berrocal»</strong>, capturing the light, memory and atmosphere of my childhood in <strong className="text-bone font-semibold">Granada</strong>.</>
+                        )}
+                      </p>
+                    </div>
+
+                    {/* Foto pequeña ampliable al lado del texto */}
+                    <button
+                      type="button"
+                      onClick={() => setExpandedAwardImage({
+                        url: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1600&auto=format&fit=crop",
+                        titleEs: "«Plaza Berrocal» — Premio Joven 2026",
+                        titleEn: "«Plaza Berrocal» — Youth Prize 2026",
+                        subtitleEs: "Pintura al Aire Libre · Fundación Caja Rural Granada",
+                        subtitleEn: "Plein Air Painting · Caja Rural Granada Foundation"
+                      })}
+                      className="relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden border border-white/20 hover:border-[#e8b4b8] group/thumb cursor-pointer shadow-md hover:shadow-[0_0_20px_rgba(232,180,184,0.35)] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8b4b8]"
+                      title={t("Clic para ampliar fotografía de la obra", "Click to enlarge artwork photograph")}
+                    >
+                      <img 
+                        src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=500&auto=format&fit=crop" 
+                        alt="Obra galardonada Plaza Berrocal"
+                        className="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-black/40 group-hover/thumb:bg-black/15 transition-colors flex items-center justify-center">
+                        <div className="w-7 h-7 rounded-full bg-black/60 backdrop-blur-sm border border-white/30 flex items-center justify-center text-bone group-hover/thumb:text-[#e8b4b8] group-hover/thumb:scale-110 transition-all shadow-md">
+                          <ZoomIn size={14} />
+                        </div>
+                      </div>
+                      <span className="absolute bottom-1 right-1 text-[8px] font-mono uppercase tracking-wider bg-black/70 text-bone px-1 rounded border border-white/10">
+                        {t("AMPLIAR", "ZOOM")}
+                      </span>
+                    </button>
+                  </div>
                 </div>
-                <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
-                  {t(
-                    <>Especialización en <strong className="text-bone font-semibold">dibujo, pintura y fundamentos visuales</strong>. Pensamiento crítico, teoría plástica y creatividad compositiva.</>,
-                    <>Specialization in <strong className="text-bone font-semibold">drawing, painting and visual fundamentals</strong>. Critical thinking, plastic theory and compositional creativity.</>
-                  )}
-                </p>
+
+                {/* Premio 2: Speedpainting 2022 */}
+                <div className="relative pl-6 border-l-2 border-[#e8b4b8]/40 bg-white/[0.03] p-4 sm:p-5 -ml-3 rounded-2xl border border-white/10 space-y-3">
+                  <div className="absolute w-2.5 h-2.5 bg-[#e8b4b8] rotate-45 organic-diamond-sm -left-[6px] top-4 shadow-[0_0_10px_rgba(232,180,184,0.8)]" aria-hidden="true" />
+                  
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#e8b4b8] font-bold bg-[#e8b4b8]/15 px-2.5 py-0.5 rounded-full border border-[#e8b4b8]/30 flex items-center gap-1">
+                      <Award size={11} /> {t("1º PREMIO", "1ST PRIZE")}
+                    </span>
+                    <span className="text-xs font-mono text-bone-muted">{t("Nov 2022", "Nov 2022")}</span>
+                  </div>
+
+                  {/* Disposición al lado del texto */}
+                  <div className="flex flex-col sm:flex-row gap-4 items-start justify-between">
+                    <div className="flex-1 space-y-1.5">
+                      <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">
+                        <a 
+                          href="https://lboxacademy.es/eventos/entrega-del-premio-de-la-sexta-edicion-speed-painting-2022/" 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-[#e8b4b8] hover:text-[#fce4e6] font-semibold transition-colors underline decoration-[#e8b4b8]/50"
+                        >
+                          {t("VI Edición Speed Painting", "VI Speed Painting Edition")} ↗
+                        </a>
+                      </h5>
+                      <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold">
+                        Lightbox Academy & NVIDIA
+                      </div>
+                      <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans pt-1">
+                        {t(
+                          "Reto en directo de crear una ilustración sobre el Japón medieval con un toque de fantasía en tres horas bajo estricto límite temporal.",
+                          "Live challenge to create an illustration inspired by medieval Japan with a fantasy twist in three hours under strict time limit."
+                        )}
+                      </p>
+                    </div>
+
+                    {/* Foto pequeña ampliable al lado del texto */}
+                    <button
+                      type="button"
+                      onClick={() => setExpandedAwardImage({
+                        url: "https://images.unsplash.com/photo-1605806616949-1e87b487cb2a?q=80&w=1600&auto=format&fit=crop",
+                        titleEs: "VI Edición Speed Painting — 1º Premio 2022",
+                        titleEn: "VI Speed Painting Edition — 1st Prize 2022",
+                        subtitleEs: "Ilustración Japón Medieval · Lightbox Academy & NVIDIA",
+                        subtitleEn: "Medieval Japan Illustration · Lightbox Academy & NVIDIA"
+                      })}
+                      className="relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden border border-white/20 hover:border-[#e8b4b8] group/thumb cursor-pointer shadow-md hover:shadow-[0_0_20px_rgba(232,180,184,0.35)] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8b4b8]"
+                      title={t("Clic para ampliar fotografía de la obra", "Click to enlarge artwork photograph")}
+                    >
+                      <img 
+                        src="https://images.unsplash.com/photo-1605806616949-1e87b487cb2a?q=80&w=500&auto=format&fit=crop" 
+                        alt="Ilustración Ganadora Speed Painting 2022"
+                        className="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-black/40 group-hover/thumb:bg-black/15 transition-colors flex items-center justify-center">
+                        <div className="w-7 h-7 rounded-full bg-black/60 backdrop-blur-sm border border-white/30 flex items-center justify-center text-bone group-hover/thumb:text-[#e8b4b8] group-hover/thumb:scale-110 transition-all shadow-md">
+                          <ZoomIn size={14} />
+                        </div>
+                      </div>
+                      <span className="absolute bottom-1 right-1 text-[8px] font-mono uppercase tracking-wider bg-black/70 text-bone px-1 rounded border border-white/10">
+                        {t("AMPLIAR", "ZOOM")}
+                      </span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-
-          {/* Column 3: Reconocimientos (2 premios balanceados) */}
-          <div className="flex flex-col md:col-span-2 lg:col-span-1 will-change-transform">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-8 rounded-lg bg-vampire-red/10 border border-vampire-red/30 flex items-center justify-center text-vampire-red shrink-0" aria-hidden="true">
-                <Trophy size={16} />
-              </div>
-              <h4 className="text-xl font-serif text-bone font-bold italic">{t("Reconocimientos", "Awards")}</h4>
-            </div>
-            
-            <div className="space-y-8 flex-1">
-              {/* Nuevo Premio: Certamen Caja Rural Granada 2026 */}
-              <div 
-                className="relative pl-6 border-l-2 border-vampire-red/60 bg-white/[0.02] p-3 -ml-3 rounded-r-xl"
-              >
-                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-3 shadow-[0_0_10px_rgba(184,197,168,0.8)]" aria-hidden="true"></div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#B8C5A8] font-bold bg-vampire-red/15 px-2 py-0.5 rounded-sm border border-vampire-red/30">
-                    {t("PREMIO JOVEN", "YOUTH PRIZE")}
-                  </span>
-                  <span className="text-[11px] font-mono text-bone-muted">{t("Sep 2026", "Sep 2026")}</span>
-                </div>
-                <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">
-                  {t("Certamen de Pintura Rápida 2026", "2026 Quick Painting Contest")}
-                </h5>
-                <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2 mt-0.5">
-                  <a 
-                    href="https://fundacioncrg.com/fundacion-caja-rural-granada-entrega-el-primer-premio-de-su-xviii-certamen-de-pintura-rapida-a-pepe-bonano/" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="hover:text-vampire-red transition-colors inline-block underline decoration-[#B8C5A8]/40"
-                    title={t("Ver enlace oficial en Fundación Caja Rural Granada", "View official link at Fundación Caja Rural Granada")}
-                  >
-                    Fundación Caja Rural Granada ↗
-                  </a> · {t("Obra:", "Artwork:")} <span className="italic text-bone">«Plaza Berrocal»</span>
-                </div>
-                <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
-                  {t(
-                    <>Ganadora del <strong className="text-bone font-semibold">Premio Joven</strong> con mi cuadro <strong className="text-bone font-semibold">«Plaza Berrocal»</strong>, un lugar que fue la infancia de mi abuelo y que para mí es un escenario cotidiano y diario de mi vida y mi entorno en <strong className="text-bone font-semibold">Granada</strong>.</>,
-                    <>Winner of the <strong className="text-bone font-semibold">Youth Prize</strong> with my painting <strong className="text-bone font-semibold">«Plaza Berrocal»</strong>, a place that was my grandfather's childhood and for me represents an everyday, daily setting of my life and environment in <strong className="text-bone font-semibold">Granada</strong>.</>
-                  )}
-                </p>
-              </div>
-
-              {/* Premio 2022: Speedpainting */}
-              <div 
-                className="relative pl-6 border-l-2 border-white/15 p-3 -ml-3 rounded-r-xl"
-              >
-                <div className="absolute w-2.5 h-2.5 bg-vampire-red rotate-45 organic-diamond-sm -left-[6px] top-3 shadow-[0_0_8px_rgba(184,197,168,0.6)]" aria-hidden="true"></div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#B8C5A8] font-bold bg-vampire-red/15 px-2 py-0.5 rounded-sm border border-vampire-red/30">
-                    {t("1º PREMIO", "1ST PRIZE")}
-                  </span>
-                  <span className="text-[11px] font-mono text-bone-muted">{t("Nov 2022", "Nov 2022")}</span>
-                </div>
-                <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">
-                  <a 
-                    href="https://lboxacademy.es/eventos/entrega-del-premio-de-la-sexta-edicion-speed-painting-2022/" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="hover:text-vampire-red transition-colors underline decoration-white/30"
-                  >
-                    {t("VI Edición Speed Painting", "VI Speed Painting Edition")}
-                  </a>
-                </h5>
-                <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2 mt-0.5">
-                  Lightbox Academy & NVIDIA
-                </div>
-                <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
-                  {t(
-                    "Reto de crear una ilustración sobre el Japón medieval con un toque de fantasía en tres horas. Jurado encabezado por David Benzal, Jorge Ramos y Ygor Yglesias.",
-                    "Challenge to create an illustration inspired by medieval Japan with a fantasy twist in three hours. Jury led by David Benzal, Jorge Ramos and Ygor Yglesias."
-                  )}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+        </motion.div>
       </div>
-    </section>
+
+      {/* Lightbox Modal para ampliar las fotos de los premios */}
+      <AnimatePresence>
+        {expandedAwardImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setExpandedAwardImage(null)}
+            className="fixed inset-0 z-[999999] bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 md:p-8 cursor-zoom-out"
+            role="dialog"
+            aria-modal="true"
+          >
+            <motion.div
+              initial={{ scale: 0.94, opacity: 0, y: 15 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.94, opacity: 0, y: 15 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-4xl w-full max-h-[90vh] glass-panel rounded-3xl p-4 sm:p-6 border border-white/20 shadow-[0_25px_70px_rgba(0,0,0,0.9)] flex flex-col items-center cursor-default overflow-hidden"
+            >
+              {/* Close button */}
+              <button
+                type="button"
+                onClick={() => setExpandedAwardImage(null)}
+                className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/[0.08] hover:bg-[#e8b4b8] border border-white/20 text-bone hover:text-black flex items-center justify-center transition-all duration-200 cursor-pointer shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8b4b8]"
+                title={t("Cerrar ampliación (Esc)", "Close image (Esc)")}
+              >
+                <X size={20} />
+              </button>
+
+              {/* Large Image */}
+              <div className="relative w-full max-h-[68vh] rounded-2xl overflow-hidden border border-white/10 bg-black/50 flex items-center justify-center">
+                <img
+                  src={expandedAwardImage.url}
+                  alt={t(expandedAwardImage.titleEs, expandedAwardImage.titleEn)}
+                  className="w-full h-full max-h-[68vh] object-contain rounded-2xl"
+                />
+              </div>
+
+              {/* Image Info & Caption */}
+              <div className="w-full pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-white/10 mt-4">
+                <div>
+                  <h4 className="text-base sm:text-lg font-serif font-bold text-bone">
+                    {t(expandedAwardImage.titleEs, expandedAwardImage.titleEn)}
+                  </h4>
+                  <p className="text-xs font-mono text-[#B8C5A8]">
+                    {t(expandedAwardImage.subtitleEs, expandedAwardImage.subtitleEn)}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setExpandedAwardImage(null)}
+                  className="text-xs font-mono uppercase tracking-widest text-[#e8b4b8] hover:text-[#fce4e6] px-3 py-1.5 rounded-lg bg-white/[0.05] border border-white/10 transition-colors"
+                >
+                  {t("CERRAR [ESC]", "CLOSE [ESC]")}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.section>
   );
 }

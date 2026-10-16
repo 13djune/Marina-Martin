@@ -170,7 +170,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
         {/* 6. Floating Frosted Glass User Info Pill (Strictly Mobile-First, Accessible) */}
         {showUserInfo && (
           <div
-            className="absolute left-3 right-3 bottom-3 sm:left-4 sm:right-4 sm:bottom-4 z-[10] flex items-center justify-between rounded-[20px] px-3 sm:px-4 py-2.5 sm:py-3 border border-white/20 backdrop-blur-xl bg-[#121614]/85 shadow-[0_8px_30px_rgba(0,0,0,0.7)]"
+            className="absolute left-3 right-3 bottom-3 sm:left-4 sm:right-4 sm:bottom-4 z-[10] flex items-center justify-between rounded-[22px] px-3.5 sm:px-4 py-2.5 sm:py-3 border border-white/30 backdrop-blur-2xl bg-white/[0.08] shadow-[0_12px_35px_rgba(0,0,0,0.7),inset_0_1.5px_1px_rgba(255,255,255,0.45)]"
             style={{
               transform: 'translateZ(25px)',
             }}

@@ -1,71 +1,54 @@
-import { useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring, useVelocity, useTransform } from 'motion/react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
-  // Instant positions for primary cursor
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
+  const dotRef = useRef<HTMLDivElement>(null);
+  const trailRef = useRef<HTMLDivElement>(null);
 
-  // Velocity tracking across X and Y axes
-  const velX = useVelocity(cursorX);
-  const velY = useVelocity(cursorY);
+  // Mouse coordinates
+  const mouse = useRef({ x: -100, y: -100 });
+  const prevMouse = useRef({ x: -100, y: -100 });
 
-  // Smooth positions for outer fluid aura
-  const ringSpringConfig = { damping: 22, stiffness: 260, mass: 0.55 };
-  const smoothX = useSpring(cursorX, ringSpringConfig);
-  const smoothY = useSpring(cursorY, ringSpringConfig);
+  // Physics positions
+  const dot = useRef({ x: -100, y: -100 });
+  const trail = useRef({ x: -100, y: -100 });
 
-  // Combined speed along the motion trajectory (capped to keep deformation elegant)
-  const speed = useTransform(() => {
-    const vx = velX.get();
-    const vy = velY.get();
-    return Math.min(Math.hypot(vx, vy), 1400);
-  });
+  // Directional physics: angle & gentle deformation
+  const angle = useRef(0);
+  const targetAngle = useRef(0);
+  const stretch = useRef(1);
+  const squash = useRef(1);
 
-  // Angle of motion along the X and Y axes
-  const moveAngle = useTransform(() => {
-    const vx = velX.get();
-    const vy = velY.get();
-    if (Math.hypot(vx, vy) < 25) return 0;
-    return Math.atan2(vy, vx) * (180 / Math.PI);
-  });
-  const smoothAngle = useSpring(moveAngle, { damping: 20, stiffness: 320 });
+  const isHoveringRef = useRef(false);
+  isHoveringRef.current = isHovering;
 
-  // Axis-responsive elongation: stretches along the movement vector
-  const stretch = useTransform(speed, [0, 1200], [1, 1.55]);
-  const smoothStretch = useSpring(stretch, { damping: 18, stiffness: 300 });
-
-  // Incompressible fluid volume conservation: squashes perpendicularly
-  const squash = useTransform(speed, [0, 1200], [1, 0.74]);
-  const smoothSquash = useSpring(squash, { damping: 18, stiffness: 300 });
-
-  // Outer ring deformation along movement axis
-  const outerStretch = useSpring(
-    useTransform(speed, [0, 1200], [1, 1.38]),
-    { damping: 20, stiffness: 250 }
-  );
-  const outerSquash = useSpring(
-    useTransform(speed, [0, 1200], [1, 0.82]),
-    { damping: 20, stiffness: 250 }
-  );
+  const isClickingRef = useRef(false);
+  isClickingRef.current = isClicking;
 
   useEffect(() => {
-    // Only show custom cursor on devices with a fine pointer (mouse)
+    // Only enable on devices with a fine pointer (mouse / trackpad)
     if (window.matchMedia('(pointer: coarse)').matches) {
       return;
     }
 
-    const updateMousePosition = (e: MouseEvent) => {
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
-      if (!isVisible) setIsVisible(true);
+    const onMouseMove = (e: MouseEvent) => {
+      mouse.current.x = e.clientX;
+      mouse.current.y = e.clientY;
+      if (!isVisible) {
+        setIsVisible(true);
+        dot.current.x = e.clientX;
+        dot.current.y = e.clientY;
+        trail.current.x = e.clientX;
+        trail.current.y = e.clientY;
+        prevMouse.current.x = e.clientX;
+        prevMouse.current.y = e.clientY;
+      }
     };
 
-    const handleMouseOver = (e: MouseEvent) => {
+    const onMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (
         target.tagName.toLowerCase() === 'button' ||
@@ -74,7 +57,9 @@ export default function CustomCursor() {
         target.closest('a') ||
         target.classList.contains('cursor-pointer') ||
         target.closest('.cursor-pointer') ||
-        target.getAttribute('role') === 'button'
+        target.getAttribute('role') === 'button' ||
+        target.tagName.toLowerCase() === 'input' ||
+        target.tagName.toLowerCase() === 'textarea'
       ) {
         setIsHovering(true);
       } else {
@@ -82,102 +67,139 @@ export default function CustomCursor() {
       }
     };
 
-    const handleMouseLeave = () => {
-      setIsVisible(false);
+    const onMouseDown = () => setIsClicking(true);
+    const onMouseUp = () => setIsClicking(false);
+    const onMouseLeave = () => setIsVisible(false);
+    const onMouseEnter = () => setIsVisible(true);
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('mouseover', onMouseOver, { passive: true });
+    window.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mouseleave', onMouseLeave);
+    document.addEventListener('mouseenter', onMouseEnter);
+
+    let animationFrameId: number;
+
+    // Smooth, controlled 120Hz RAF Physics Loop
+    const renderPhysics = (time: number) => {
+      const hovering = isHoveringRef.current;
+      const clicking = isClickingRef.current;
+
+      // Calculate instantaneous mouse delta (velocity)
+      const vx = mouse.current.x - prevMouse.current.x;
+      const vy = mouse.current.y - prevMouse.current.y;
+      prevMouse.current.x = mouse.current.x;
+      prevMouse.current.y = mouse.current.y;
+
+      const speed = Math.hypot(vx, vy);
+
+      // 1. Inner core dot follows cursor directly for crisp responsiveness
+      dot.current.x = mouse.current.x;
+      dot.current.y = mouse.current.y;
+
+      if (hovering) {
+        // IN HOVER:
+        // Outer circle snaps statically right to the cursor position (no outward runaway drift!)
+        trail.current.x += (mouse.current.x - trail.current.x) * 0.35;
+        trail.current.y += (mouse.current.y - trail.current.y) * 0.35;
+
+        // Reset stretch and angle smoothly to neutral
+        stretch.current += (1 - stretch.current) * 0.2;
+        squash.current += (1 - squash.current) * 0.2;
+        targetAngle.current = 0;
+        angle.current += (0 - angle.current) * 0.15;
+
+        // Very subtle, calm organic breathing (2.5% breathing wave)
+        const organicBreath = 1 + Math.sin(time * 0.0035) * 0.025;
+        const clickScale = clicking ? 0.88 : 1;
+
+        if (dotRef.current) {
+          dotRef.current.style.transform = `translate3d(${dot.current.x}px, ${dot.current.y}px, 0) translate(-50%, -50%) scale(${clickScale})`;
+        }
+
+        if (trailRef.current) {
+          trailRef.current.style.transform = `translate3d(${trail.current.x}px, ${trail.current.y}px, 0) translate(-50%, -50%) scale(${organicBreath * clickScale})`;
+        }
+      } else {
+        // IN REGULAR MOVEMENT:
+        // Smooth controlled follow (calm lerp, no runaway swings)
+        trail.current.x += (mouse.current.x - trail.current.x) * 0.22;
+        trail.current.y += (mouse.current.y - trail.current.y) * 0.22;
+
+        // Directional angle only updates when moving meaningfully (> 1.2px)
+        if (speed > 1.2) {
+          const rad = Math.atan2(vy, vx);
+          targetAngle.current = rad * (180 / Math.PI);
+        }
+
+        // Shortest arc angle interpolation
+        let angleDiff = targetAngle.current - angle.current;
+        while (angleDiff < -180) angleDiff += 360;
+        while (angleDiff > 180) angleDiff -= 360;
+        angle.current += angleDiff * 0.15;
+
+        // Controlled, refined stretch (capped at 1.22 max, subtle organic fluid droplet)
+        const targetStretch = 1 + Math.min(speed * 0.012, 0.22);
+        stretch.current += (targetStretch - stretch.current) * 0.18;
+        squash.current = 1 / Math.sqrt(stretch.current);
+
+        const clickScale = clicking ? 0.85 : 1;
+
+        if (dotRef.current) {
+          dotRef.current.style.transform = `translate3d(${dot.current.x}px, ${dot.current.y}px, 0) translate(-50%, -50%) rotate(${angle.current}deg) scale(${stretch.current * clickScale}, ${squash.current * clickScale})`;
+        }
+
+        if (trailRef.current) {
+          const outerStretch = 1 + (stretch.current - 1) * 1.15;
+          const outerSquash = 1 / Math.sqrt(outerStretch);
+          trailRef.current.style.transform = `translate3d(${trail.current.x}px, ${trail.current.y}px, 0) translate(-50%, -50%) rotate(${angle.current}deg) scale(${outerStretch * clickScale}, ${outerSquash * clickScale})`;
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(renderPhysics);
     };
 
-    const handleMouseEnter = () => {
-      setIsVisible(true);
-    };
-
-    const handleMouseDown = () => setIsClicking(true);
-    const handleMouseUp = () => setIsClicking(false);
-
-    window.addEventListener('mousemove', updateMousePosition);
-    window.addEventListener('mouseover', handleMouseOver);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('mouseenter', handleMouseEnter);
+    animationFrameId = requestAnimationFrame(renderPhysics);
 
     return () => {
-      window.removeEventListener('mousemove', updateMousePosition);
-      window.removeEventListener('mouseover', handleMouseOver);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('mouseenter', handleMouseEnter);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseover', onMouseOver);
+      window.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mouseleave', onMouseLeave);
+      document.removeEventListener('mouseenter', onMouseEnter);
+      cancelAnimationFrame(animationFrameId);
     };
-  }, [isVisible, cursorX, cursorY]);
+  }, [isVisible]);
 
   if (!isVisible) return null;
 
   return (
     <>
-      {/* Primary Fluid Droplet with mix-blend-difference on interaction */}
-      <motion.div
-        className={`fixed top-0 left-0 pointer-events-none z-[1000000] hidden sm:block origin-center rounded-full ${
-          isHovering 
-            ? 'w-10 h-10 bg-[#B8C5A8] mix-blend-difference shadow-none' 
-            : 'w-3.5 h-3.5 bg-[#B8C5A8] shadow-[0_0_14px_rgba(184,197,168,0.85)]'
+      {/* Primary Inner Core Fluid Dot */}
+      <div
+        ref={dotRef}
+        className={`fixed top-0 left-0 pointer-events-none z-[1000000] hidden sm:block will-change-transform transition-[width,height,background-color,border-radius,opacity] duration-200 ${
+          isHovering
+            ? 'w-2 h-2 bg-[#e8b4b8] rounded-full opacity-90'
+            : 'w-3 h-3 bg-[#B8C5A8] shadow-[0_0_10px_rgba(184,197,168,0.85)] rounded-[60%_40%_52%_48%_/_50%_50%_50%_50%]'
         }`}
         style={{
-          x: cursorX,
-          y: cursorY,
-          marginLeft: isHovering ? '-20px' : '-7px',
-          marginTop: isHovering ? '-20px' : '-7px',
-          rotate: isHovering ? 0 : smoothAngle,
-          scaleX: isHovering ? 1 : smoothStretch,
-          scaleY: isHovering ? 1 : smoothSquash,
-        }}
-        animate={{
-          scale: isClicking ? 0.8 : isHovering ? 1 : 1,
-          borderRadius: isHovering 
-            ? '50%'
-            : [
-                '60% 40% 50% 50% / 50% 50% 50% 50%',
-                '50% 50% 40% 60% / 45% 55% 45% 55%',
-                '40% 60% 55% 45% / 55% 45% 55% 45%',
-                '60% 40% 50% 50% / 50% 50% 50% 50%',
-              ],
-        }}
-        transition={{
-          scale: { type: 'spring', stiffness: 350, damping: 22 },
-          borderRadius: { duration: 2.8, repeat: Infinity, ease: 'easeInOut' },
+          transform: `translate3d(-100px, -100px, 0) translate(-50%, -50%)`,
         }}
       />
-      
-      {/* Outer Organic Fluid Aura Ring */}
-      <motion.div
-        className={`fixed top-0 left-0 pointer-events-none z-[1000000] hidden sm:block origin-center rounded-full transition-opacity duration-200 ${
-          isHovering 
-            ? 'w-14 h-14 border-2 border-[#B8C5A8] mix-blend-difference' 
-            : 'w-10 h-10 border border-[#B8C5A8]/70 shadow-[0_0_18px_rgba(184,197,168,0.4)]'
+
+      {/* Secondary Outer Organic Aura Ring */}
+      <div
+        ref={trailRef}
+        className={`fixed top-0 left-0 pointer-events-none z-[999999] hidden sm:block will-change-transform transition-[width,height,border-color,border-radius,background-color,opacity] duration-250 ${
+          isHovering
+            ? 'w-12 h-12 border-1.5 border-[#e8b4b8] bg-[#e8b4b8]/10 backdrop-blur-[1px] opacity-95 rounded-[46%_54%_52%_48%_/_50%_48%_52%_50%]'
+            : 'w-8 h-8 border border-[#B8C5A8]/60 shadow-[0_0_12px_rgba(184,197,168,0.3)] opacity-70 rounded-[58%_42%_52%_48%_/_48%_52%_48%_52%]'
         }`}
         style={{
-          x: smoothX,
-          y: smoothY,
-          marginLeft: isHovering ? '-28px' : '-20px',
-          marginTop: isHovering ? '-28px' : '-20px',
-          rotate: isHovering ? 0 : smoothAngle,
-          scaleX: isHovering ? 1 : outerStretch,
-          scaleY: isHovering ? 1 : outerSquash,
-        }}
-        animate={{
-          scale: isClicking ? 0.75 : isHovering ? 1.05 : 1,
-          opacity: isHovering ? 0.95 : 0.8,
-          borderRadius: isHovering
-            ? '50%'
-            : [
-                '45% 55% 65% 35% / 55% 45% 55% 45%',
-                '58% 42% 38% 62% / 45% 55% 42% 58%',
-                '40% 60% 52% 48% / 60% 40% 58% 42%',
-                '45% 55% 65% 35% / 55% 45% 55% 45%',
-              ],
-        }}
-        transition={{
-          scale: { type: 'spring', stiffness: 300, damping: 24 },
-          borderRadius: { duration: 3.4, repeat: Infinity, ease: 'easeInOut' },
+          transform: `translate3d(-100px, -100px, 0) translate(-50%, -50%)`,
         }}
       />
     </>

@@ -135,48 +135,57 @@ export default function Contact() {
         <form 
           ref={formRef}
           onSubmit={handleSubmit} 
-          className="space-y-6"
+          className="glass-panel p-6 sm:p-10 md:p-12 rounded-3xl space-y-7 relative overflow-hidden"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Physical Glass Specular Reflections & Internal Light Sheens */}
+          <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" aria-hidden="true" />
+          <div className="absolute top-0 left-0 bottom-0 w-[1px] bg-gradient-to-b from-white/40 via-white/10 to-transparent pointer-events-none z-20" aria-hidden="true" />
+          <div className="absolute -top-[100%] -left-[50%] w-[200%] h-[200%] pointer-events-none rotate-12 bg-gradient-to-b from-white/[0.07] via-transparent to-transparent z-0" aria-hidden="true" />
+          
+          {/* Subtle botanical glass atmosphere glows */}
+          <div className="absolute top-0 right-0 w-80 h-80 bg-[#e8b4b8]/8 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#B8C5A8]/8 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
             <div className="contact-field will-change-transform">
-              <label htmlFor="name" className="block text-sm uppercase tracking-wider text-bone font-bold mb-2">{t("Nombre", "Name")}</label>
+              <label htmlFor="name" className="block text-xs uppercase tracking-wider text-bone font-bold mb-2 font-mono">{t("Nombre", "Name")}</label>
               <input
                 type="text"
                 id="name"
                 name="name"
                 required
-                className="w-full bg-black/40 border border-[#B8C5A8]/30 rounded-none px-4 py-3 text-bone placeholder:text-[#B8C5A8]/50 focus:outline-none focus:border-vampire-red focus-visible:ring-2 focus-visible:ring-vampire-red transition-colors"
+                className="w-full glass-input rounded-xl px-4 py-3.5 text-bone placeholder:text-[#B8C5A8]/45 focus:outline-none focus:border-[#e8b4b8] focus-visible:ring-2 focus-visible:ring-[#e8b4b8] transition-all"
                 placeholder={t("Tu nombre completo", "Your full name")}
               />
             </div>
             <div className="contact-field will-change-transform">
-              <label htmlFor="email" className="block text-sm uppercase tracking-wider text-bone font-bold mb-2">{t("Email", "Email")}</label>
+              <label htmlFor="email" className="block text-xs uppercase tracking-wider text-bone font-bold mb-2 font-mono">{t("Email", "Email")}</label>
               <input
                 type="email"
                 id="email"
                 name="email"
                 required
-                className="w-full bg-black/40 border border-[#B8C5A8]/30 rounded-none px-4 py-3 text-bone placeholder:text-[#B8C5A8]/50 focus:outline-none focus:border-vampire-red focus-visible:ring-2 focus-visible:ring-vampire-red transition-colors"
+                className="w-full glass-input rounded-xl px-4 py-3.5 text-bone placeholder:text-[#B8C5A8]/45 focus:outline-none focus:border-[#e8b4b8] focus-visible:ring-2 focus-visible:ring-[#e8b4b8] transition-all"
                 placeholder={t("tu@email.com", "you@email.com")}
               />
             </div>
           </div>
 
-          <div className="contact-field will-change-transform">
-            <label htmlFor="message" className="block text-sm uppercase tracking-wider text-bone font-bold mb-2">{t("Mensaje", "Message")}</label>
+          <div className="contact-field will-change-transform relative z-10">
+            <label htmlFor="message" className="block text-xs uppercase tracking-wider text-bone font-bold mb-2 font-mono">{t("Mensaje", "Message")}</label>
             <textarea
               id="message"
               name="message"
               required
               rows={6}
-              className="w-full bg-black/40 border border-[#B8C5A8]/30 rounded-none px-4 py-3 text-bone placeholder:text-[#B8C5A8]/50 focus:outline-none focus:border-vampire-red focus-visible:ring-2 focus-visible:ring-vampire-red transition-colors resize-none"
+              className="w-full glass-input rounded-xl px-4 py-3.5 text-bone placeholder:text-[#B8C5A8]/45 focus:outline-none focus:border-[#e8b4b8] focus-visible:ring-2 focus-visible:ring-[#e8b4b8] transition-all resize-none"
               placeholder={t("Cuéntame los detalles de la comisión...", "Tell me the details of the commission...")}
             ></textarea>
           </div>
 
-          {/* File Upload */}
-          <div className="contact-field will-change-transform">
-            <label className="block text-sm uppercase tracking-wider text-bone font-bold mb-2">{t("Archivos Adjuntos", "Attachments")}</label>
+          {/* File Upload Glass Area */}
+          <div className="contact-field will-change-transform relative z-10">
+            <label className="block text-xs uppercase tracking-wider text-bone font-bold mb-2 font-mono">{t("Archivos Adjuntos", "Attachments")}</label>
             
             <div 
               role="button"
@@ -187,7 +196,7 @@ export default function Contact() {
                   fileInputRef.current?.click();
                 }
               }}
-              className="border-2 border-dashed border-[#B8C5A8]/30 p-8 text-center hover:border-vampire-red/80 transition-colors cursor-pointer group rounded-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red backdrop-blur-md bg-[#22121b]/40"
+              className="border-2 border-dashed border-[#e8b4b8]/30 hover:border-[#e8b4b8] p-8 text-center transition-all cursor-pointer group rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8b4b8] glass-panel-subtle hover:bg-white/[0.04]"
               onClick={() => fileInputRef.current?.click()}
               aria-label={t("Haz clic para adjuntar referencias (PDF, JPG, PNG)", "Click to attach references (PDF, JPG, PNG)")}
             >
@@ -200,11 +209,11 @@ export default function Contact() {
               />
               
               <div className="w-12 h-12 mx-auto mb-4 relative flex items-center justify-center">
-                <div className="absolute inset-0 border border-vampire-red/30 group-hover:border-vampire-red rotate-45 organic-diamond transition-colors"></div>
-                <Upload className="text-bone-muted group-hover:text-vampire-red transition-colors" size={22} aria-hidden="true" />
+                <div className="absolute inset-0 border border-[#e8b4b8]/40 group-hover:border-[#e8b4b8] rotate-45 organic-diamond transition-colors"></div>
+                <Upload className="text-[#e8b4b8] group-hover:scale-110 transition-transform" size={22} aria-hidden="true" />
               </div>
               
-              <p className="text-bone-muted font-sans text-sm font-medium">
+              <p className="text-bone-muted font-sans text-sm font-medium group-hover:text-[#e8b4b8] transition-colors">
                 {t("Haz clic para adjuntar referencias (PDF, JPG, PNG)", "Click to attach references (PDF, JPG, PNG)")}
               </p>
             </div>
@@ -212,12 +221,12 @@ export default function Contact() {
             {files.length > 0 && (
               <div className="mt-4 space-y-2">
                 {files.map((file, index) => (
-                  <div key={index} className="flex items-center justify-between bg-black/50 px-4 py-2.5 border border-[#B8C5A8]/30 rounded-none">
+                  <div key={index} className="flex items-center justify-between bg-black/50 px-4 py-2.5 border border-[#e8b4b8]/30 rounded-xl backdrop-blur-md">
                     <span className="text-sm text-bone truncate mr-4">{file.name}</span>
                     <button 
                       type="button" 
                       onClick={() => removeFile(index)}
-                      className="min-h-[44px] min-w-[44px] flex items-center justify-center text-bone-muted hover:text-vampire-red transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red rounded-none"
+                      className="min-h-[44px] min-w-[44px] flex items-center justify-center text-bone-muted hover:text-[#e8b4b8] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8b4b8] rounded-lg"
                       aria-label={`${t("Eliminar archivo", "Remove file")}: ${file.name}`}
                     >
                       <X size={18} aria-hidden="true" />
@@ -228,6 +237,17 @@ export default function Contact() {
             )}
           </div>
 
+          {/* Direct Email Highlight Link */}
+          <div className="text-center text-xs font-mono text-bone-muted relative z-10 pt-1">
+            {t("O si prefieres, escribe directamente a:", "Or if you prefer, email directly to:")}{' '}
+            <a 
+              href="mailto:marinaprieto.art@gmail.com" 
+              className="text-[#e8b4b8] hover:text-[#fce4e6] font-bold underline decoration-[#e8b4b8]/50 hover:decoration-[#fce4e6] transition-colors ml-1 inline-block"
+            >
+              marinaprieto.art@gmail.com ↗
+            </a>
+          </div>
+
           <AnimatePresence>
             {submitStatus !== 'idle' && (
               <motion.div
@@ -236,9 +256,9 @@ export default function Contact() {
                 initial={{ opacity: 0, y: 50, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                className={`fixed bottom-6 right-6 z-50 flex items-center p-4 border shadow-2xl backdrop-blur-md rounded-lg ${submitStatus === 'success' ? 'bg-green-950/90 border-green-400 text-bone' : 'bg-red-950/90 border-red-400 text-bone'}`}
+                className={`fixed bottom-6 right-6 z-50 flex items-center p-4 border shadow-2xl backdrop-blur-md rounded-xl ${submitStatus === 'success' ? 'bg-[#1c2a1a]/95 border-[#B8C5A8] text-bone' : 'bg-[#2d1218]/95 border-[#e8b4b8] text-bone'}`}
               >
-                {submitStatus === 'success' ? <CheckCircle2 className="mr-3 flex-shrink-0 text-green-400" size={24} /> : <XCircle className="mr-3 flex-shrink-0 text-red-400" size={24} />}
+                {submitStatus === 'success' ? <CheckCircle2 className="mr-3 flex-shrink-0 text-[#B8C5A8]" size={24} /> : <XCircle className="mr-3 flex-shrink-0 text-[#e8b4b8]" size={24} />}
                 <div>
                   <h4 className="font-bold text-bone mb-0.5">{submitStatus === 'success' ? t("¡Éxito!", "Success!") : t("Error", "Error")}</h4>
                   <span className="text-sm text-bone">{statusMessage}</span>
@@ -246,7 +266,7 @@ export default function Contact() {
                 <button 
                   type="button" 
                   onClick={() => setSubmitStatus('idle')}
-                  className="min-h-[44px] min-w-[44px] ml-4 flex items-center justify-center text-bone-muted hover:text-vampire-red transition-colors"
+                  className="min-h-[44px] min-w-[44px] ml-4 flex items-center justify-center text-bone-muted hover:text-[#e8b4b8] transition-colors"
                   aria-label={t("Cerrar notificación", "Dismiss alert")}
                 >
                   <X size={18} aria-hidden="true" />
@@ -255,15 +275,13 @@ export default function Contact() {
             )}
           </AnimatePresence>
 
-          <div className="contact-field text-center pt-6 will-change-transform">
+          <div className="contact-field text-center pt-4 will-change-transform relative z-10">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="group relative inline-flex items-center justify-center px-10 py-4 font-bold text-vampire-red group-hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] min-w-[200px] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red rounded-sm"
+              className="group relative inline-flex items-center justify-center px-10 py-4 font-bold text-black bg-[#e8b4b8] hover:bg-[#fce4e6] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] min-w-[220px] cursor-pointer shadow-lg hover:shadow-[0_0_25px_rgba(232,180,184,0.5)] rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
-              <div className="absolute inset-0 w-full h-full border-2 border-vampire-red transition-all duration-300 group-hover:bg-vampire-red"></div>
-              <div className="absolute inset-0 w-full h-full border-2 border-vampire-red rotate-2 scale-105 opacity-50 group-hover:rotate-0 group-hover:scale-100 transition-all duration-300 pointer-events-none"></div>
-              <span className="relative z-10 flex items-center tracking-widest uppercase text-sm font-bold">
+              <span className="relative z-10 flex items-center tracking-widest uppercase text-sm font-black">
                 {isSubmitting ? t("Enviando...", "Sending...") : t("Enviar Solicitud", "Send Request")}
                 {!isSubmitting && <Send size={16} className="ml-3 group-hover:translate-x-1 transition-transform" aria-hidden="true" />}
               </span>
