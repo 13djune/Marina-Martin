@@ -56,21 +56,21 @@ function MainContent() {
         {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
       </AnimatePresence>
       
-      <div className={`bg-[#22121b] min-h-screen relative overflow-hidden text-[#B8C5A8] selection:bg-[#B8C5A8] selection:text-[#162012] transition-opacity duration-1000 ${isLoading ? 'opacity-0 h-screen overflow-hidden' : 'opacity-100'}`}>
+      <div className={`bg-[#5E3F47] min-h-screen relative overflow-hidden text-[#faf7f2] selection:bg-[#5b6c4b] selection:text-[#faf7f2] transition-opacity duration-300 ${isLoading ? 'opacity-0 h-screen overflow-hidden' : 'opacity-100'}`}>
         <CustomCursor />
         <BackToTop />
-        {/* Dark Moody Editorial Background Foundation: Darker Muted Plum (#22121b) with Kombu Green (#24301d) shadows */}
+        {/* Rich Velvety Burgundy Mauve Canvas Foundation (#5E3F47) */}
         <div 
           className="fixed inset-0 pointer-events-none z-0" 
           style={{
-            background: 'radial-gradient(ellipse at 50% 20%, rgba(210, 167, 170, 0.05) 0%, rgba(34, 18, 27, 0.95) 45%, rgba(26, 36, 21, 0.98) 85%, #10180d 100%)'
+            background: 'radial-gradient(ellipse at 50% 15%, rgba(122, 82, 93, 0.45) 0%, rgba(94, 63, 71, 0.95) 50%, rgba(68, 42, 49, 0.98) 100%)'
           }}
           aria-hidden="true"
         />
         <div 
           className="fixed inset-0 opacity-40 pointer-events-none z-0 transform-gpu will-change-transform" 
           style={{
-            backgroundImage: 'radial-gradient(circle at 20% 30%, #24301d 0%, transparent 60%), radial-gradient(circle at 80% 70%, #162012 0%, transparent 60%)'
+            backgroundImage: 'radial-gradient(circle at 20% 25%, rgba(184, 197, 168, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(184, 197, 168, 0.08) 0%, transparent 60%)'
           }}
           aria-hidden="true"
         />

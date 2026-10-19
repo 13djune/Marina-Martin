@@ -177,26 +177,57 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Primary Inner Core Fluid Dot */}
+      {/* Primary Inner Core Luminous Destello / Crystal Flare */}
       <div
         ref={dotRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[100] hidden md:block will-change-transform transition-[width,height,background-color,border-radius,opacity] duration-200 ${
-          isHovering
-            ? 'w-2 h-2 bg-[#e8b4b8] rounded-full opacity-90'
-            : 'w-3 h-3 bg-[#B8C5A8] shadow-[0_0_10px_rgba(184,197,168,0.85)] rounded-[60%_40%_52%_48%_/_50%_50%_50%_50%]'
-        }`}
+        className="fixed top-0 left-0 pointer-events-none z-[100] hidden md:block will-change-transform"
         style={{
           transform: `translate3d(-100px, -100px, 0) translate(-50%, -50%)`,
         }}
-      />
+      >
+        <div className={`relative flex items-center justify-center transition-transform duration-200 ${
+          isHovering ? 'scale-125' : 'scale-100'
+        }`}>
+          {/* 4-point radiant flare / destello with light rays and soft crystal glow */}
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="filter drop-shadow-[0_0_8px_rgba(184,197,168,0.95)] drop-shadow-[0_0_2px_rgba(255,255,255,0.9)]"
+            aria-hidden="true"
+          >
+            {/* Ambient soft glow aura */}
+            <circle cx="12" cy="12" r="5" fill="#B8C5A8" fillOpacity={isHovering ? 0.45 : 0.3} />
+            
+            {/* 4-point Primary Destello starburst rays */}
+            <path
+              d="M12 0.5 Q12 12 0.5 12 Q12 12 12 23.5 Q12 12 23.5 12 Q12 12 12 0.5 Z"
+              fill={isHovering ? "#ffffff" : "#B8C5A8"}
+            />
+            
+            {/* Secondary diagonal micro-glint rays */}
+            <path
+              d="M12 4.5 Q12 12 4.5 12 Q12 12 12 19.5 Q12 12 19.5 12 Q12 12 12 4.5 Z"
+              fill="#ffffff"
+              fillOpacity="0.45"
+              transform="rotate(45 12 12)"
+            />
+
+            {/* Intense white center point */}
+            <circle cx="12" cy="12" r="1.8" fill="#ffffff" />
+          </svg>
+        </div>
+      </div>
 
       {/* Secondary Outer Organic Aura Ring */}
       <div
         ref={trailRef}
         className={`fixed top-0 left-0 pointer-events-none z-[100] hidden md:block will-change-transform transition-[width,height,border-color,border-radius,background-color,opacity] duration-250 ${
           isHovering
-            ? 'w-12 h-12 border-1.5 border-[#e8b4b8] bg-[#e8b4b8]/10 backdrop-blur-[1px] opacity-95 rounded-[46%_54%_52%_48%_/_50%_48%_52%_50%]'
-            : 'w-8 h-8 border border-[#B8C5A8]/60 shadow-[0_0_12px_rgba(184,197,168,0.3)] opacity-70 rounded-[58%_42%_52%_48%_/_48%_52%_48%_52%]'
+            ? 'w-14 h-14 border border-[#B8C5A8] bg-[#B8C5A8]/15 backdrop-blur-[1px] opacity-95 rounded-[46%_54%_52%_48%_/_50%_48%_52%_50%]'
+            : 'w-9 h-9 border border-[#B8C5A8]/60 shadow-[0_0_15px_rgba(184,197,168,0.4)] opacity-75 rounded-[58%_42%_52%_48%_/_48%_52%_48%_52%]'
         }`}
         style={{
           transform: `translate3d(-100px, -100px, 0) translate(-50%, -50%)`,

@@ -49,7 +49,7 @@ export default function Divider() {
       <div className="mx-6 flex items-center justify-center relative">
         <div 
           ref={diamondRef} 
-          className="w-3 h-3 bg-[#B8C5A8] rotate-45 organic-diamond shadow-[0_0_15px_rgba(184,197,168,0.7)]" 
+          className="w-3 h-3 bg-[#B8C5A8] rotate-45 organic-diamond shadow-[0_0_15px_rgba(184,197,168,0.75)]" 
         />
       </div>
       <div 

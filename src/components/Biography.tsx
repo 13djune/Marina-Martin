@@ -47,13 +47,21 @@ export default function Biography() {
   return (
     <motion.section 
       id="about" 
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.08 }}
-      transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-      className="py-24 px-6 md:px-12 bg-vampire-bg relative z-10 border-t border-white/5 text-bone overflow-hidden"
+      viewport={{ once: true, amount: 0.02 }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
+      className="py-24 px-6 md:px-12 relative z-10 text-[#faf7f2] overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto">
+      {/* Distinct Sage & Moss Green Atmospheric Illumination highlighting Section from #5E3F47 */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{
+          background: 'radial-gradient(ellipse at 50% 25%, rgba(68, 92, 54, 0.45) 0%, rgba(45, 64, 36, 0.28) 50%, transparent 80%)'
+        }}
+        aria-hidden="true"
+      />
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Top Section Intro: Profile Card & Bio Content with Framer Motion Entrance */}
         <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-24 mb-24">
           
@@ -78,8 +86,8 @@ export default function Biography() {
                 enableTilt={true}
                 enableMobileTilt={false}
                 behindGlowEnabled={true}
-                behindGlowColor="rgba(62, 232, 143, 0.2)"
-                innerGradient="linear-gradient(145deg, rgba(62, 232, 143, 0.12) 0%, rgba(255, 255, 255, 0.05) 100%)"
+                behindGlowColor="rgba(91, 108, 75, 0.25)"
+                innerGradient="linear-gradient(145deg, rgba(91, 108, 75, 0.15) 0%, rgba(255, 255, 255, 0.2) 100%)"
                 onContactClick={() => {
                   const element = document.getElementById('contact');
                   if (element) {
@@ -89,7 +97,7 @@ export default function Biography() {
               />
             </div>
             
-            <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-vampire-red/20 blur-3xl rounded-full z-[-1]"></div>
+            <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-[#5b6c4b]/20 blur-3xl rounded-full z-[-1]"></div>
           </motion.div>
 
           {/* Text Side with Framer Motion Fade-in and vertical movement */}
@@ -101,33 +109,33 @@ export default function Biography() {
             className="w-full md:w-7/12 flex flex-col justify-center"
           >
             <div className="pt-6">
-              <h3 className="text-xs uppercase tracking-widest text-[#e8b4b8] mb-3 font-sans font-bold">
+              <h3 className="text-xs uppercase tracking-widest text-[#B8C5A8] mb-3 font-sans font-bold">
                 {t("Sobre la Artista", "About the Artist")}
               </h3>
               
-              <h2 className="text-4xl md:text-5xl font-serif text-bone mb-6 italic">Marina Martín Prieto</h2>
+              <h2 className="text-4xl md:text-5xl font-serif text-[#faf7f2] mb-6 italic font-bold">Marina Martín Prieto</h2>
               
-              <div className="space-y-6 text-bone-muted text-sm md:text-base font-sans font-light leading-relaxed">
+              <div className="space-y-6 text-[#eedbe1] text-sm md:text-base font-sans font-light leading-relaxed">
                 <p>
                   {t(
-                    <>Hola, mi nombre es <strong className="text-bone font-semibold">Marina Martín Prieto</strong> y tengo 26 años. Durante mis años formativos me he centrado principalmente en la <strong className="text-bone font-semibold">comprensión de la luz y el color</strong> como puedes ver en mi portfolio, pudiendo asegurar con certeza mi capacidad de <strong className="text-bone font-semibold">traducir las ideas en ilustraciones llenas de vida, movimiento y color</strong>.</>,
-                    <>Hello, my name is <strong className="text-bone font-semibold">Marina Martín Prieto</strong> and I am 26 years old. During my formative years I have focused mainly on the <strong className="text-bone font-semibold">understanding of light and color</strong> as you can see in my portfolio, being able to assure with certainty my ability to <strong className="text-bone font-semibold">translate ideas into illustrations full of life, movement and color</strong>.</>
+                    <>Hola, mi nombre es <strong className="text-[#faf7f2] font-semibold">Marina Martín Prieto</strong> y tengo 26 años. Durante mis años formativos me he centrado principalmente en la <strong className="text-[#faf7f2] font-semibold">comprensión de la luz y el color</strong> como puedes ver en mi portfolio, pudiendo asegurar con certeza mi capacidad de <strong className="text-[#faf7f2] font-semibold">traducir las ideas en ilustraciones llenas de vida, movimiento y color</strong>.</>,
+                    <>Hello, my name is <strong className="text-[#faf7f2] font-semibold">Marina Martín Prieto</strong> and I am 26 years old. During my formative years I have focused mainly on the <strong className="text-[#faf7f2] font-semibold">understanding of light and color</strong> as you can see in my portfolio, being able to assure with certainty my ability to <strong className="text-[#faf7f2] font-semibold">translate ideas into illustrations full of life, movement and color</strong>.</>
                   )}
                 </p>
                 <p>
                   {t(
-                    <>A la hora de trabajar me gusta <strong className="text-bone font-semibold">mostrar el proceso de la ilustración</strong> para que el equipo pueda sugerir cambios con el objetivo de acercarse lo máximo posible a su visión, combinándolo con una <strong className="text-bone font-semibold">gran capacidad creativa para sorprender e inventar</strong>.</>,
-                    <>When working I like to <strong className="text-bone font-semibold">showcase the illustration process</strong> so that the team can suggest changes with the aim of getting as close to their vision as possible, combining it with a <strong className="text-bone font-semibold">great creative capacity to surprise and innovate</strong>.</>
+                    <>A la hora de trabajar me gusta <strong className="text-[#faf7f2] font-semibold">mostrar el proceso de la ilustración</strong> para que el equipo pueda sugerir cambios con el objetivo de acercarse lo máximo posible a su visión, combinándolo con una <strong className="text-[#faf7f2] font-semibold">gran capacidad creativa para sorprender e inventar</strong>.</>,
+                    <>When working I like to <strong className="text-[#faf7f2] font-semibold">showcase the illustration process</strong> so that the team can suggest changes with the aim of getting as close to their vision as possible, combining it with a <strong className="text-[#faf7f2] font-semibold">great creative capacity to surprise and innovate</strong>.</>
                   )}
                 </p>
               </div>
 
-              {/* Glassmorphic Skills & Specializations Card */}
-              <div className="mt-10 glass-card p-6 sm:p-8 rounded-3xl relative overflow-hidden">
+              {/* Glassmorphism Skills & Specializations Card */}
+              <div className="mt-10 glass-panel p-6 sm:p-8 rounded-3xl relative overflow-hidden backdrop-blur-2xl bg-white/[0.08] border border-white/25 shadow-[0_24px_60px_rgba(28,14,20,0.5),inset_0_1.5px_1px_rgba(255,255,255,0.4)]">
                 {/* Physical Glass Specular Reflections */}
                 <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" aria-hidden="true" />
                 <div className="absolute -top-[100%] -left-[50%] w-[200%] h-[200%] pointer-events-none rotate-12 bg-gradient-to-b from-white/[0.07] via-transparent to-transparent z-0" aria-hidden="true" />
-                <div className="absolute top-0 right-0 w-44 h-44 bg-[#e8b4b8]/8 rounded-full blur-2xl pointer-events-none" aria-hidden="true" />
+                <div className="absolute top-0 right-0 w-44 h-44 bg-[#B8C5A8]/10 rounded-full blur-2xl pointer-events-none" aria-hidden="true" />
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center relative z-10">
                   <div className="space-y-7">
@@ -154,30 +162,30 @@ export default function Biography() {
                   <div ref={chartWrapperRef} className="h-[240px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
                       <RadarChart cx="50%" cy="50%" outerRadius="70%" data={skillsData}>
-                        <PolarGrid stroke="rgba(184, 197, 168, 0.2)" />
+                        <PolarGrid stroke="rgba(184, 197, 168, 0.25)" />
                         <PolarAngleAxis dataKey="subject" tick={{ fill: '#B8C5A8', fontSize: 11, fontFamily: 'sans-serif', fontWeight: 600 }} />
                         <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                         <RechartsTooltip 
-                          contentStyle={{ backgroundColor: 'rgba(34, 18, 27, 0.95)', borderColor: '#e8b4b8', color: '#B8C5A8', borderRadius: '12px' }}
+                          contentStyle={{ backgroundColor: 'rgba(56, 30, 38, 0.95)', borderColor: '#B8C5A8', color: '#faf7f2', borderRadius: '12px' }}
                           itemStyle={{ color: '#B8C5A8' }}
                         />
-                        <Radar name="Skills" dataKey="A" stroke="#e8b4b8" fill="#e8b4b8" fillOpacity={0.25} />
+                        <Radar name="Skills" dataKey="A" stroke="#B8C5A8" fill="#B8C5A8" fillOpacity={0.35} />
                       </RadarChart>
                     </ResponsiveContainer>
                   </div>
                 </div>
               </div>
               
-              {/* Frosted Glass Action Buttons */}
+              {/* Action Buttons with frosted glass and high contrast against #5E3F47 */}
               <div className="mt-8 flex flex-wrap gap-4 items-center">
                 {/* 1. Descargar CV */}
                 <button 
                   type="button"
                   onClick={downloadCV}
-                  className="inline-flex items-center gap-2.5 border border-white/20 hover:border-[#e8b4b8] bg-white/[0.05] hover:bg-[#e8b4b8]/10 backdrop-blur-md text-bone hover:text-[#e8b4b8] text-xs uppercase tracking-[0.2em] px-6 py-3.5 font-bold transition-all duration-300 rounded-xl cursor-pointer shadow-lg hover:shadow-[0_0_20px_rgba(232,180,184,0.25)] hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
+                  className="inline-flex items-center gap-2.5 border border-white/25 hover:border-white/50 bg-white/12 hover:bg-white/20 text-[#faf7f2] hover:text-white text-xs uppercase tracking-[0.2em] px-6 py-3.5 font-bold transition-all duration-300 rounded-xl cursor-pointer shadow-lg hover:shadow-[0_4px_25px_rgba(0,0,0,0.3)] hover:scale-105 active:scale-95 group min-h-[44px] backdrop-blur-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8]"
                   title={t("Descargar Curriculum Vitae en PDF", "Download Resume PDF")}
                 >
-                  <Download size={16} className="text-[#B8C5A8] group-hover:text-[#e8b4b8] group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
+                  <Download size={16} className="text-[#B8C5A8] group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
                   <span>{t("DESCARGAR CV", "DOWNLOAD CV")}</span>
                 </button>
 
@@ -185,10 +193,10 @@ export default function Biography() {
                 <button 
                   type="button"
                   onClick={downloadPortfolio}
-                  className="inline-flex items-center gap-2.5 border border-white/20 hover:border-[#e8b4b8] bg-white/[0.05] hover:bg-[#e8b4b8]/10 backdrop-blur-md text-bone hover:text-[#e8b4b8] text-xs uppercase tracking-[0.2em] px-6 py-3.5 font-bold transition-all duration-300 rounded-xl cursor-pointer shadow-lg hover:shadow-[0_0_20px_rgba(232,180,184,0.25)] hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
+                  className="inline-flex items-center gap-2.5 border border-white/25 hover:border-white/50 bg-white/12 hover:bg-white/20 text-[#faf7f2] hover:text-white text-xs uppercase tracking-[0.2em] px-6 py-3.5 font-bold transition-all duration-300 rounded-xl cursor-pointer shadow-lg hover:shadow-[0_4px_25px_rgba(0,0,0,0.3)] hover:scale-105 active:scale-95 group min-h-[44px] backdrop-blur-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8]"
                   title={t("Descargar Dossier de Portfolio en PDF", "Download Portfolio Dossier PDF")}
                 >
-                  <FileText size={16} className="text-[#B8C5A8] group-hover:text-[#e8b4b8] group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
+                  <FileText size={16} className="text-[#B8C5A8] group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
                   <span>{t("DESCARGAR PORTFOLIO", "DOWNLOAD PORTFOLIO")}</span>
                 </button>
 
@@ -204,7 +212,7 @@ export default function Biography() {
                       window.location.hash = '#contact';
                     }
                   }}
-                  className="inline-flex items-center gap-2.5 bg-vampire-red hover:bg-[#e8b4b8] text-black text-xs uppercase tracking-[0.2em] px-7 py-3.5 font-black transition-all duration-300 rounded-xl cursor-pointer shadow-lg hover:shadow-[0_0_25px_rgba(232,180,184,0.5)] hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  className="inline-flex items-center gap-2.5 bg-[#faf7f2] hover:bg-[#B8C5A8] text-[#263120] text-xs uppercase tracking-[0.2em] px-7 py-3.5 font-black transition-all duration-300 rounded-xl cursor-pointer shadow-xl hover:shadow-[0_6px_30px_rgba(184,197,168,0.4)] hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                   title={t("Ir a la sección de contacto", "Scroll to contact section")}
                 >
                   <span>{t("TRABAJA CONMIGO", "WORK WITH ME")}</span>
@@ -221,20 +229,20 @@ export default function Biography() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.08 }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="pt-16 border-t border-white/10 space-y-12"
+          className="pt-16 border-t border-white/15 space-y-12"
         >
           {/* Section Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-[11px] font-mono uppercase tracking-widest text-[#e8b4b8] mb-3">
-                <Sparkles size={12} className="text-[#e8b4b8]" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-[11px] font-mono uppercase tracking-widest text-[#B8C5A8] mb-3 backdrop-blur-md">
+                <Sparkles size={12} className="text-[#B8C5A8]" />
                 <span>{t("TRAYECTORIA & CURRÍCULUM", "CAREER & RESUME")}</span>
               </div>
-              <h3 className="text-3xl sm:text-4xl font-serif text-bone font-bold italic">
+              <h3 className="text-3xl sm:text-4xl font-serif text-[#faf7f2] font-bold italic">
                 {t("Experiencia, Formación y Logros", "Experience, Education & Milestones")}
               </h3>
             </div>
-            <p className="text-xs sm:text-sm font-sans text-bone-muted max-w-md font-light leading-relaxed">
+            <p className="text-xs sm:text-sm font-sans text-[#eedbe1] max-w-md font-normal leading-relaxed">
               {t(
                 "Recorrido profesional combinando fundamentos plásticos tradicionales de Bellas Artes con producción digital avanzada para cine y medios audiovisuales.",
                 "Professional path combining traditional Fine Arts plastic foundations with advanced digital production for cinema and audiovisual media."
@@ -245,28 +253,28 @@ export default function Biography() {
           {/* Tier 1: Experiencia Profesional (3 Full-Width Cards in Grid) */}
           <div>
             <div className="flex items-center gap-2.5 mb-6">
-              <div className="w-8 h-8 rounded-lg bg-white/[0.08] border border-white/20 backdrop-blur-md flex items-center justify-center text-[#e8b4b8] shadow-sm shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-white/15 border border-white/25 backdrop-blur-md flex items-center justify-center text-[#B8C5A8] shadow-sm shrink-0">
                 <Briefcase size={15} />
               </div>
-              <h4 className="text-xl font-serif text-bone font-bold italic">{t("Experiencia Profesional", "Professional Experience")}</h4>
-              <span className="text-[11px] font-mono uppercase tracking-widest text-[#B8C5A8]/70 ml-2">
+              <h4 className="text-xl font-serif text-[#faf7f2] font-bold italic">{t("Experiencia Profesional", "Professional Experience")}</h4>
+              <span className="text-[11px] font-mono uppercase tracking-widest text-[#B8C5A8] ml-2 font-semibold">
                 {t("3 Roles de Producción", "3 Production Roles")}
               </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
               {/* Job 1: Ilustradora Freelance */}
-              <div className="glass-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group hover:border-[#e8b4b8]/40 transition-all duration-300">
+              <div className="moss-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group hover:border-[#B8C5A8]/50 transition-all duration-300">
                 <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/50 to-transparent pointer-events-none z-20" aria-hidden="true" />
                 <div className="relative z-10">
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#e8b4b8] font-bold bg-[#e8b4b8]/15 px-2.5 py-0.5 rounded-full border border-[#e8b4b8]/30">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#B8C5A8] font-bold bg-white/15 px-2.5 py-0.5 rounded-full border border-white/20">
                       {t("ACTUALIDAD", "PRESENT")}
                     </span>
-                    <span className="text-xs font-mono text-[#B8C5A8]">{t("2022 - Actualidad", "2022 - Present")}</span>
+                    <span className="text-xs font-mono text-[#d5decb]">{t("2022 - Actualidad", "2022 - Present")}</span>
                   </div>
                   <h5 className="text-lg font-bold text-bone leading-snug mb-1">{t("Ilustradora Freelance", "Freelance Illustrator")}</h5>
-                  <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-3">
+                  <div className="text-xs uppercase tracking-wider text-[#d5decb] font-mono font-semibold mb-3">
                     {t("Autónoma", "Freelance")}
                   </div>
                   <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans mb-5">
@@ -277,29 +285,29 @@ export default function Biography() {
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-1.5 pt-3 border-t border-white/10 relative z-10">
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Portadas de Libros</span>
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Ilustración Editorial</span>
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Comisiones</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Portadas de Libros</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Ilustración Editorial</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Comisiones</span>
                 </div>
               </div>
 
               {/* Job 2: Artista Conceptual - Nocturnia Studios */}
-              <div className="glass-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group hover:border-[#e8b4b8]/40 transition-all duration-300">
+              <div className="moss-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group hover:border-[#B8C5A8]/50 transition-all duration-300">
                 <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/50 to-transparent pointer-events-none z-20" aria-hidden="true" />
                 <div className="relative z-10">
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#e8b4b8] font-bold bg-[#e8b4b8]/15 px-2.5 py-0.5 rounded-full border border-[#e8b4b8]/30">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#B8C5A8] font-bold bg-white/15 px-2.5 py-0.5 rounded-full border border-white/20">
                       {t("ACTUALIDAD", "PRESENT")}
                     </span>
-                    <span className="text-xs font-mono text-[#B8C5A8]">{t("Ago 2023 - Actualidad", "Aug 2023 - Present")}</span>
+                    <span className="text-xs font-mono text-[#d5decb]">{t("Ago 2023 - Actualidad", "Aug 2023 - Present")}</span>
                   </div>
                   <h5 className="text-lg font-bold text-bone leading-snug mb-1">{t("Artista Conceptual", "Concept Artist")}</h5>
-                  <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-3">
+                  <div className="text-xs uppercase tracking-wider text-[#d5decb] font-mono font-semibold mb-3">
                     <a 
                       href="https://www.linkedin.com/company/nocturnia-studios/" 
                       target="_blank" 
                       rel="noopener noreferrer" 
-                      className="text-[#e8b4b8] hover:text-[#fce4e6] font-semibold transition-colors underline decoration-[#e8b4b8]/50"
+                      className="text-[#B8C5A8] hover:text-white font-semibold transition-colors underline decoration-[#B8C5A8]/50"
                     >
                       Nocturnia Studios ↗
                     </a>
@@ -312,25 +320,25 @@ export default function Biography() {
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-1.5 pt-3 border-t border-white/10 relative z-10">
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Concept Art</span>
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-[#e8b4b8]/10 text-[#e8b4b8] border border-[#e8b4b8]/25 font-bold">Personajes</span>
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Entornos & Props</span>
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Photoshop</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Concept Art</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-[#5b6c4b]/30 text-[#B8C5A8] border border-[#B8C5A8]/40 font-bold">Personajes</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Entornos & Props</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Photoshop</span>
                 </div>
               </div>
 
               {/* Job 3: Azafata de Eventos, AULA */}
-              <div className="glass-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group hover:border-[#e8b4b8]/40 transition-all duration-300">
+              <div className="moss-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group hover:border-[#B8C5A8]/50 transition-all duration-300">
                 <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/50 to-transparent pointer-events-none z-20" aria-hidden="true" />
                 <div className="relative z-10">
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#B8C5A8] font-bold bg-white/[0.08] px-2.5 py-0.5 rounded-full border border-white/10">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#d5decb] font-bold bg-white/10 px-2.5 py-0.5 rounded-full border border-white/15">
                       {t("MADRID", "MADRID")}
                     </span>
-                    <span className="text-xs font-mono text-[#B8C5A8]">{t("Mar 2023", "Mar 2023")}</span>
+                    <span className="text-xs font-mono text-[#d5decb]">{t("Mar 2023", "Mar 2023")}</span>
                   </div>
                   <h5 className="text-lg font-bold text-bone leading-snug mb-1">{t("Azafata de Eventos, AULA", "Event Hostess, AULA")}</h5>
-                  <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-3">
+                  <div className="text-xs uppercase tracking-wider text-[#d5decb] font-mono font-semibold mb-3">
                     Lightbox Academy • Madrid
                   </div>
                   <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans mb-5">
@@ -341,9 +349,9 @@ export default function Biography() {
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-1.5 pt-3 border-t border-white/10 relative z-10">
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Representación</span>
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">Orientación Artística</span>
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.04] text-[#B8C5A8] border border-white/5">AULA Madrid</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Representación</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Orientación Artística</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">AULA Madrid</span>
                 </div>
               </div>
             </div>
@@ -352,14 +360,14 @@ export default function Biography() {
           {/* Tier 2: Dual Pillars Grid (Educación & Reconocimientos Side-by-Side with Harmonious Height) */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-stretch">
             {/* Column Left: Educación & Formación Superior (Rich & Complete - No Void) */}
-            <div className="glass-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group">
+            <div className="moss-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group">
               <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" aria-hidden="true" />
               <div className="absolute -top-[100%] -left-[50%] w-[200%] h-[200%] pointer-events-none rotate-12 bg-gradient-to-b from-white/[0.07] via-transparent to-transparent z-0" aria-hidden="true" />
-              <div className="absolute top-0 right-0 w-36 h-36 bg-[#e8b4b8]/8 rounded-full blur-2xl pointer-events-none group-hover:bg-[#e8b4b8]/15 transition-colors" aria-hidden="true" />
+              <div className="absolute top-0 right-0 w-36 h-36 bg-[#B8C5A8]/8 rounded-full blur-2xl pointer-events-none group-hover:bg-[#B8C5A8]/15 transition-colors" aria-hidden="true" />
 
               <div className="relative z-10 space-y-7">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                  <div className="w-10 h-10 rounded-xl bg-white/[0.08] border border-white/20 backdrop-blur-md flex items-center justify-center text-[#e8b4b8] shadow-sm shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-white/[0.08] border border-white/20 backdrop-blur-md flex items-center justify-center text-[#B8C5A8] shadow-sm shrink-0">
                     <GraduationCap size={18} />
                   </div>
                   <div>
@@ -371,15 +379,15 @@ export default function Biography() {
                 </div>
 
                 {/* Degree 1: Lightbox Academy */}
-                <div className="relative pl-6 border-l-2 border-[#e8b4b8]/40">
-                  <div className="absolute w-2.5 h-2.5 bg-[#e8b4b8] rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(232,180,184,0.7)]" aria-hidden="true" />
+                <div className="relative pl-6 border-l-2 border-[#B8C5A8]/40">
+                  <div className="absolute w-2.5 h-2.5 bg-[#B8C5A8] rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.7)]" aria-hidden="true" />
                   <div className="flex items-center justify-between gap-2 mb-1">
                     <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">
                       <a 
                         href="https://lboxacademy.es/" 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="text-[#e8b4b8] hover:text-[#fce4e6] font-semibold transition-colors underline decoration-[#e8b4b8]/50"
+                        className="text-[#B8C5A8] hover:text-white font-semibold transition-colors underline decoration-[#B8C5A8]/50"
                       >
                         Lightbox Academy ↗
                       </a>
@@ -398,8 +406,8 @@ export default function Biography() {
                 </div>
 
                 {/* Degree 2: Universidad de Granada */}
-                <div className="relative pl-6 border-l-2 border-[#e8b4b8]/40">
-                  <div className="absolute w-2.5 h-2.5 bg-[#e8b4b8] rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(232,180,184,0.7)]" aria-hidden="true" />
+                <div className="relative pl-6 border-l-2 border-[#B8C5A8]/40">
+                  <div className="absolute w-2.5 h-2.5 bg-[#B8C5A8] rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.7)]" aria-hidden="true" />
                   <div className="flex items-center justify-between gap-2 mb-1">
                     <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">{t("Grado en Bellas Artes", "Degree in Fine Arts")}</h5>
                     <span className="text-xs font-mono text-[#B8C5A8]">2017 - 2021 · Granada</span>
@@ -418,9 +426,9 @@ export default function Biography() {
                 {/* Sub-block: Idiomas & Comunicación Global */}
                 <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-4">
                   <div className="flex items-center gap-2.5">
-                    <Languages size={15} className="text-[#e8b4b8]" />
+                    <Languages size={15} className="text-[#B8C5A8]" />
                     <div>
-                      <span className="block text-xs font-mono uppercase tracking-widest text-[#e8b4b8] font-bold">
+                      <span className="block text-xs font-mono uppercase tracking-widest text-[#B8C5A8] font-bold">
                         {t("Idiomas de Trabajo", "Working Languages")}
                       </span>
                       <span className="text-xs text-bone-muted font-sans">
@@ -430,13 +438,13 @@ export default function Biography() {
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="text-xs font-sans px-2.5 py-1 rounded-lg bg-white/[0.05] border border-white/10 text-bone">
-                      <strong className="text-[#e8b4b8]">Español:</strong> {t("Nativo", "Native")}
+                      <strong className="text-[#B8C5A8]">Español:</strong> {t("Nativo", "Native")}
                     </span>
                     <span className="text-xs font-sans px-2.5 py-1 rounded-lg bg-white/[0.05] border border-white/10 text-bone">
-                      <strong className="text-[#e8b4b8]">English:</strong> B2 {t("Profesional", "Professional")}
+                      <strong className="text-[#B8C5A8]">English:</strong> B2 {t("Profesional", "Professional")}
                     </span>
-                    <span className="text-xs font-sans px-2.5 py-1 rounded-lg bg-[#e8b4b8]/10 border border-[#e8b4b8]/30 text-bone">
-                      <strong className="text-[#e8b4b8]">{t("Japonés", "Japanese")}:</strong> N5
+                    <span className="text-xs font-sans px-2.5 py-1 rounded-lg bg-[#5b6c4b]/20 border border-[#B8C5A8]/30 text-bone">
+                      <strong className="text-[#B8C5A8]">{t("Japonés", "Japanese")}:</strong> N5
                     </span>
                   </div>
                 </div>
@@ -444,14 +452,14 @@ export default function Biography() {
             </div>
 
             {/* Column Right: Reconocimientos & Premios Oficiales */}
-            <div className="glass-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group">
+            <div className="moss-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group">
               <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" aria-hidden="true" />
               <div className="absolute -top-[100%] -left-[50%] w-[200%] h-[200%] pointer-events-none rotate-12 bg-gradient-to-b from-white/[0.07] via-transparent to-transparent z-0" aria-hidden="true" />
-              <div className="absolute top-0 right-0 w-36 h-36 bg-[#e8b4b8]/8 rounded-full blur-2xl pointer-events-none group-hover:bg-[#e8b4b8]/15 transition-colors" aria-hidden="true" />
+              <div className="absolute top-0 right-0 w-36 h-36 bg-[#B8C5A8]/8 rounded-full blur-2xl pointer-events-none group-hover:bg-[#B8C5A8]/15 transition-colors" aria-hidden="true" />
 
               <div className="relative z-10 space-y-7">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                  <div className="w-10 h-10 rounded-xl bg-white/[0.08] border border-white/20 backdrop-blur-md flex items-center justify-center text-[#e8b4b8] shadow-sm shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-white/[0.08] border border-white/20 backdrop-blur-md flex items-center justify-center text-[#B8C5A8] shadow-sm shrink-0">
                     <Trophy size={18} />
                   </div>
                   <div>
@@ -463,11 +471,11 @@ export default function Biography() {
                 </div>
 
                 {/* Premio 1: Certamen Caja Rural Granada 2026 */}
-                <div className="relative pl-6 border-l-2 border-[#e8b4b8]/40 bg-white/[0.03] p-4 sm:p-5 -ml-3 rounded-2xl border border-white/10 space-y-3">
-                  <div className="absolute w-2.5 h-2.5 bg-[#e8b4b8] rotate-45 organic-diamond-sm -left-[6px] top-4 shadow-[0_0_10px_rgba(232,180,184,0.8)]" aria-hidden="true" />
+                <div className="relative pl-6 border-l-2 border-[#B8C5A8]/40 bg-white/[0.03] p-4 sm:p-5 -ml-3 rounded-2xl border border-white/10 space-y-3">
+                  <div className="absolute w-2.5 h-2.5 bg-[#B8C5A8] rotate-45 organic-diamond-sm -left-[6px] top-4 shadow-[0_0_10px_rgba(184,197,168,0.8)]" aria-hidden="true" />
                   
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#e8b4b8] font-bold bg-[#e8b4b8]/15 px-2.5 py-0.5 rounded-full border border-[#e8b4b8]/30 flex items-center gap-1">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#B8C5A8] font-bold bg-[#5b6c4b]/20 px-2.5 py-0.5 rounded-full border border-[#B8C5A8]/30 flex items-center gap-1">
                       <Award size={11} /> {t("PREMIO JOVEN", "YOUTH PRIZE")}
                     </span>
                     <span className="text-xs font-mono text-bone-muted">{t("Sep 2026", "Sep 2026")}</span>
@@ -484,7 +492,7 @@ export default function Biography() {
                           href="https://fundacioncrg.com/fundacion-caja-rural-granada-entrega-el-primer-premio-de-su-xviii-certamen-de-pintura-rapida-a-pepe-bonano/" 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          className="text-[#e8b4b8] hover:text-[#fce4e6] font-semibold transition-colors inline-block underline decoration-[#e8b4b8]/50"
+                          className="text-[#B8C5A8] hover:text-white font-semibold transition-colors inline-block underline decoration-[#B8C5A8]/50"
                           title={t("Ver enlace oficial en Fundación Caja Rural Granada", "View official link at Fundación Caja Rural Granada")}
                         >
                           Fundación Caja Rural Granada ↗
@@ -508,7 +516,7 @@ export default function Biography() {
                         subtitleEs: "Pintura al Aire Libre · Fundación Caja Rural Granada",
                         subtitleEn: "Plein Air Painting · Caja Rural Granada Foundation"
                       })}
-                      className="relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden border border-white/20 hover:border-[#e8b4b8] group/thumb cursor-pointer shadow-md hover:shadow-[0_0_20px_rgba(232,180,184,0.35)] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8b4b8]"
+                      className="relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden border border-white/20 hover:border-[#B8C5A8] group/thumb cursor-pointer shadow-md hover:shadow-[0_0_20px_rgba(184,197,168,0.35)] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8]"
                       title={t("Clic para ampliar fotografía de la obra", "Click to enlarge artwork photograph")}
                     >
                       <img 
@@ -517,7 +525,7 @@ export default function Biography() {
                         className="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-black/40 group-hover/thumb:bg-black/15 transition-colors flex items-center justify-center">
-                        <div className="w-7 h-7 rounded-full bg-black/60 backdrop-blur-sm border border-white/30 flex items-center justify-center text-bone group-hover/thumb:text-[#e8b4b8] group-hover/thumb:scale-110 transition-all shadow-md">
+                        <div className="w-7 h-7 rounded-full bg-black/60 backdrop-blur-sm border border-white/30 flex items-center justify-center text-bone group-hover/thumb:text-[#B8C5A8] group-hover/thumb:scale-110 transition-all shadow-md">
                           <ZoomIn size={14} />
                         </div>
                       </div>
@@ -529,11 +537,11 @@ export default function Biography() {
                 </div>
 
                 {/* Premio 2: Speedpainting 2022 */}
-                <div className="relative pl-6 border-l-2 border-[#e8b4b8]/40 bg-white/[0.03] p-4 sm:p-5 -ml-3 rounded-2xl border border-white/10 space-y-3">
-                  <div className="absolute w-2.5 h-2.5 bg-[#e8b4b8] rotate-45 organic-diamond-sm -left-[6px] top-4 shadow-[0_0_10px_rgba(232,180,184,0.8)]" aria-hidden="true" />
+                <div className="relative pl-6 border-l-2 border-[#B8C5A8]/40 bg-white/[0.03] p-4 sm:p-5 -ml-3 rounded-2xl border border-white/10 space-y-3">
+                  <div className="absolute w-2.5 h-2.5 bg-[#B8C5A8] rotate-45 organic-diamond-sm -left-[6px] top-4 shadow-[0_0_10px_rgba(184,197,168,0.8)]" aria-hidden="true" />
                   
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#e8b4b8] font-bold bg-[#e8b4b8]/15 px-2.5 py-0.5 rounded-full border border-[#e8b4b8]/30 flex items-center gap-1">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#B8C5A8] font-bold bg-[#5b6c4b]/20 px-2.5 py-0.5 rounded-full border border-[#B8C5A8]/30 flex items-center gap-1">
                       <Award size={11} /> {t("1º PREMIO", "1ST PRIZE")}
                     </span>
                     <span className="text-xs font-mono text-bone-muted">{t("Nov 2022", "Nov 2022")}</span>
@@ -547,7 +555,7 @@ export default function Biography() {
                           href="https://lboxacademy.es/eventos/entrega-del-premio-de-la-sexta-edicion-speed-painting-2022/" 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          className="text-[#e8b4b8] hover:text-[#fce4e6] font-semibold transition-colors underline decoration-[#e8b4b8]/50"
+                          className="text-[#B8C5A8] hover:text-white font-semibold transition-colors underline decoration-[#B8C5A8]/50"
                         >
                           {t("VI Edición Speed Painting", "VI Speed Painting Edition")} ↗
                         </a>
@@ -573,7 +581,7 @@ export default function Biography() {
                         subtitleEs: "Ilustración Japón Medieval · Lightbox Academy & NVIDIA",
                         subtitleEn: "Medieval Japan Illustration · Lightbox Academy & NVIDIA"
                       })}
-                      className="relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden border border-white/20 hover:border-[#e8b4b8] group/thumb cursor-pointer shadow-md hover:shadow-[0_0_20px_rgba(232,180,184,0.35)] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8b4b8]"
+                      className="relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden border border-white/20 hover:border-[#B8C5A8] group/thumb cursor-pointer shadow-md hover:shadow-[0_0_20px_rgba(184,197,168,0.35)] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8]"
                       title={t("Clic para ampliar fotografía de la obra", "Click to enlarge artwork photograph")}
                     >
                       <img 
@@ -582,7 +590,7 @@ export default function Biography() {
                         className="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-black/40 group-hover/thumb:bg-black/15 transition-colors flex items-center justify-center">
-                        <div className="w-7 h-7 rounded-full bg-black/60 backdrop-blur-sm border border-white/30 flex items-center justify-center text-bone group-hover/thumb:text-[#e8b4b8] group-hover/thumb:scale-110 transition-all shadow-md">
+                        <div className="w-7 h-7 rounded-full bg-black/60 backdrop-blur-sm border border-white/30 flex items-center justify-center text-bone group-hover/thumb:text-[#B8C5A8] group-hover/thumb:scale-110 transition-all shadow-md">
                           <ZoomIn size={14} />
                         </div>
                       </div>
@@ -623,7 +631,7 @@ export default function Biography() {
               <button
                 type="button"
                 onClick={() => setExpandedAwardImage(null)}
-                className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-10 h-10 rounded-full bg-black/70 hover:bg-[#e8b4b8] border border-white/20 text-bone hover:text-black flex items-center justify-center transition-all duration-200 cursor-pointer shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8b4b8]"
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-10 h-10 rounded-full bg-black/70 hover:bg-[#5b6c4b] border border-white/20 text-bone hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8]"
                 title={t("Cerrar ampliación (Esc)", "Close image (Esc)")}
               >
                 <X size={20} />
@@ -651,7 +659,7 @@ export default function Biography() {
                 <button
                   type="button"
                   onClick={() => setExpandedAwardImage(null)}
-                  className="text-xs font-mono uppercase tracking-widest text-[#e8b4b8] hover:text-[#fce4e6] px-3 py-1.5 rounded-lg bg-white/[0.05] border border-white/10 transition-colors"
+                  className="text-xs font-mono uppercase tracking-widest text-[#B8C5A8] hover:text-white px-3 py-1.5 rounded-lg bg-white/[0.05] border border-white/10 transition-colors"
                 >
                   {t("CERRAR [ESC]", "CLOSE [ESC]")}
                 </button>

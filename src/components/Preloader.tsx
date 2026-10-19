@@ -16,21 +16,21 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       getOptimizedImageUrl(item.imageUrl, 800, 75)
     );
 
-    // Track real assets
+    // Track real assets with fast ceiling
     const assetsPromise = Promise.all([
-      preloadImages(criticalUrls, 1500),
+      preloadImages(criticalUrls, 350),
       document.fonts ? document.fonts.ready : Promise.resolve(),
     ]);
 
-    // Smooth snappy progress increments
+    // Ultra-snappy progress increments
     const stepInterval = setInterval(() => {
       setProgress((prev) => {
-        if (prev < 85) {
-          return prev + Math.floor(Math.random() * 18) + 12;
+        if (prev < 90) {
+          return prev + 35;
         }
         return prev;
       });
-    }, 60);
+    }, 25);
 
     assetsPromise.finally(() => {
       if (!isMounted) return;
@@ -38,16 +38,16 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       setProgress(100);
       setTimeout(() => {
         if (isMounted) onComplete();
-      }, 250);
+      }, 40);
     });
 
-    // Fallback safety timeout (max 1.2s so user never waits)
+    // Fallback safety timeout (max 350ms so user never waits)
     const safetyTimeout = setTimeout(() => {
       if (!isMounted) return;
       clearInterval(stepInterval);
       setProgress(100);
       onComplete();
-    }, 1200);
+    }, 350);
 
     return () => {
       isMounted = false;

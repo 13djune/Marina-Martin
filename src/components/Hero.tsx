@@ -67,11 +67,11 @@ export default function Hero() {
         }
       }
 
-      // 2. Smooth, Unified Parallax on Scroll
+      // 2. Smooth, Unified Parallax on Scroll (Preserving solid contrast without sudden washed-out color shifts)
       if (contentRef.current) {
         gsap.to(contentRef.current, {
-          yPercent: -15,
-          opacity: 0.25,
+          yPercent: -12,
+          opacity: 0.85,
           ease: 'none',
           scrollTrigger: {
             trigger: section,
@@ -130,108 +130,143 @@ export default function Hero() {
     <section 
       ref={sectionRef} 
       className="relative min-h-[100svh] flex flex-col justify-between items-center overflow-hidden pt-20 sm:pt-24 pb-8 sm:pb-12 px-3 sm:px-6 md:px-12 select-none"
-      style={{ backgroundColor: '#22121b' }}
     >
-      {/* 1. Cinematic Atmospheric Chiaroscuro Background (Zero flowers, pure dark atmospheric depth) */}
+      {/* 1. Cinematic Deep Burgundy Mauve Atmosphere (#5E3F47) */}
       <div 
         className="absolute inset-0 pointer-events-none select-none z-0"
         style={{
-          background: 'radial-gradient(ellipse at 50% 45%, #2a1421 0%, #1e0d17 40%, #172214 75%, #0d140a 100%)'
+          background: 'radial-gradient(ellipse at 50% 40%, rgba(125, 82, 93, 0.45) 0%, rgba(94, 63, 71, 0.85) 50%, rgba(65, 40, 48, 0.98) 100%)'
         }}
         aria-hidden="true"
       />
       
-      {/* Subtle Dusty Rose / Pale Sage ambient atmospheric glow */}
+      {/* Subtle Luminous Sage & Ambient Sheens */}
       <div 
         className="absolute inset-0 pointer-events-none z-0"
         style={{
-          backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(232, 180, 184, 0.08) 0%, transparent 65%), radial-gradient(circle at 20% 80%, rgba(36, 48, 29, 0.6) 0%, transparent 60%)'
+          backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(184, 197, 168, 0.09) 0%, transparent 65%), radial-gradient(circle at 20% 80%, rgba(184, 197, 168, 0.07) 0%, transparent 60%)'
         }}
         aria-hidden="true"
       />
 
-      {/* 2. Cinematic Volumetric Lighting Rays */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-40 mix-blend-screen">
+      {/* 2. Deep Muted Green Corner Light Beam from Top-Right Corner (#5D6E4D) */}
+      {/* 2a. Muted Forest Green Corner Light Emitter (#5D6E4D) */}
+      <div 
+        className="absolute -top-16 -right-16 w-80 h-80 sm:w-[540px] sm:h-[540px] rounded-full pointer-events-none z-0 blur-[70px] opacity-85"
+        style={{
+          background: 'radial-gradient(circle at center, rgba(93, 110, 77, 0.75) 0%, rgba(75, 92, 60, 0.55) 35%, rgba(50, 65, 40, 0.3) 60%, transparent 80%)'
+        }}
+        aria-hidden="true"
+      />
+
+      {/* 2b. Corner Diagonal Volumetric Light Shaft in #5D6E4D */}
+      <div 
+        className="absolute top-0 right-0 w-[140%] h-[140%] pointer-events-none z-0 opacity-70 mix-blend-screen"
+        style={{
+          background: 'conic-gradient(from 195deg at 100% 0%, transparent 0deg, rgba(93, 110, 77, 0.45) 14deg, rgba(75, 92, 60, 0.5) 26deg, rgba(50, 65, 40, 0.25) 40deg, rgba(94, 63, 71, 0) 55deg)',
+          filter: 'blur(35px)',
+          transformOrigin: 'top right',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* 2c. Diagonal Ambient Sheen in Darker Green #5D6E4D */}
+      <div 
+        className="absolute -top-10 -right-10 w-full sm:w-[90%] h-[125%] pointer-events-none z-0 opacity-60 mix-blend-screen"
+        style={{
+          background: 'radial-gradient(circle at 100% 0%, rgba(93, 110, 77, 0.4) 0%, rgba(70, 86, 56, 0.25) 35%, rgba(45, 58, 35, 0.1) 60%, transparent 75%)'
+        }}
+        aria-hidden="true"
+      />
+
+      {/* 2d. Volumetric Atmospheric WebGL Rays in #5D6E4D */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-80 mix-blend-screen">
         <SideRays
-          speed={1.2}
-          rayColor1="#B8C5A8"
-          rayColor2="#24301d"
-          intensity={1.2}
-          spread={2.2}
+          speed={0.8}
+          rayColor1="#5D6E4D"
+          rayColor2="#3E4E32"
+          intensity={1.3}
+          spread={2.4}
           origin="top-right"
-          tilt={-12}
-          saturation={0.9}
-          blend={0.6}
-          falloff={1.1}
-          opacity={0.3}
+          tilt={-16}
+          saturation={1.1}
+          blend={0.7}
+          falloff={1.4}
+          opacity={0.75}
         />
       </div>
 
-      {/* 3. Transparent PNG Figures without Borders (Concept Art & Fine Arts Sculptures) */}
-      {/* Right Transparent PNG: Classical Chiaroscuro Sculpture Figure (No border, no card, pure PNG cutout) */}
+      {/* 3. Transparent PNG Sculptures Interleaved with Typography */}
+      {/* Right Transparent PNG: Classical Chiaroscuro Sculpture Figure */}
       <div 
         ref={plateRightRef}
-        className="absolute -right-2 sm:right-4 md:right-10 lg:right-16 top-20 sm:top-24 md:top-28 z-10 pointer-events-none w-[115px] sm:w-[180px] md:w-[250px] lg:w-[320px] xl:w-[380px] will-change-transform opacity-35 sm:opacity-55 md:opacity-75 transition-opacity"
+        className="absolute -right-2 sm:right-4 md:right-10 lg:right-16 top-20 sm:top-24 md:top-28 z-10 pointer-events-none w-[125px] sm:w-[190px] md:w-[260px] lg:w-[330px] xl:w-[400px] will-change-transform opacity-75 sm:opacity-85 md:opacity-95 transition-opacity"
       >
         <img 
           src="/images/hero-sculpture-1.png" 
           alt="Concept Art Classical Form" 
-          className="w-full h-auto object-contain filter drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)] drop-shadow-[0_0_35px_rgba(232,180,184,0.18)] contrast-125 brightness-90 hover:scale-105 transition-transform duration-700 pointer-events-none border-0"
+          className="w-full h-auto object-contain filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)] contrast-110 brightness-95 hover:scale-105 transition-transform duration-700 pointer-events-none border-0"
         />
       </div>
 
-      {/* Left Transparent PNG: Concept Art Figure Silhouette (No border, no card, pure PNG cutout) */}
+      {/* Left Transparent PNG: Concept Art Figure Silhouette */}
       <div 
         ref={plateLeftRef}
-        className="absolute -left-2 sm:left-4 md:left-8 lg:left-14 bottom-16 sm:bottom-20 md:bottom-24 z-10 pointer-events-none w-[95px] sm:w-[150px] md:w-[210px] lg:w-[270px] xl:w-[320px] will-change-transform opacity-30 sm:opacity-45 md:opacity-70 transition-opacity"
+        className="absolute -left-2 sm:left-4 md:left-8 lg:left-14 bottom-16 sm:bottom-20 md:bottom-24 z-10 pointer-events-none w-[105px] sm:w-[160px] md:w-[220px] lg:w-[280px] xl:w-[340px] will-change-transform opacity-70 sm:opacity-80 md:opacity-90 transition-opacity"
       >
         <img 
           src="/images/hero-figure-2.png" 
           alt="Concept Art Anatomical Study" 
-          className="w-full h-auto object-contain filter drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)] drop-shadow-[0_0_35px_rgba(184,197,168,0.15)] contrast-125 brightness-90 hover:scale-105 transition-transform duration-700 pointer-events-none border-0"
+          className="w-full h-auto object-contain filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)] contrast-110 brightness-95 hover:scale-105 transition-transform duration-700 pointer-events-none border-0"
         />
       </div>
 
-      {/* 4. Top Editorial Kicker & Exhibition Coordinates (Fully Responsive on Mobile) */}
+      {/* 4. Top Editorial Kicker & Exhibition Coordinates */}
       <div 
         ref={subtitleRef}
-        className="relative z-20 w-full max-w-7xl flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3 text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] sm:tracking-[0.3em] text-[#B8C5A8] border-b border-white/10 pb-2.5 sm:pb-3 text-center sm:text-left"
+        className="relative z-20 w-full max-w-7xl flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3 text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#faf7f2] border-b border-white/20 pb-2.5 sm:pb-3 text-center sm:text-left font-semibold"
       >
         <div className="flex items-center gap-2">
-          <Sparkles size={13} className="text-[#e8b4b8] animate-pulse" aria-hidden="true" />
-          <span className="font-bold text-[#B8C5A8]">{t("CONCEPT ART & ENTORNO", "CONCEPT ART & ENVIRONMENT")}</span>
+          <Sparkles size={13} className="text-[#B8C5A8]" aria-hidden="true" />
+          <span className="font-bold text-[#faf7f2]">{t("CONCEPT ART & ENTORNO", "CONCEPT ART & ENVIRONMENT")}</span>
         </div>
-        <div className="flex items-center gap-2 sm:gap-3 text-[9px] sm:text-[10px] text-[#B8C5A8]/80">
+
+        {/* Circular Preview Lenses (Inspired directly by Reference Photo 2) */}
+        <div className="hidden lg:flex items-center gap-2 text-[10px] text-[#eedbe1] font-sans">
+          <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-[#B8C5A8]/30 font-mono text-[9px] text-[#B8C5A8]">[ Concepto ]</span>
+          <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-[#B8C5A8]/30 font-mono text-[9px] text-[#B8C5A8]">[ Claroscuro ]</span>
+          <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-[#B8C5A8]/30 font-mono text-[9px] text-[#B8C5A8]">[ Atmósfera ]</span>
+        </div>
+
+        <div className="flex items-center gap-2 sm:gap-3 text-[9px] sm:text-[10px] text-[#eedbe1]">
           <span>{t("MADRID · REMOTO", "MADRID · REMOTE")}</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#e8b4b8]" aria-hidden="true" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#B8C5A8]" aria-hidden="true" />
           <span>{t("ILUMINACIÓN CINEMATOGRÁFICA 8K", "8K CINEMATIC LIGHTING")}</span>
         </div>
       </div>
 
-      {/* 5. MASSIVE BOLD TYPOGRAPHY: Perfectly Responsive Fluid VW Scaling with Zero Overflow */}
+      {/* 5. MASSIVE BOLD ARCHITECTURAL TYPOGRAPHY: Interleaved with Concept Art Sculptures */}
       <div 
         ref={contentRef}
         className="relative z-20 w-full max-w-[1600px] my-auto flex flex-col items-center justify-center text-center pointer-events-none px-2"
       >
-        {/* Line 1: First Name scaling gracefully without wrapping or clipping on any mobile */}
+        {/* Line 1: First Name */}
         <h1 
           ref={titleLine1Ref}
-          className="text-[13.5vw] sm:text-[12vw] md:text-[11vw] lg:text-[11.5vw] xl:text-[13.5rem] 2xl:text-[15.5rem] font-serif font-black tracking-tighter uppercase leading-[0.84] sm:leading-[0.8] text-[#B8C5A8] drop-shadow-[0_15px_35px_rgba(22,32,18,0.95)] transform will-change-transform select-none"
-          style={{ textShadow: '0 8px 30px rgba(22,32,18,0.95)' }}
+          className="text-[13.5vw] sm:text-[12vw] md:text-[11vw] lg:text-[11.5vw] xl:text-[13.5rem] 2xl:text-[15.5rem] font-serif font-black tracking-tighter uppercase leading-[0.84] sm:leading-[0.8] text-[#faf7f2] drop-shadow-[0_12px_35px_rgba(0,0,0,0.6)] transform will-change-transform select-none"
         >
           MARINA
         </h1>
 
-        {/* Central Intersecting Editorial Ribbon (Updated without flowers) */}
-        <div className="my-0.5 sm:my-[-0.75rem] lg:my-[-1.25rem] z-30 px-3.5 py-1 sm:px-6 sm:py-1.5 backdrop-blur-md bg-[#22121b]/80 border-y border-[#e8b4b8]/35 max-w-[94vw] sm:max-w-xl text-[9px] sm:text-xs md:text-sm font-serif italic text-bone tracking-[0.18em] sm:tracking-[0.2em] uppercase shadow-lg">
+        {/* Central Intersecting Editorial Ribbon (Moss Green Card with Frosted Specular Sheen) */}
+        <div className="my-0.5 sm:my-[-0.75rem] lg:my-[-1.25rem] z-30 px-4 py-1.5 sm:px-7 sm:py-2 rounded-xl backdrop-blur-2xl bg-[#5b6c4b]/95 text-[#faf7f2] border border-[#7e946a] max-w-[94vw] sm:max-w-xl text-[10px] sm:text-xs md:text-sm font-serif italic tracking-[0.16em] sm:tracking-[0.18em] uppercase shadow-[0_15px_35px_rgba(0,0,0,0.4),inset_0_1.5px_1px_rgba(255,255,255,0.4)] font-bold">
           {t("«Arte Conceptual · Iluminación & Claroscuro»", "«Concept Art · Lighting & Chiaroscuro»")}
         </div>
 
-        {/* Line 2: Surname scaling gracefully */}
+        {/* Line 2: Surname */}
         <h1 
           ref={titleLine2Ref}
-          className="text-[13.5vw] sm:text-[12vw] md:text-[11vw] lg:text-[11.5vw] xl:text-[13.5rem] 2xl:text-[15.5rem] font-serif font-black tracking-tighter uppercase leading-[0.84] sm:leading-[0.8] text-[#B8C5A8] drop-shadow-[0_15px_35px_rgba(22,32,18,0.95)] transform will-change-transform select-none"
-          style={{ textShadow: '0 8px 30px rgba(22,32,18,0.95)' }}
+          className="text-[13.5vw] sm:text-[12vw] md:text-[11vw] lg:text-[11.5vw] xl:text-[13.5rem] 2xl:text-[15.5rem] font-serif font-black tracking-tighter uppercase leading-[0.84] sm:leading-[0.8] text-[#faf7f2] drop-shadow-[0_12px_35px_rgba(0,0,0,0.6)] transform will-change-transform select-none"
         >
           MARTÍN
         </h1>
@@ -240,12 +275,12 @@ export default function Hero() {
       {/* 6. Scroll Indicator with Safe Bottom Spacing */}
       <div
         ref={scrollIndicatorRef}
-        className="mt-3 sm:mt-6 pb-1 sm:pb-0 flex flex-col items-center gap-1 text-[#B8C5A8] will-change-transform pointer-events-none"
+        className="mt-3 sm:mt-6 pb-1 sm:pb-0 flex flex-col items-center gap-1 text-[#faf7f2] will-change-transform pointer-events-none font-semibold"
         aria-hidden="true"
       >
-        <span className="text-[9px] uppercase tracking-[0.3em] font-mono font-bold text-[#B8C5A8]/90">{t("DESPLAZAR", "SCROLL")}</span>
+        <span className="text-[9px] uppercase tracking-[0.3em] font-mono font-bold text-[#B8C5A8]">{t("DESPLAZAR", "SCROLL")}</span>
         <div className="chevron-bounce">
-          <ChevronDown size={18} className="text-[#e8b4b8]" />
+          <ChevronDown size={18} className="text-[#B8C5A8]" />
         </div>
       </div>
     </section>

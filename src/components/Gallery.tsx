@@ -108,53 +108,132 @@ export default function Gallery() {
 
   return (
     <section 
-      ref={sectionRef}
+      ref={sectionRef} 
       id="portfolio" 
-      className="py-20 md:py-28 px-4 sm:px-6 md:px-12 bg-vampire-bg relative z-10"
+      className="py-20 md:py-28 px-4 sm:px-6 md:px-12 relative z-10"
     >
       <div className="max-w-7xl mx-auto">
         {/* Section Header: Galería de Proyectos */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-12 gap-6">
           <div ref={headerRef} className="will-change-transform">
-            <div className="flex items-center gap-2 mb-3 text-xs font-mono uppercase tracking-[0.25em] text-vampire-red font-bold">
+            <div className="flex items-center gap-2 mb-3 text-xs font-mono uppercase tracking-[0.25em] text-[#B8C5A8] font-bold">
               <BookOpen size={14} aria-hidden="true" />
               <span>{t("ARCHIVO DE CUADERNOS & ESTUDIOS", "SKETCHBOOK ARCHIVE & STUDIES")}</span>
             </div>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-black uppercase text-bone italic leading-tight">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-black uppercase text-[#faf7f2] italic leading-tight">
               {t("Galería de", "Project")}<br/>
-              <span className="text-vampire-red">{t("Proyectos", "Gallery")}</span>
+              <span className="text-[#B8C5A8]">{t("Proyectos", "Gallery")}</span>
             </h2>
             <div 
               ref={redLineRef}
-              className="w-24 h-1 bg-vampire-red mt-4 origin-left will-change-transform"
+              className="w-24 h-1.5 bg-[#B8C5A8] mt-4 origin-left will-change-transform rounded-full"
             />
           </div>
 
           <div ref={descRef} className="max-w-md space-y-3 will-change-transform">
-            <p className="text-bone-muted text-sm md:text-base font-serif italic leading-relaxed">
+            <p className="text-[#eedbe1] text-sm md:text-base font-serif italic leading-relaxed">
               {t(
                 "Colección de cuadernos de bocetos encuadernados. Haz clic en cualquier portada para abrir el cuaderno interactivo en 3D y explorar su proceso de creación.",
                 "Collection of bound sketchbooks. Click on any cover to open the interactive 3D book and explore its creative visual development process."
               )}
             </p>
-            <div className="flex items-center gap-2 text-xs font-mono text-bone-muted/80">
-              <Sparkles size={13} className="text-vampire-red" aria-hidden="true" />
+            <div className="flex items-center gap-2 text-xs font-mono text-[#eedbe1]">
+              <Sparkles size={13} className="text-[#B8C5A8]" aria-hidden="true" />
               <span>
-                {t("Total en archivo:", "Archive total:")} <strong className="text-bone font-bold">{galleryItems.length} {t("volúmenes", "volumes")}</strong>
+                {t("Total en archivo:", "Archive total:")} <strong className="text-[#B8C5A8] font-bold">{galleryItems.length} {t("volúmenes", "volumes")}</strong>
               </span>
             </div>
           </div>
         </div>
 
+        {/* ========================================================================= */}
+        {/* EDITORIAL SHOWCASE CARD: Frosted Glassmorphism with Interleaved Typography */}
+        {/* ========================================================================= */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="glass-panel rounded-3xl p-6 sm:p-8 md:p-10 mb-12 relative overflow-hidden backdrop-blur-2xl bg-white/[0.08] border border-white/25 shadow-[0_25px_65px_rgba(28,14,20,0.5),inset_0_1.5px_1.5px_rgba(255,255,255,0.4)]"
+        >
+          {/* Top specular sheen */}
+          <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none" />
+
+          {/* Top coordinates & pills */}
+          <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono uppercase tracking-widest text-[#eedbe1] pb-4 mb-6 border-b border-white/20">
+            <div className="flex items-center gap-2">
+              <span className="text-white font-bold bg-[#5b6c4b]/30 px-2.5 py-0.5 rounded-full border border-[#B8C5A8]/30">[ {t("Visión Escultórica", "Sculptural Vision")} ]</span>
+              <span className="bg-white/[0.06] px-2.5 py-0.5 rounded-full border border-white/10">[ {t("Atmósfera 8K", "8K Atmosphere")} ]</span>
+              <span className="bg-white/[0.06] px-2.5 py-0.5 rounded-full border border-white/10">[ {t("Claroscuro", "Chiaroscuro")} ]</span>
+            </div>
+            <div className="flex items-center gap-2 text-[#B8C5A8]">
+              <Sparkles size={12} />
+              <span>{t("DIRECCIÓN DE ARTE & NARRATIVA", "ART DIRECTION & LORE")}</span>
+            </div>
+          </div>
+
+          {/* Large Interleaved Typography: Text woven with real artwork capsules and lenses */}
+          <div className="text-left select-none space-y-3 sm:space-y-4">
+            <div className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-sans font-black uppercase text-[#faf7f2] leading-[1.15] tracking-tight flex flex-wrap items-center gap-x-3 gap-y-2.5">
+              <span>CREAMOS</span>
+              
+              {/* Inline Image Capsule 1 */}
+              <span className="inline-flex items-center h-8 sm:h-11 md:h-13 px-2 sm:px-2.5 rounded-full bg-white/15 border border-white/30 backdrop-blur-md overflow-hidden shadow-lg transform hover:scale-105 transition-transform align-middle">
+                <img 
+                  src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=400&auto=format&fit=crop" 
+                  alt="Entorno orgánico" 
+                  className="w-12 sm:w-16 md:w-20 h-5 sm:h-7 md:h-9 object-cover rounded-full"
+                />
+                <span className="text-[10px] font-mono text-[#B8C5A8] ml-1.5 hidden sm:inline">[Entorno]</span>
+              </span>
+
+              <span>MUNDOS</span>
+              <span className="italic font-serif font-light text-[#B8C5A8]">VISUALES</span>
+              
+              {/* Inline Circular Image Lens 2 */}
+              <span className="inline-flex items-center justify-center w-8 h-8 sm:w-11 sm:h-11 md:w-13 md:h-13 rounded-full bg-white/20 border-2 border-white/40 overflow-hidden shadow-lg transform hover:scale-110 transition-transform align-middle">
+                <img 
+                  src="/images/hero-sculpture-1.png" 
+                  alt="Estudio 3D" 
+                  className="w-full h-full object-contain p-0.5"
+                />
+              </span>
+
+              <span>PARA</span>
+              <span>CINE</span>
+
+              {/* Inline Image Capsule 3 */}
+              <span className="inline-flex items-center h-8 sm:h-11 md:h-13 px-2 sm:px-2.5 rounded-full bg-white/15 border border-white/30 backdrop-blur-md overflow-hidden shadow-lg transform hover:scale-105 transition-transform align-middle">
+                <img 
+                  src="https://images.unsplash.com/photo-1605806616949-1e87b487cb2a?q=80&w=400&auto=format&fit=crop" 
+                  alt="Personaje y ropaje" 
+                  className="w-12 sm:w-16 md:w-20 h-5 sm:h-7 md:h-9 object-cover rounded-full"
+                />
+                <span className="text-[10px] font-mono text-[#B8C5A8] ml-1.5 hidden sm:inline">[Personaje]</span>
+              </span>
+
+              <span>&</span>
+              <span className="italic font-serif font-light text-[#faf7f2]">VIDEOJUEGOS</span>
+            </div>
+
+            <p className="text-xs sm:text-sm md:text-base font-serif italic text-[#eedbe1] max-w-3xl pt-2 leading-relaxed">
+              {t(
+                "«Cada imagen es un destello de una historia no contada; la luz guía la mirada, mientras la forma esculpe la memoria visual.»",
+                "«Each image is a spark of an untold story; light leads the eye while form sculpts the visual memory.»"
+              )}
+            </p>
+          </div>
+        </motion.div>
+
         {/* Category Filter Tabs with Smooth Layout Transition Animation */}
         <div 
           ref={filterRef}
-          className="mb-10 flex flex-wrap items-center gap-2 sm:gap-2.5 pb-2 border-b border-white/10 will-change-transform"
+          className="mb-10 flex flex-wrap items-center gap-2 sm:gap-2.5 pb-2 border-b border-white/15 will-change-transform"
           role="tablist"
           aria-label={t("Filtro de categorías de la galería", "Gallery categories filter")}
         >
-          <div className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-bone-muted mr-2 hidden sm:flex">
-            <Layers size={14} className="text-vampire-red" aria-hidden="true" />
+          <div className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[#B8C5A8] mr-2 hidden sm:flex font-bold">
+            <Layers size={14} className="text-[#B8C5A8]" aria-hidden="true" />
             <span>{t("Filtrar:", "Filter:")}</span>
           </div>
 
@@ -167,17 +246,17 @@ export default function Gallery() {
                 role="tab"
                 aria-selected={isActive}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`relative px-3.5 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider transition-colors duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red ${
+                className={`relative px-4 py-2 rounded-full text-xs font-mono uppercase tracking-wider transition-colors duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8] ${
                   isActive
-                    ? 'text-black font-bold'
-                    : 'text-bone-muted hover:text-bone hover:bg-[#B8C5A8]/10'
+                    ? 'text-[#faf7f2] font-bold'
+                    : 'text-[#eedbe1] hover:text-[#B8C5A8] bg-white/[0.08] hover:bg-white/[0.15]'
                 }`}
               >
                 {/* Active Pill Layout Indicator Animation */}
                 {isActive && (
                   <motion.span
                     layoutId="active-gallery-pill"
-                    className="absolute inset-0 rounded-full bg-vampire-red shadow-[0_0_15px_rgba(184,197,168,0.5)] z-0"
+                    className="absolute inset-0 rounded-full bg-[#5b6c4b] border border-[#7e946a] shadow-md z-0"
                     transition={{ type: 'spring', stiffness: 380, damping: 28 }}
                   />
                 )}
@@ -186,8 +265,8 @@ export default function Gallery() {
             );
           })}
 
-          <div className="ml-auto text-[11px] font-mono text-bone-muted hidden md:block">
-            {t("Mostrando", "Showing")} <strong className="text-vampire-red">{filteredItems.length}</strong> / {galleryItems.length}
+          <div className="ml-auto text-[11px] font-mono text-[#eedbe1] hidden md:block">
+            {t("Mostrando", "Showing")} <strong className="text-[#B8C5A8]">{filteredItems.length}</strong> / {galleryItems.length}
           </div>
         </div>
 

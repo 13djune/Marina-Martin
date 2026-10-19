@@ -4,46 +4,52 @@
   --font-serif: "Playfair Display", serif;
   --font-body: "Lora", serif;
 
-  --color-vampire-bg: #22121b; /* Deep muted plum purple base (darker) */
-  --color-vampire-card: #2d1823; /* Card background deep plum */
-  --color-vampire-red: #B8C5A8; /* Pale sage green primary accent & UI */
-  --color-vampire-red-dark: #9dae8c;
+  --color-vampire-bg: #5E3F47; /* Deep warm burgundy mauve background */
+  --color-stone-bg: #5E3F47;
+  --color-stone-light: #734e57;
+  --color-stone-dark: #4a3037;
+  --color-vampire-card: rgba(255, 255, 255, 0.08); /* Frosted glass card */
+  --color-moss-card: rgba(255, 255, 255, 0.08);
+  --color-moss-card-dark: rgba(255, 255, 255, 0.04);
+  --color-vampire-red: #B8C5A8; /* Beloved Pale Sage Green */
+  --color-vampire-red-dark: #8c9e78;
   --color-accent-green: #B8C5A8;
-  --color-accent-green-dark: #9dae8c;
-  --color-bone: #B8C5A8; /* Pale sage green strictly for all text */
-  --color-bone-muted: #8fa07e; /* Pale sage green muted */
-  --color-tropical-green: #24301d; /* Kombu Green shadows */
-  --color-tropical-dark: #162012;
-  --color-kombu-green: #24301d; /* Kombu Green deep shadows */
-  --color-kombu-green-dark: #162012;
-  --color-muted-plum: #22121b; /* Deep muted plum purple base */
-  --color-muted-plum-dark: #150910;
-  --color-pale-sage: #B8C5A8; /* Pale sage green */
-  --color-sage-green: #B8C5A8; /* Pale sage green */
-  --color-sage-green-light: #d8e2cd; /* Luminous soft sage */
-  --color-dusty-pink: #D2A7AA; /* Dusty pink petals */
-  --color-dusty-pink-light: #e8c7c9;
-  --color-dusty-pink-deep: #a66a70;
-  --color-link-rose: #e8b4b8; /* Luminous dusty rose highlight for links */
-  --color-link-rose-hover: #f7d6d9;
+  --color-accent-green-dark: #8c9e78;
+  --color-charcoal-text: #faf7f2; /* Pure ivory for max readability on #5E3F47 */
+  --color-charcoal-muted: #e8d6dc; /* Accessible soft mauve ivory */
+  --color-bone: #faf7f2; /* Pure bone ivory */
+  --color-bone-muted: #d9c4cb; /* Soft muted bone for secondary text */
+  --color-tropical-green: #3d252c;
+  --color-tropical-dark: #2a181d;
+  --color-kombu-green: #3d252c;
+  --color-kombu-green-dark: #2a181d;
+  --color-muted-plum: #4a3037;
+  --color-muted-plum-dark: #352026;
+  --color-pale-sage: #B8C5A8;
+  --color-sage-green: #a2b490;
+  --color-sage-green-light: #d8e2cd;
+  --color-dusty-pink: #ffd8dc;
+  --color-dusty-pink-light: #fff0f2;
+  --color-dusty-pink-deep: #e8b4b8;
+  --color-link-rose: #B8C5A8;
+  --color-link-rose-hover: #ffffff;
 }
 
 @layer base {
   html {
-    /* Lenis provides physics-based smooth scrolling; remove native smooth to prevent judder */
     scroll-behavior: auto;
   }
   
   body {
-    background-color: #22121b;
-    color: #B8C5A8;
+    background-color: #5E3F47;
+    color: #faf7f2;
     font-family: "Lora", Georgia, serif;
     overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: "Playfair Display", Georgia, serif;
-    color: #B8C5A8;
+    color: #faf7f2;
   }
 
   @media (pointer: fine) {
@@ -52,11 +58,11 @@
     }
   }
 
-  /* WCAG AAA High-Contrast Focus Visible Rings in Pale Sage Green */
+  /* WCAG AAA High-Contrast Focus Visible Rings in Beloved Sage Green */
   *:focus-visible {
     outline: 2px solid #B8C5A8 !important;
     outline-offset: 3px !important;
-    box-shadow: 0 0 0 3px rgba(51, 67, 43, 0.9) !important;
+    box-shadow: 0 0 0 3px rgba(184, 197, 168, 0.4) !important;
     border-radius: 4px;
   }
 }
@@ -93,15 +99,15 @@
   background-position: 0 0, 6px 6px;
 }
 
-/* Custom scrollbar with hardcoded colors */
+/* Custom scrollbar matching palette with green thumb */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #3a1e2a; 
+  background: #3c242a; 
 }
 ::-webkit-scrollbar-thumb {
-  background: #33432B; 
+  background: #5D6E4D; 
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -140,50 +146,51 @@
   border-radius: 24% 76% 24% 76% / 76% 24% 76% 24%;
 }
 
-/* Real Physical Frosted Glassmorphism Presets */
-.glass-panel {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 35%, rgba(34, 18, 27, 0.65) 100%);
+/* Physical Frosted Glassmorphism Presets (Tuned for #5E3F47 background) */
+.moss-card, .glass-card, .stone-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 45%, rgba(68, 38, 47, 0.35) 100%);
   backdrop-filter: blur(28px) saturate(180%);
   -webkit-backdrop-filter: blur(28px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.22);
   box-shadow: 
-    0 30px 80px rgba(8, 4, 7, 0.75), 
-    inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.45),
-    inset 1px 0 1px 0 rgba(255, 255, 255, 0.2),
-    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.45),
-    inset 0 0 35px 0 rgba(232, 180, 184, 0.05);
-}
-
-.glass-panel-subtle {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(34, 18, 27, 0.5) 100%);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 
-    0 20px 50px rgba(8, 4, 7, 0.5), 
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.35),
-    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.3);
-}
-
-.glass-card {
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 30%, rgba(34, 18, 27, 0.55) 100%);
-  backdrop-filter: blur(24px) saturate(170%);
-  -webkit-backdrop-filter: blur(24px) saturate(170%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 
-    0 22px 55px rgba(8, 4, 7, 0.6), 
-    inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.4),
-    inset 1px 0 1px 0 rgba(255, 255, 255, 0.15),
-    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.35);
+    0 24px 60px rgba(32, 16, 22, 0.4),
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.25);
+  color: #faf7f2;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.glass-card:hover {
-  border-color: rgba(232, 180, 184, 0.45);
+.moss-card:hover, .glass-card:hover, .stone-card:hover {
+  border-color: rgba(184, 197, 168, 0.65);
   box-shadow: 
-    0 28px 65px rgba(8, 4, 7, 0.75), 
-    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.55),
-    0 0 30px rgba(232, 180, 184, 0.18);
+    0 32px 75px rgba(32, 16, 22, 0.55),
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.5),
+    0 0 35px rgba(184, 197, 168, 0.3);
+}
+
+/* Real Physical Frosted Glassmorphism Panels */
+.glass-panel {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 40%, rgba(68, 38, 47, 0.45) 100%);
+  backdrop-filter: blur(32px) saturate(190%);
+  -webkit-backdrop-filter: blur(32px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 
+    0 30px 80px rgba(28, 14, 20, 0.55), 
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.45),
+    inset 1px 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.35),
+    inset 0 0 35px 0 rgba(184, 197, 168, 0.08);
+}
+
+.glass-panel-subtle {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.03) 45%, rgba(68, 38, 47, 0.3) 100%);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    0 20px 50px rgba(28, 14, 20, 0.35), 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.2);
 }
 
 .glass-input {
@@ -199,9 +206,9 @@
 
 .glass-input:focus {
   background: rgba(255, 255, 255, 0.08);
-  border-color: #e8b4b8;
+  border-color: #B8C5A8;
   box-shadow: 
-    0 0 25px rgba(232, 180, 184, 0.3),
+    0 0 25px rgba(184, 197, 168, 0.35),
     inset 0 1.5px 1px rgba(255, 255, 255, 0.35);
 }
 
@@ -217,26 +224,26 @@
 }
 
 .glass-button:hover {
-  background: linear-gradient(135deg, rgba(232, 180, 184, 0.2) 0%, rgba(255, 255, 255, 0.08) 100%);
-  border-color: #e8b4b8;
+  background: linear-gradient(135deg, rgba(184, 197, 168, 0.22) 0%, rgba(255, 255, 255, 0.08) 100%);
+  border-color: #B8C5A8;
   box-shadow: 
     0 12px 30px rgba(0, 0, 0, 0.45), 
-    0 0 20px rgba(232, 180, 184, 0.3),
+    0 0 20px rgba(184, 197, 168, 0.35),
     inset 0 1.5px 1px rgba(255, 255, 255, 0.5);
 }
 
-/* Editorial Link Accent in Radiant Luminous Dusty Rose (#e8b4b8) */
+/* Editorial Link Accent in Beloved Radiant Sage Green (#B8C5A8) */
 .link-accent, .link-highlight {
-  color: #e8b4b8;
+  color: #B8C5A8;
   text-decoration: underline;
   text-underline-offset: 4px;
-  text-decoration-color: rgba(232, 180, 184, 0.45);
+  text-decoration-color: rgba(184, 197, 168, 0.45);
   transition: all 0.25s ease;
 }
 
 .link-accent:hover, .link-highlight:hover {
-  color: #fce4e6;
-  text-decoration-color: #fce4e6;
-  text-shadow: 0 0 12px rgba(232, 180, 184, 0.55);
+  color: #ffffff;
+  text-decoration-color: #ffffff;
+  text-shadow: 0 0 12px rgba(184, 197, 168, 0.65);
 }
 
