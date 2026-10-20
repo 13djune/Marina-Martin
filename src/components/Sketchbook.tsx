@@ -9,7 +9,7 @@ import {
   Check,
   X
 } from 'lucide-react';
-import { Project, Hotspot } from '../data';
+import { Project, Hotspot, getSketchbookPages } from '../data';
 import { useLanguage } from '../LanguageContext';
 import { soundManager } from '../utils/audio';
 import ProgressiveImage from './ui/ProgressiveImage';
@@ -63,11 +63,13 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
     return false;
   });
   const [mobilePageIndex, setMobilePageIndex] = useState<number>(autoOpenSpread ? 2 : 0);
+  const [mobileDirection, setMobileDirection] = useState<'forward' | 'backward'>('forward');
 
-  // Mobile page handlers
+  // Mobile page handlers with directional tracking for Framer Motion flip/slide
   const nextMobilePage = () => {
     if (mobilePageIndex < 9) {
       soundManager.playPageTurn();
+      setMobileDirection('forward');
       setMobilePageIndex((prev) => prev + 1);
       setActiveHotspot(null);
     }
@@ -76,7 +78,17 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
   const prevMobilePage = () => {
     if (mobilePageIndex > 0) {
       soundManager.playPageTurn();
+      setMobileDirection('backward');
       setMobilePageIndex((prev) => prev - 1);
+      setActiveHotspot(null);
+    }
+  };
+
+  const goToMobilePage = (idx: number) => {
+    if (idx !== mobilePageIndex) {
+      soundManager.playPageTurn();
+      setMobileDirection(idx > mobilePageIndex ? 'forward' : 'backward');
+      setMobilePageIndex(idx);
       setActiveHotspot(null);
     }
   };
@@ -107,10 +119,60 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
     }
   }, []);
 
-  // Process images
-  const sketchImage = project.processImages[0]?.url || project.imageUrl;
-  const secondaryImage = project.processImages[1]?.url || project.imageUrl;
-  const sketchHotspots = project.processImages[0]?.hotspots || [];
+  // Configuración completa de páginas obtenida directamente de data.ts
+  const pages = getSketchbookPages(project);
+  const isCarmilla = project.id === 1 || project.titleEs.toLowerCase().includes('carmilla');
+
+  // Enlaces a imágenes y hotspots definidos en data.ts para cada página
+  const carmillaSilhouettesImage = pages.page00.imageUrl;
+  const carmillaCharacterImage = pages.page01.imageUrl;
+  const lauraCharacterImage = pages.page02.imageUrl;
+  const carmillaIllustration1Image = pages.page03.imageUrl;
+  const carmillaIllustration2Image = pages.page04.imageUrl;
+
+  const sketchImage = pages.page00.imageUrl;
+  const secondaryImage = pages.page04.imageUrl || pages.page01.imageUrl;
+  const sketchHotspots = pages.page00.hotspots || [];
+
+  const carmillaSilhouettesHotspots = pages.page00.hotspots || [];
+  const carmillaCharacterHotspots = pages.page01.hotspots || [];
+  const lauraCharacterHotspots = pages.page02.hotspots || [];
+  const carmillaIllustration1Hotspots = pages.page03.hotspots || [];
+  const carmillaIllustration2Hotspots = pages.page04.hotspots || [];
+
+  // Tactile book flip / slide animation variants for Framer Motion
+  const mobileFlipVariants = {
+    enter: (direction: 'forward' | 'backward') => ({
+      x: direction === 'forward' ? '75%' : '-75%',
+      rotateY: direction === 'forward' ? 24 : -24,
+      opacity: 0,
+      scale: 0.93,
+    }),
+    center: {
+      x: '0%',
+      rotateY: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        x: { type: 'spring', stiffness: 280, damping: 28 },
+        rotateY: { type: 'spring', stiffness: 260, damping: 26 },
+        opacity: { duration: 0.28 },
+        scale: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+      },
+    },
+    exit: (direction: 'forward' | 'backward') => ({
+      x: direction === 'forward' ? '-75%' : '75%',
+      rotateY: direction === 'forward' ? -24 : 24,
+      opacity: 0,
+      scale: 0.93,
+      transition: {
+        x: { type: 'spring', stiffness: 280, damping: 28 },
+        rotateY: { type: 'spring', stiffness: 260, damping: 26 },
+        opacity: { duration: 0.2 },
+        scale: { duration: 0.3 },
+      },
+    }),
+  };
 
   // Responsive check
   useEffect(() => {
@@ -209,13 +271,13 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
       case 0:
         return `${t("Portada cerrada de", "Front cover closed of")} ${t(project.titleEs, project.titleEn)}`;
       case 1:
-        return t("Páginas 00 y 01: Estudio Preliminar y Dossier Conceptual", "Pages 00 and 01: Preliminary Study and Concept Dossier");
+        return `${pages.page00.pageNumber} & ${pages.page01.pageNumber}: ${t(pages.page00.sectionHeaderEs, pages.page00.sectionHeaderEn)} / ${t(pages.page01.titleEs, pages.page01.titleEn)}`;
       case 2:
-        return t("Páginas 02 y 03: Bocetos e Iluminación Clave Tonal", "Pages 02 and 03: Sketches and Tonal Key Lighting");
+        return `${pages.page02.pageNumber} & ${pages.page03.pageNumber}: ${t(pages.page02.titleEs, pages.page02.titleEn)} / ${t(pages.page03.titleEs, pages.page03.titleEn)}`;
       case 3:
-        return t("Páginas 04 y 05: Estudio Secundario y Lámina Final HD", "Pages 04 and 05: Secondary Study and Final HD Plate");
+        return `${pages.page04.pageNumber} & ${pages.page05?.pageNumber || "PÁG. 05"}: ${t(pages.page04.titleEs, pages.page04.titleEn)} / ${t(pages.page05?.titleEs || "Lámina Final HD", pages.page05?.titleEn || "Final HD Plate")}`;
       case 4:
-        return t("Páginas 06 y 07: Revisión de Taller y Certificado de Autenticidad", "Pages 06 and 07: Workshop Review and Certificate of Authenticity");
+        return `${pages.page06?.pageNumber || "PÁG. 06"} & ${pages.page07?.pageNumber || "PÁG. 07"}: ${t(pages.page06?.titleEs || "Revisión de Taller", pages.page06?.titleEn || "Workshop Review")} / ${t(pages.page07?.titleEs || "Certificado de Autenticidad", pages.page07?.titleEn || "Certificate of Authenticity")}`;
       case 5:
         return t("Contraportada cerrada", "Back cover closed");
       default:
@@ -238,17 +300,17 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
     ? 'calc(100vh - 110px)'
     : 'calc(100vh - 130px)';
 
-  // Mobile Single-Page Definition and Renderer
+  // Mobile Single-Page Definition and Renderer - dynamically driven by pages configuration
   const mobilePages = [
     { num: 'PORTADA', titleEs: 'Portada del Cuaderno', titleEn: 'Front Cover' },
-    { num: 'PÁG. 00', titleEs: 'Estudio Preliminar & Génesis', titleEn: 'Preliminary Study & Genesis' },
-    { num: 'PÁG. 01', titleEs: 'Dossier Conceptual & Paleta', titleEn: 'Concept Dossier & Palette' },
-    { num: 'PÁG. 02', titleEs: 'Bocetos & Trazo Exploratorio', titleEn: 'Sketches & Linework' },
-    { num: 'PÁG. 03', titleEs: 'Clave Tonal & Iluminación', titleEn: 'Tonal Key & Lighting' },
-    { num: 'PÁG. 04', titleEs: 'Estudio Secundario & Color', titleEn: 'Secondary Study & Color' },
-    { num: 'PÁG. 05', titleEs: 'Lámina Final HD', titleEn: 'Final HD Plate' },
-    { num: 'PÁG. 06', titleEs: 'Revisión de Taller & Specs', titleEn: 'Workshop Review & Specs' },
-    { num: 'PÁG. 07', titleEs: 'Certificado de Autenticidad', titleEn: 'Certificate of Authenticity' },
+    { num: pages.page00.pageNumber, titleEs: pages.page00.titleEs, titleEn: pages.page00.titleEn },
+    { num: pages.page01.pageNumber, titleEs: pages.page01.titleEs, titleEn: pages.page01.titleEn },
+    { num: pages.page02.pageNumber, titleEs: pages.page02.titleEs, titleEn: pages.page02.titleEn },
+    { num: pages.page03.pageNumber, titleEs: pages.page03.titleEs, titleEn: pages.page03.titleEn },
+    { num: pages.page04.pageNumber, titleEs: pages.page04.titleEs, titleEn: pages.page04.titleEn },
+    { num: pages.page05?.pageNumber || 'PÁG. 05', titleEs: pages.page05?.titleEs || 'Lámina Final HD', titleEn: pages.page05?.titleEn || 'Final HD Plate' },
+    { num: pages.page06?.pageNumber || 'PÁG. 06', titleEs: pages.page06?.titleEs || 'Revisión de Taller & Specs', titleEn: pages.page06?.titleEn || 'Workshop Review & Specs' },
+    { num: pages.page07?.pageNumber || 'PÁG. 07', titleEs: pages.page07?.titleEs || 'Certificado de Autenticidad', titleEn: pages.page07?.titleEn || 'Certificate of Authenticity' },
     { num: 'FINAL', titleEs: 'Contraportada de Estudio', titleEn: 'Studio Back Cover' },
   ];
 
@@ -312,44 +374,71 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
           <div className="w-full h-full bg-[#fdfbf7] p-5 flex flex-col justify-between relative overflow-hidden text-[#1c1917]">
             <PaperTextureOverlay type="botanical" seed={8} opacity={0.06} />
             <div className="flex items-center justify-between pb-2 border-b border-[#2b2b2b]/15 text-xs font-mono text-[#54422b] relative z-10">
-              <span className="font-bold uppercase tracking-wider">{t("ESTUDIO PRELIMINAR", "PRELIMINARY STUDY")}</span>
-              <span className="font-bold">PÁG. 00</span>
+              <span className="font-bold uppercase tracking-wider">{t(pages.page00.sectionHeaderEs, pages.page00.sectionHeaderEn)}</span>
+              <span className="font-bold">{pages.page00.pageNumber}</span>
             </div>
             <div className="relative z-10 my-auto py-1">
               <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#165e38] font-bold block mb-0.5">
-                {t("NOTAS DE TALLER & GÉNESIS", "STUDIO NOTES & GENESIS")}
+                {t(pages.page00.subHeaderEs, pages.page00.subHeaderEn)}
               </span>
               <h4 className="font-serif italic font-bold text-base text-[#1c1917] mb-2 truncate">
-                «{t(project.titleEs, project.titleEn)}»
+                {t(pages.page00.titleEs, pages.page00.titleEn)}
               </h4>
-              <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden border border-[#2b2b2b]/20 shadow-sm bg-[#ece5d5]/80 mb-2.5">
+              <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden border border-[#2b2b2b]/20 shadow-sm bg-black/90 mb-2.5">
                 <ProgressiveImage 
-                  src={sketchImage} 
-                  alt={t(project.titleEs, project.titleEn)}
+                  src={pages.page00.imageUrl} 
+                  alt={t(pages.page00.imageAltEs || pages.page00.titleEs, pages.page00.imageAltEn || pages.page00.titleEn)}
                   widthParam={800}
                   className="w-full h-full object-cover filter contrast-105"
                   containerClassName="w-full h-full"
                 />
-                <span className="absolute bottom-1 right-2 text-[9px] font-mono text-bone font-bold bg-black/60 px-1.5 py-0.5 rounded">
-                  REF. SK-001 · MMP
-                </span>
+                {(pages.page00.hotspots || []).map((hs, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setActiveHotspot(hs)}
+                    className="absolute w-8 h-8 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer"
+                    style={{ left: `${hs.x}%`, top: `${hs.y}%` }}
+                    aria-label={t(hs.titleEs, hs.titleEn)}
+                  >
+                    <span className="w-4 h-4 rounded-full border border-[#B8C5A8] bg-black/85 text-[#B8C5A8] flex items-center justify-center text-[9px] font-bold shadow-lg">
+                      ✦
+                    </span>
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onOpenZoom) onOpenZoom(pages.page00.imageUrl);
+                  }}
+                  className="absolute bottom-1.5 right-1.5 px-2 py-1 rounded bg-black/80 hover:bg-vampire-red text-bone hover:text-black text-[10px] font-mono font-bold flex items-center gap-1 border border-white/20"
+                >
+                  <Maximize2 size={11} />
+                  <span>HD</span>
+                </button>
               </div>
+              {activeHotspot && (
+                <div className="p-2 mb-2 rounded-lg bg-black/92 text-bone text-[11px] border border-white/20">
+                  <div className="flex items-center justify-between text-[#e8b4b8] font-bold text-[10px] mb-0.5">
+                    <span>✦ {t(activeHotspot.titleEs, activeHotspot.titleEn)}</span>
+                    <button onClick={() => setActiveHotspot(null)} className="p-0.5 text-white/60 hover:text-white">✕</button>
+                  </div>
+                  <p className="font-serif italic leading-tight text-bone-muted">{t(activeHotspot.descriptionEs, activeHotspot.descriptionEn)}</p>
+                </div>
+              )}
               <div className="p-2.5 rounded-xl bg-[#f7f2e7] border-l-3 border-[#54422b] shadow-xs">
                 <div className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-[#54422b] font-bold mb-0.5">
                   <Sparkles size={12} className="text-vampire-red" />
-                  <span>{t("PLANTEAMIENTO PLÁSTICO", "PLASTIC APPROACH")}</span>
+                  <span>{t(pages.page00.notesTitleEs || "APUNTES DE PROCESO", pages.page00.notesTitleEn || "PROCESS NOTES")}</span>
                 </div>
                 <p className="font-serif italic text-xs text-[#2b251e] leading-relaxed">
-                  {t(
-                    "«Primeras anotaciones de atmósfera, valores tonales y estructura geométrica preliminar.»",
-                    "«Initial notes on atmosphere, tonal values, and preliminary geometric structure.»"
-                  )}
+                  «{t(pages.page00.quoteEs || pages.page00.notesEs || project.techniqueEs, pages.page00.quoteEn || pages.page00.notesEn || project.techniqueEn)}»
                 </p>
               </div>
             </div>
             <div className="pt-2 border-t border-[#2b2b2b]/15 flex items-center justify-between text-[10px] font-mono text-[#54422b] relative z-10">
-              <span>{t("REGISTRO", "RECORD")}: {project.year} · MMP</span>
-              <span className="font-bold">✦ {project.sketchbookVol}</span>
+              <span>{t(pages.page00.footerLeftEs || `REGISTRO: ${project.year} · MMP`, pages.page00.footerLeftEn || `RECORD: ${project.year} · MMP`)}</span>
+              <span className="font-bold">✦ {pages.page00.footerRightEs || project.sketchbookVol}</span>
             </div>
           </div>
         );
@@ -359,56 +448,91 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
           <div className="w-full h-full bg-[#fdfbf7] p-5 flex flex-col justify-between relative overflow-hidden text-[#1c1917]">
             <PaperTextureOverlay type="rag" seed={1} opacity={0.06} />
             <div className="flex items-center justify-between pb-2 border-b border-[#2b2b2b]/15 text-xs font-mono text-[#54422b] relative z-10">
-              <span className="font-bold uppercase tracking-wider">{t("I. DOSSIER CONCEPTUAL", "I. CONCEPT DOSSIER")}</span>
-              <span className="font-bold">PÁG. 01</span>
+              <span className="font-bold uppercase tracking-wider">{t(pages.page01.sectionHeaderEs, pages.page01.sectionHeaderEn)}</span>
+              <span className="font-bold">{pages.page01.pageNumber}</span>
             </div>
             <div className="relative z-10 my-auto py-1">
               <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#165e38] font-bold block mb-0.5">
-                {t(project.categoryEs, project.categoryEn)} · {project.year}
+                {t(pages.page01.subHeaderEs, pages.page01.subHeaderEn)}
               </span>
               <h3 className="font-serif italic font-bold text-base text-[#1c1917] truncate mb-1">
-                «{t(project.titleEs, project.titleEn)}»
+                {t(pages.page01.titleEs, pages.page01.titleEn)}
               </h3>
-              <p className="text-xs font-serif italic text-[#332e26] leading-relaxed mb-2.5 line-clamp-3">
-                {t(project.descriptionEs, project.descriptionEn)}
-              </p>
-              <div className="p-2.5 rounded-xl bg-[#efe9d9]/80 border border-[#3d362e]/20 mb-2">
-                <div className="text-[10px] font-mono uppercase tracking-wider text-[#54422b] mb-1.5 flex items-center justify-between font-bold">
-                  <span>{t("PALETA DE PIGMENTOS", "PIGMENT PALETTE")}</span>
-                  {copiedHex && (
-                    <span className="text-vampire-red text-[10px] font-mono font-bold flex items-center gap-1">
-                      <Check size={11} /> {copiedHex}
+              <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black/90 border border-[#2b2b2b]/20 shadow-md mb-2">
+                <ProgressiveImage 
+                  src={pages.page01.imageUrl} 
+                  alt={t(pages.page01.imageAltEs || pages.page01.titleEs, pages.page01.imageAltEn || pages.page01.titleEn)}
+                  widthParam={800}
+                  className="w-full h-full object-cover"
+                  containerClassName="w-full h-full"
+                />
+                {(pages.page01.hotspots || []).map((hs, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setActiveHotspot(hs)}
+                    className="absolute w-8 h-8 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer"
+                    style={{ left: `${hs.x}%`, top: `${hs.y}%` }}
+                    aria-label={t(hs.titleEs, hs.titleEn)}
+                  >
+                    <span className="w-4 h-4 rounded-full border border-[#B8C5A8] bg-black/85 text-[#B8C5A8] flex items-center justify-center text-[9px] font-bold shadow-lg">
+                      ✦
                     </span>
-                  )}
-                </div>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {project.palette.map((color, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => handleCopyHex(color.hex)}
-                      className="flex items-center gap-1.5 p-1 rounded-lg bg-white/80 border border-[#3d362e]/15 text-left active:scale-95 transition-transform"
-                    >
-                      <span className="w-4 h-4 rounded shrink-0 shadow-xs border border-black/20" style={{ backgroundColor: color.hex }} />
-                      <div className="overflow-hidden">
-                        <span className="text-[10px] font-sans font-bold text-[#1c1917] truncate block leading-tight">
-                          {t(color.nameEs, color.nameEn)}
-                        </span>
-                        <span className="text-[9px] font-mono text-[#54422b] block">{color.hex}</span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onOpenZoom) onOpenZoom(pages.page01.imageUrl);
+                  }}
+                  className="absolute bottom-1.5 right-1.5 px-2 py-1 rounded bg-black/80 hover:bg-vampire-red text-bone hover:text-black text-[10px] font-mono font-bold flex items-center gap-1 border border-white/20"
+                >
+                  <Maximize2 size={11} />
+                  <span>HD</span>
+                </button>
               </div>
-              <div className="p-2.5 rounded-xl bg-[#f7f2e7] border-l-3 border-[#54422b] shadow-xs">
-                <p className="font-serif italic text-xs text-[#2b251e] leading-relaxed line-clamp-2">
-                  «{t(project.notesEs, project.notesEn)}»
-                </p>
-              </div>
+              {activeHotspot && (
+                <div className="p-2 mb-2 rounded-lg bg-black/92 text-bone text-[11px] border border-white/20">
+                  <div className="flex items-center justify-between text-[#e8b4b8] font-bold text-[10px] mb-0.5">
+                    <span>✦ {t(activeHotspot.titleEs, activeHotspot.titleEn)}</span>
+                    <button onClick={() => setActiveHotspot(null)} className="p-0.5 text-white/60 hover:text-white">✕</button>
+                  </div>
+                  <p className="font-serif italic leading-tight text-bone-muted">{t(activeHotspot.descriptionEs, activeHotspot.descriptionEn)}</p>
+                </div>
+              )}
+              {/* Palette */}
+              {pages.page01.palette && pages.page01.palette.length > 0 && (
+                <div className="p-2 rounded-xl bg-[#efe9d9]/80 border border-[#3d362e]/20 mb-2">
+                  <div className="text-[9px] font-mono uppercase tracking-wider text-[#54422b] mb-1 flex items-center justify-between font-bold">
+                    <span>{t("PALETA CROMÁTICA", "CHROMATIC PALETTE")}</span>
+                    {copiedHex && <span className="text-vampire-red font-mono font-bold">{copiedHex}</span>}
+                  </div>
+                  <div className="grid grid-cols-2 gap-1">
+                    {pages.page01.palette.map((color, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => handleCopyHex(color.hex)}
+                        className="flex items-center gap-1 p-0.5 rounded bg-white/80 border border-[#3d362e]/15 text-left"
+                      >
+                        <span className="w-3.5 h-3.5 rounded shrink-0 border border-black/20" style={{ backgroundColor: color.hex }} />
+                        <span className="text-[9px] font-sans font-bold text-[#1c1917] truncate">{t(color.nameEs, color.nameEn)}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {pages.page01.notesEs && (
+                <div className="p-2 rounded-xl bg-[#f7f2e7] border-l-3 border-[#54422b]">
+                  <p className="font-serif italic text-xs text-[#2b251e] leading-tight line-clamp-2">
+                    «{t(pages.page01.notesEs, pages.page01.notesEn || pages.page01.notesEs)}»
+                  </p>
+                </div>
+              )}
             </div>
             <div className="pt-2 border-t border-[#2b2b2b]/15 flex items-center justify-between text-[10px] font-mono text-[#54422b] relative z-10">
-              <span className="font-serif italic text-[#3d372e] font-semibold">{t("Registro Conceptual", "Concept Record")}</span>
-              <span className="font-bold">EXP. {project.sketchbookVol}</span>
+              <span className="font-serif italic text-[#3d372e] font-semibold">{t(pages.page01.footerLeftEs || "", pages.page01.footerLeftEn || "")}</span>
+              <span className="font-bold">{pages.page01.footerRightEs || project.sketchbookVol}</span>
             </div>
           </div>
         );
@@ -418,64 +542,69 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
           <div className="w-full h-full bg-[#fdfbf7] p-5 flex flex-col justify-between relative overflow-hidden text-[#1c1917]">
             <PaperTextureOverlay type="laid" seed={2} opacity={0.06} />
             <div className="flex items-center justify-between pb-2 border-b border-[#2b2b2b]/10 text-xs font-mono text-[#54422b] relative z-10">
-              <span className="font-bold">PÁG. 02</span>
-              <span className="font-bold uppercase tracking-wider">{t("II. BOCETOS & TRAZO", "II. SKETCHES & LINEWORK")}</span>
+              <span className="font-bold">{pages.page02.pageNumber}</span>
+              <span className="font-bold uppercase tracking-wider">{t(pages.page02.sectionHeaderEs, pages.page02.sectionHeaderEn)}</span>
             </div>
-            <div className="relative my-auto flex-1 max-h-[78%] rounded-xl overflow-hidden bg-black/90 border border-[#2b2b2b]/20 shadow-md z-10">
-              <ProgressiveImage 
-                src={sketchImage} 
-                alt={t(project.titleEs, project.titleEn)}
-                widthParam={900}
-                className="w-full h-full object-cover"
-                containerClassName="w-full h-full"
-              />
-              {sketchHotspots.map((hs, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => setActiveHotspot(hs)}
-                  className="absolute w-10 h-10 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
-                  style={{ left: `${hs.x}%`, top: `${hs.y}%` }}
-                  aria-label={t(hs.titleEs, hs.titleEn)}
-                >
-                  <span className="w-5 h-5 rounded-full border border-[#B8C5A8] bg-black/85 text-[#B8C5A8] flex items-center justify-center text-[10px] font-bold shadow-lg">
-                    ✦
-                  </span>
-                </button>
-              ))}
-              <button
-                type="button"
-                onClick={() => {
-                  if (onOpenZoom) onOpenZoom(sketchImage);
-                }}
-                className="absolute bottom-2 right-2 px-2.5 py-1.5 rounded-lg bg-black/80 hover:bg-vampire-red text-bone hover:text-black text-[11px] font-mono font-bold flex items-center gap-1 border border-white/20"
-              >
-                <Maximize2 size={13} />
-                <span>HD</span>
-              </button>
-              {activeHotspot && (
-                <div className="absolute inset-x-2 bottom-2 bg-black/92 backdrop-blur-md p-2.5 rounded-xl border border-white/20 text-bone shadow-2xl z-30">
-                  <div className="flex items-center justify-between pb-1 border-b border-white/10 mb-1">
-                    <span className="text-[10px] font-mono text-[#e8b4b8] font-bold">
-                      ✦ {t(activeHotspot.titleEs, activeHotspot.titleEn)}
+            <div className="relative z-10 my-auto py-1">
+              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#165e38] font-bold block mb-0.5">
+                {t(pages.page02.subHeaderEs, pages.page02.subHeaderEn)}
+              </span>
+              <h3 className="font-serif italic font-bold text-base text-[#1c1917] truncate mb-1">
+                {t(pages.page02.titleEs, pages.page02.titleEn)}
+              </h3>
+              <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black/90 border border-[#2b2b2b]/20 shadow-md mb-2">
+                <ProgressiveImage 
+                  src={pages.page02.imageUrl} 
+                  alt={t(pages.page02.imageAltEs || pages.page02.titleEs, pages.page02.imageAltEn || pages.page02.titleEn)}
+                  widthParam={900}
+                  className="w-full h-full object-cover"
+                  containerClassName="w-full h-full"
+                />
+                {(pages.page02.hotspots || []).map((hs, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setActiveHotspot(hs)}
+                    className="absolute w-8 h-8 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer"
+                    style={{ left: `${hs.x}%`, top: `${hs.y}%` }}
+                    aria-label={t(hs.titleEs, hs.titleEn)}
+                  >
+                    <span className="w-4 h-4 rounded-full border border-[#B8C5A8] bg-black/85 text-[#B8C5A8] flex items-center justify-center text-[9px] font-bold shadow-lg">
+                      ✦
                     </span>
-                    <button
-                      type="button"
-                      onClick={() => setActiveHotspot(null)}
-                      className="text-white/60 hover:text-white p-0.5"
-                    >
-                      <X size={13} />
-                    </button>
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onOpenZoom) onOpenZoom(pages.page02.imageUrl);
+                  }}
+                  className="absolute bottom-1.5 right-1.5 px-2 py-1 rounded bg-black/80 hover:bg-vampire-red text-bone hover:text-black text-[10px] font-mono font-bold flex items-center gap-1 border border-white/20"
+                >
+                  <Maximize2 size={11} />
+                  <span>HD</span>
+                </button>
+              </div>
+              {activeHotspot && (
+                <div className="p-2 mb-2 rounded-lg bg-black/92 text-bone text-[11px] border border-white/20">
+                  <div className="flex items-center justify-between text-[#e8b4b8] font-bold text-[10px] mb-0.5">
+                    <span>✦ {t(activeHotspot.titleEs, activeHotspot.titleEn)}</span>
+                    <button onClick={() => setActiveHotspot(null)} className="p-0.5 text-white/60 hover:text-white">✕</button>
                   </div>
-                  <p className="text-[11px] font-sans text-bone-muted leading-tight">
-                    {t(activeHotspot.descEs, activeHotspot.descEn)}
+                  <p className="font-serif italic leading-tight text-bone-muted">{t(activeHotspot.descriptionEs, activeHotspot.descriptionEn)}</p>
+                </div>
+              )}
+              {(pages.page02.quoteEs || pages.page02.notesEs) && (
+                <div className="p-2.5 rounded-xl bg-[#f7f2e7] border-l-3 border-[#54422b] shadow-xs">
+                  <p className="font-serif italic text-xs text-[#2b251e] leading-relaxed">
+                    «{t(pages.page02.quoteEs || pages.page02.notesEs || "", pages.page02.quoteEn || pages.page02.notesEn || "")}»
                   </p>
                 </div>
               )}
             </div>
             <div className="pt-2 border-t border-[#2b2b2b]/10 flex items-center justify-between text-xs font-mono text-[#3d372e] relative z-10">
-              <span className="font-serif italic font-semibold">{t("Estudio Anatómico & Trazo", "Anatomical & Stroke Study")}</span>
-              <span className="text-[#54422b] font-bold">PLATE 01</span>
+              <span className="font-serif italic font-semibold">{t(pages.page02.footerLeftEs || "", pages.page02.footerLeftEn || "")}</span>
+              <span className="text-[#54422b] font-bold">{pages.page02.footerRightEs || "PLATE 01"}</span>
             </div>
           </div>
         );
@@ -485,53 +614,69 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
           <div className="w-full h-full bg-[#fdfbf7] p-5 flex flex-col justify-between relative overflow-hidden text-[#1c1917]">
             <PaperTextureOverlay type="watercolor" seed={3} opacity={0.06} />
             <div className="flex items-center justify-between pb-2 border-b border-[#2b2b2b]/15 text-xs font-mono text-[#54422b] relative z-10">
-              <span className="font-bold uppercase tracking-wider">{t("III. CLAVE TONAL & LUZ", "III. TONAL KEY & LIGHT")}</span>
-              <span className="font-bold">PÁG. 03</span>
+              <span className="font-bold uppercase tracking-wider">{t(pages.page03.sectionHeaderEs, pages.page03.sectionHeaderEn)}</span>
+              <span className="font-bold">{pages.page03.pageNumber}</span>
             </div>
             <div className="relative z-10 my-auto py-1">
-              <h3 className="font-serif italic font-bold text-base text-[#1c1917] mb-2">
-                {t("Estudio Atmosférico & Contraste", "Atmospheric Study & Contrast")}
+              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#165e38] font-bold block mb-0.5">
+                {t(pages.page03.subHeaderEs, pages.page03.subHeaderEn)}
+              </span>
+              <h3 className="font-serif italic font-bold text-base text-[#1c1917] mb-1.5 truncate">
+                {t(pages.page03.titleEs, pages.page03.titleEn)}
               </h3>
-              <div className="mb-2.5 p-2.5 rounded-xl bg-[#efe9d9]/80 border border-[#3d362e]/20">
-                <div className="text-[10px] font-mono uppercase tracking-wider text-[#54422b] mb-1.5 flex items-center justify-between font-bold">
-                  <span>{t("ESCALA TONAL DINÁMICA", "DYNAMIC TONAL SCALE")}</span>
-                  <span>0% — 100%</span>
-                </div>
-                <div className="grid grid-cols-5 h-7 rounded-lg overflow-hidden border border-[#2b2b2b]/30 mb-1.5">
-                  <div className="bg-[#0e0e0e] flex items-center justify-center text-[9px] font-mono text-bone font-bold">0%</div>
-                  <div className="bg-[#383838] flex items-center justify-center text-[9px] font-mono text-bone font-bold">25%</div>
-                  <div className="bg-[#6c6c6c] flex items-center justify-center text-[9px] font-mono text-bone font-bold">50%</div>
-                  <div className="bg-[#b0b0b0] flex items-center justify-center text-[9px] font-mono text-[#1c1917] font-bold">75%</div>
-                  <div className="bg-[#f5f5f5] flex items-center justify-center text-[9px] font-mono text-[#1c1917] font-bold">100%</div>
-                </div>
-                <div className="flex justify-between text-[9px] font-mono text-[#54422b]">
-                  <span>{t("Sombra Profunda", "Deep Shadow")}</span>
-                  <span>{t("Alta Luz", "Highlight")}</span>
-                </div>
+              <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black/90 border border-[#2b2b2b]/20 shadow-md mb-2">
+                <ProgressiveImage 
+                  src={pages.page03.imageUrl} 
+                  alt={t(pages.page03.imageAltEs || pages.page03.titleEs, pages.page03.imageAltEn || pages.page03.titleEn)}
+                  widthParam={900}
+                  className="w-full h-full object-cover"
+                  containerClassName="w-full h-full"
+                />
+                {(pages.page03.hotspots || []).map((hs, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setActiveHotspot(hs)}
+                    className="absolute w-8 h-8 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer"
+                    style={{ left: `${hs.x}%`, top: `${hs.y}%` }}
+                    aria-label={t(hs.titleEs, hs.titleEn)}
+                  >
+                    <span className="w-4 h-4 rounded-full border border-[#B8C5A8] bg-black/85 text-[#B8C5A8] flex items-center justify-center text-[9px] font-bold shadow-lg">
+                      ✦
+                    </span>
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onOpenZoom) onOpenZoom(pages.page03.imageUrl);
+                  }}
+                  className="absolute bottom-1.5 right-1.5 px-2 py-1 rounded bg-black/80 hover:bg-vampire-red text-bone hover:text-black text-[10px] font-mono font-bold flex items-center gap-1 border border-white/20"
+                >
+                  <Maximize2 size={11} />
+                  <span>HD</span>
+                </button>
               </div>
-              <p className="text-xs font-serif italic text-[#332e26] leading-relaxed mb-2.5">
-                {t(
-                  "La clave tonal busca un rango dinámico donde las sombras profundas definan la atmósfera y los puntos de luz guíen la narrativa visual.",
-                  "The tonal key provides dynamic contrast where deep shadows shape atmosphere and focal highlights guide narrative focus."
-                )}
-              </p>
-              <div className="p-2 rounded-xl bg-[#efe9d9] border border-[#3d362e]/20 text-xs font-mono text-[#1c1917]">
-                <span className="text-vampire-red font-bold block text-[10px] uppercase tracking-wider mb-1">
-                  ✦ {t("PIGMENTOS DOMINANTES", "DOMINANT PIGMENTS")}:
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {project.palette.slice(0, 3).map((p, idx) => (
-                    <div key={idx} className="flex items-center gap-1.5 bg-white/80 px-2 py-0.5 rounded border border-[#3d362e]/15 text-[10px]">
-                      <span className="w-2.5 h-2.5 rounded shrink-0 border border-black/20" style={{ backgroundColor: p.hex }} />
-                      <span className="font-semibold text-[#1c1917]">{t(p.nameEs, p.nameEn)}</span>
-                    </div>
-                  ))}
+              {activeHotspot && (
+                <div className="p-2 mb-2 rounded-lg bg-black/92 text-bone text-[11px] border border-white/20">
+                  <div className="flex items-center justify-between text-[#e8b4b8] font-bold text-[10px] mb-0.5">
+                    <span>✦ {t(activeHotspot.titleEs, activeHotspot.titleEn)}</span>
+                    <button onClick={() => setActiveHotspot(null)} className="p-0.5 text-white/60 hover:text-white">✕</button>
+                  </div>
+                  <p className="font-serif italic leading-tight text-bone-muted">{t(activeHotspot.descriptionEs, activeHotspot.descriptionEn)}</p>
                 </div>
-              </div>
+              )}
+              {pages.page03.quoteEs && (
+                <div className="p-2.5 rounded-xl bg-[#f7f2e7] border-l-3 border-[#54422b] shadow-xs">
+                  <p className="font-serif italic text-xs text-[#2b251e] leading-relaxed">
+                    «{t(pages.page03.quoteEs, pages.page03.quoteEn || pages.page03.quoteEs)}»
+                  </p>
+                </div>
+              )}
             </div>
             <div className="pt-2 border-t border-[#2b2b2b]/15 flex items-center justify-between text-[10px] font-mono text-[#54422b] relative z-10">
-              <span className="font-serif italic text-[#3d372e] font-semibold">{t("Valores Tonales & Temperatura", "Tonal Values & Temperature")}</span>
-              <span className="font-bold">EXP. {project.sketchbookVol}</span>
+              <span className="font-serif italic text-[#3d372e] font-semibold">{t(pages.page03.footerLeftEs || "", pages.page03.footerLeftEn || "")}</span>
+              <span className="font-bold">{pages.page03.footerRightEs || "PLATE 01 · MMP"}</span>
             </div>
           </div>
         );
@@ -541,31 +686,69 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
           <div className="w-full h-full bg-[#fdfbf7] p-5 flex flex-col justify-between relative overflow-hidden text-[#1c1917]">
             <PaperTextureOverlay type="vellum" seed={4} opacity={0.06} />
             <div className="flex items-center justify-between pb-2 border-b border-[#2b2b2b]/10 text-xs font-mono text-[#54422b] relative z-10">
-              <span className="font-bold">PÁG. 04</span>
-              <span className="font-bold tracking-wider uppercase">{t("IV. ESTUDIO SECUNDARIO & COLOR", "IV. SECONDARY STUDY & COLOR")}</span>
+              <span className="font-bold">{pages.page04.pageNumber}</span>
+              <span className="font-bold tracking-wider uppercase">{t(pages.page04.sectionHeaderEs, pages.page04.sectionHeaderEn)}</span>
             </div>
-            <div className="relative my-auto flex-1 max-h-[78%] rounded-xl overflow-hidden bg-black/90 border border-[#2b2b2b]/20 shadow-md z-10">
-              <ProgressiveImage 
-                src={secondaryImage} 
-                alt={t(project.titleEs, project.titleEn)}
-                widthParam={900}
-                className="w-full h-full object-cover"
-                containerClassName="w-full h-full"
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  if (onOpenZoom) onOpenZoom(secondaryImage);
-                }}
-                className="absolute bottom-2 right-2 px-2.5 py-1.5 rounded-lg bg-black/80 hover:bg-vampire-red text-bone hover:text-black text-[11px] font-mono font-bold flex items-center gap-1 border border-white/20"
-              >
-                <Maximize2 size={13} />
-                <span>HD</span>
-              </button>
+            <div className="relative z-10 my-auto py-1">
+              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#165e38] font-bold block mb-0.5">
+                {t(pages.page04.subHeaderEs, pages.page04.subHeaderEn)}
+              </span>
+              <h3 className="font-serif italic font-bold text-base text-[#1c1917] mb-1.5 truncate">
+                {t(pages.page04.titleEs, pages.page04.titleEn)}
+              </h3>
+              <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black/90 border border-[#2b2b2b]/20 shadow-md mb-2">
+                <ProgressiveImage 
+                  src={pages.page04.imageUrl} 
+                  alt={t(pages.page04.imageAltEs || pages.page04.titleEs, pages.page04.imageAltEn || pages.page04.titleEn)}
+                  widthParam={900}
+                  className="w-full h-full object-cover"
+                  containerClassName="w-full h-full"
+                />
+                {(pages.page04.hotspots || []).map((hs, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setActiveHotspot(hs)}
+                    className="absolute w-8 h-8 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer"
+                    style={{ left: `${hs.x}%`, top: `${hs.y}%` }}
+                    aria-label={t(hs.titleEs, hs.titleEn)}
+                  >
+                    <span className="w-4 h-4 rounded-full border border-[#B8C5A8] bg-black/85 text-[#B8C5A8] flex items-center justify-center text-[9px] font-bold shadow-lg">
+                      ✦
+                    </span>
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onOpenZoom) onOpenZoom(pages.page04.imageUrl);
+                  }}
+                  className="absolute bottom-1.5 right-1.5 px-2 py-1 rounded bg-black/80 hover:bg-vampire-red text-bone hover:text-black text-[10px] font-mono font-bold flex items-center gap-1 border border-white/20"
+                >
+                  <Maximize2 size={11} />
+                  <span>HD</span>
+                </button>
+              </div>
+              {activeHotspot && (
+                <div className="p-2 mb-2 rounded-lg bg-black/92 text-bone text-[11px] border border-white/20">
+                  <div className="flex items-center justify-between text-[#e8b4b8] font-bold text-[10px] mb-0.5">
+                    <span>✦ {t(activeHotspot.titleEs, activeHotspot.titleEn)}</span>
+                    <button onClick={() => setActiveHotspot(null)} className="p-0.5 text-white/60 hover:text-white">✕</button>
+                  </div>
+                  <p className="font-serif italic leading-tight text-bone-muted">{t(activeHotspot.descriptionEs, activeHotspot.descriptionEn)}</p>
+                </div>
+              )}
+              {pages.page04.quoteEs && (
+                <div className="p-2.5 rounded-xl bg-[#f7f2e7] border-l-3 border-[#54422b] shadow-xs">
+                  <p className="font-serif italic text-xs text-[#2b251e] leading-relaxed">
+                    «{t(pages.page04.quoteEs, pages.page04.quoteEn || pages.page04.quoteEs)}»
+                  </p>
+                </div>
+              )}
             </div>
             <div className="pt-2 border-t border-[#2b2b2b]/10 flex items-center justify-between text-xs font-mono text-[#3d372e] relative z-10">
-              <span className="font-serif italic font-semibold">{t(project.processImages[1]?.labelEs || "Fase de Acabado", project.processImages[1]?.labelEn || "Finish Phase")}</span>
-              <span className="text-[#54422b] font-bold">PLATE 02 · MMP</span>
+              <span className="font-serif italic font-semibold">{t(pages.page04.footerLeftEs || "", pages.page04.footerLeftEn || "")}</span>
+              <span className="text-[#54422b] font-bold">{pages.page04.footerRightEs || "PLATE 02 · MMP"}</span>
             </div>
           </div>
         );
@@ -575,13 +758,13 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
           <div className="w-full h-full bg-[#fdfbf7] p-5 flex flex-col justify-between relative overflow-hidden text-[#1c1917]">
             <PaperTextureOverlay type="woven" seed={5} opacity={0.06} />
             <div className="flex items-center justify-between pb-2 border-b border-[#2b2b2b]/10 text-xs font-mono text-[#54422b] relative z-10">
-              <span className="font-bold uppercase tracking-wider">{t("V. LÁMINA FINAL HD", "V. FINAL HD PLATE")}</span>
-              <span className="font-bold">{project.sketchbookVol}</span>
+              <span className="font-bold uppercase tracking-wider">{t(pages.page05?.sectionHeaderEs || "V. LÁMINA FINAL HD", pages.page05?.sectionHeaderEn || "V. FINAL HD PLATE")}</span>
+              <span className="font-bold">{pages.page05?.footerRightEs || project.sketchbookVol}</span>
             </div>
             <div className="relative my-auto flex-1 max-h-[76%] rounded-xl overflow-hidden bg-black/90 border border-[#2b2b2b]/20 shadow-xl z-10 group">
               <ProgressiveImage 
-                src={project.imageUrl} 
-                alt={t(project.titleEs, project.titleEn)}
+                src={pages.page05?.imageUrl || project.imageUrl} 
+                alt={t(pages.page05?.titleEs || project.titleEs, pages.page05?.titleEn || project.titleEn)}
                 widthParam={1200}
                 className="w-full h-full object-cover"
                 containerClassName="w-full h-full"
@@ -589,7 +772,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
               <button
                 type="button"
                 onClick={() => {
-                  if (onOpenZoom) onOpenZoom(project.imageUrl);
+                  if (onOpenZoom) onOpenZoom(pages.page05?.imageUrl || project.imageUrl);
                   else if (onOpenDetail) onOpenDetail();
                 }}
                 className="absolute bottom-2.5 right-2.5 px-3 py-1.5 rounded-xl bg-vampire-red hover:bg-[#e8b4b8] text-black text-xs font-mono font-bold flex items-center gap-1.5 shadow-lg active:scale-95 transition-transform"
@@ -599,8 +782,8 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
               </button>
             </div>
             <div className="pt-2 border-t border-[#2b2b2b]/10 flex items-center justify-between text-xs font-serif relative z-10">
-              <span className="italic font-bold truncate max-w-[200px]">«{t(project.titleEs, project.titleEn)}»</span>
-              <span className="font-mono text-[#54422b] font-bold">PÁG. 05</span>
+              <span className="italic font-bold truncate max-w-[200px]">«{t(pages.page05?.titleEs || project.titleEs, pages.page05?.titleEn || project.titleEn)}»</span>
+              <span className="font-mono text-[#54422b] font-bold">{pages.page05?.pageNumber || "PÁG. 05"}</span>
             </div>
           </div>
         );
@@ -610,15 +793,15 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
           <div className="w-full h-full bg-[#fdfbf7] p-5 flex flex-col justify-between relative overflow-hidden text-[#1c1917]">
             <PaperTextureOverlay type="laid" seed={6} opacity={0.06} />
             <div className="flex items-center justify-between pb-2 border-b border-[#2b2b2b]/15 text-xs font-mono text-[#54422b] relative z-10">
-              <span className="font-bold uppercase tracking-wider">{t("VI. REVISIÓN DE TALLER", "VI. WORKSHOP REVIEW")}</span>
-              <span className="font-bold">PÁG. 06</span>
+              <span className="font-bold uppercase tracking-wider">{t(pages.page06?.sectionHeaderEs || "VI. REVISIÓN DE TALLER", pages.page06?.sectionHeaderEn || "VI. WORKSHOP REVIEW")}</span>
+              <span className="font-bold">{pages.page06?.pageNumber || "PÁG. 06"}</span>
             </div>
             <div className="relative z-10 my-auto py-1">
               <h3 className="font-serif italic font-bold text-base text-[#1c1917] mb-1.5">
-                {t("Metodología & Ejecución", "Methodology & Execution")}
+                {t(pages.page06?.titleEs || "Metodología & Ejecución", pages.page06?.titleEn || "Methodology & Execution")}
               </h3>
               <p className="text-xs font-serif italic text-[#332e26] leading-relaxed mb-2.5">
-                {t(project.techniqueEs, project.techniqueEn)}
+                {t(pages.page06?.notesEs || project.techniqueEs, pages.page06?.notesEn || project.techniqueEn)}
               </p>
               <div className="grid grid-cols-2 gap-2 p-2.5 rounded-xl bg-[#efe9d9]/90 border border-[#3d362e]/20 text-xs font-mono text-[#1c1917] mb-2">
                 <div>
@@ -638,13 +821,18 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                   <span className="font-semibold truncate block">{project.sketchbookVol}</span>
                 </div>
               </div>
-              <div className="p-2.5 rounded-xl border-l-4 border-vampire-red bg-white/85 text-xs font-serif italic text-[#1c1917] font-semibold shadow-xs">
-                «{t("La comprensión de la luz y el color traduce las ideas en movimiento.", "Understanding light and color brings ideas to life.")}»
-              </div>
+              {(pages.page06?.quoteEs || true) && (
+                <div className="p-2.5 rounded-xl border-l-4 border-vampire-red bg-white/85 text-xs font-serif italic text-[#1c1917] font-semibold shadow-xs">
+                  «{t(
+                    pages.page06?.quoteEs || "La comprensión de la luz y el color traduce las ideas en movimiento.",
+                    pages.page06?.quoteEn || "Understanding light and color brings ideas to life."
+                  )}»
+                </div>
+              )}
             </div>
             <div className="pt-2 border-t border-[#2b2b2b]/15 flex items-center justify-between text-[10px] font-mono text-[#54422b] relative z-10">
-              <span className="font-semibold">{t("PROCESO Y DESARROLLO", "VISUAL PROCESS")}</span>
-              <span className="font-bold">MMP · {project.year}</span>
+              <span className="font-semibold">{t(pages.page06?.footerLeftEs || "PROCESO Y DESARROLLO", pages.page06?.footerLeftEn || "VISUAL PROCESS")}</span>
+              <span className="font-bold">{pages.page06?.footerRightEs || `MMP · ${project.year}`}</span>
             </div>
           </div>
         );
@@ -656,24 +844,24 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
             <div className="border border-[#3d362e]/30 p-3.5 rounded-xl h-full flex flex-col justify-between bg-[#fcfaf4] shadow-inner relative z-10">
               <div className="text-center pb-2 border-b border-[#3d362e]/20">
                 <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#54422b] font-bold">
-                  {t("VII. CERTIFICADO DE AUTENTICIDAD", "VII. CERTIFICATE OF AUTHENTICITY")}
+                  {t(pages.page07?.sectionHeaderEs || "VII. CERTIFICADO DE AUTENTICIDAD", pages.page07?.sectionHeaderEn || "VII. CERTIFICATE OF AUTHENTICITY")}
                 </span>
                 <h3 className="font-serif italic font-bold text-base text-[#1c1917] mt-1 truncate">
-                  {t(project.titleEs, project.titleEn)}
+                  {t(pages.page07?.titleEs || project.titleEs, pages.page07?.titleEn || project.titleEn)}
                 </h3>
               </div>
               <div className="my-auto text-center space-y-2 py-1">
                 <p className="text-[11px] font-serif italic text-[#332e26] leading-relaxed">
                   {t(
-                    "Por el presente documento se certifica que esta obra es una pieza conceptual original creada por Marina Martín Prieto.",
-                    "This document certifies that this artwork is an original conceptual piece created by Marina Martín Prieto."
+                    pages.page07?.notesEs || "Por el presente documento se certifica que esta obra es una pieza conceptual original creada por Marina Martín Prieto.",
+                    pages.page07?.notesEn || "This document certifies that this artwork is an original conceptual piece created by Marina Martín Prieto."
                   )}
                 </p>
                 <div className="w-10 h-10 rounded-full border-2 border-[#54422b] bg-[#3a1d1d] text-[#e8b4b8] flex items-center justify-center font-serif font-bold text-xs shadow-md mx-auto">
                   MMP
                 </div>
                 <div className="font-serif italic text-xs font-bold text-[#1c1917]">
-                  Marina Martín Prieto
+                  {t(pages.page07?.footerLeftEs || "Marina Martín Prieto", pages.page07?.footerLeftEn || "Marina Martín Prieto")}
                 </div>
               </div>
               <div className="pt-2 border-t border-[#3d362e]/20 text-center text-[9px] font-mono uppercase tracking-wider text-[#54422b]">
@@ -784,21 +972,33 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
             </button>
           </div>
 
-          {/* Single Page Card (Full Width, Aspect 1:1, Swipeable) */}
-          <motion.div
-            key={mobilePageIndex}
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.25 }}
-            onPanEnd={(e, info) => {
-              if (info.offset.x < -30) nextMobilePage();
-              else if (info.offset.x > 30) prevMobilePage();
-            }}
-            className="w-full aspect-[1/1] sm:aspect-[4/5] relative rounded-2xl overflow-hidden shadow-2xl border border-white/20 select-none flex flex-col justify-between"
+          {/* Single Page Card with Framer Motion tactile Book Flip / Slide transition */}
+          <div 
+            className="w-full aspect-[1/1] sm:aspect-[4/5] relative select-none"
+            style={{ perspective: 1400 }}
           >
-            {renderMobilePage(mobilePageIndex)}
-          </motion.div>
+            <AnimatePresence mode="popLayout" custom={mobileDirection}>
+              <motion.div
+                key={mobilePageIndex}
+                custom={mobileDirection}
+                variants={mobileFlipVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                onPanEnd={(e, info) => {
+                  if (info.offset.x < -30) nextMobilePage();
+                  else if (info.offset.x > 30) prevMobilePage();
+                }}
+                className="w-full h-full relative rounded-2xl overflow-hidden shadow-2xl border border-white/20 select-none flex flex-col justify-between"
+                style={{
+                  transformStyle: 'preserve-3d',
+                  backfaceVisibility: 'hidden',
+                }}
+              >
+                {renderMobilePage(mobilePageIndex)}
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
           {/* Pagination Dots (0 to 9) */}
           <div className="flex items-center justify-center gap-1.5 mt-3 py-1">
@@ -806,13 +1006,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
               <button
                 key={idx}
                 type="button"
-                onClick={() => {
-                  if (idx !== mobilePageIndex) {
-                    soundManager.playPageTurn();
-                    setMobilePageIndex(idx);
-                    setActiveHotspot(null);
-                  }
-                }}
+                onClick={() => goToMobilePage(idx)}
                 className="transition-all duration-200 cursor-pointer min-h-[28px] min-w-[14px] flex items-center justify-center"
                 aria-label={`${t("Ir a página", "Go to page")} ${idx + 1}`}
               >
@@ -1051,18 +1245,18 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
             <div className="border border-[#3d362e]/30 p-3 sm:p-5 md:p-6 rounded-none h-full flex flex-col justify-between bg-[#fcfaf4] shadow-inner relative z-10">
               <div className="text-center pb-2.5 border-b border-[#3d362e]/20">
                 <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.25em] text-[#54422b] font-bold">
-                  {t("VII. CERTIFICADO DE AUTENTICIDAD", "VII. CERTIFICATE OF AUTHENTICITY")}
+                  {t(pages.page07?.sectionHeaderEs || "VII. CERTIFICADO DE AUTENTICIDAD", pages.page07?.sectionHeaderEn || "VII. CERTIFICATE OF AUTHENTICITY")}
                 </span>
                 <h3 className="font-serif italic font-bold text-base sm:text-lg md:text-xl text-[#1c1917] mt-1">
-                  {t(project.titleEs, project.titleEn)}
+                  {t(pages.page07?.titleEs || project.titleEs, pages.page07?.titleEn || project.titleEn)}
                 </h3>
               </div>
 
               <div className="my-auto text-center space-y-2.5 py-2">
                 <p className="text-xs sm:text-sm font-serif italic text-[#332e26] leading-relaxed max-w-sm mx-auto">
                   {t(
-                    "Por la presente se certifica que esta obra conceptual forma parte del archivo original de Marina Martín Prieto.",
-                    "This certifies that this concept artwork belongs to the original archive of Marina Martín Prieto."
+                    pages.page07?.notesEs || "Por la presente se certifica que esta obra conceptual forma parte del archivo original de Marina Martín Prieto.",
+                    pages.page07?.notesEn || "This certifies that this concept artwork belongs to the original archive of Marina Martín Prieto."
                   )}
                 </p>
                 <div className="flex items-center justify-center gap-2 text-[10px] sm:text-xs font-mono text-[#54422b] font-bold">
@@ -1074,7 +1268,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
               <div className="pt-2.5 border-t border-[#3d362e]/20 flex items-center justify-between text-[10px] sm:text-xs font-mono text-[#3d372e]">
                 <div className="text-left">
                   <div className="text-[9px] sm:text-[10px] text-[#54422b] uppercase tracking-wider font-bold">{t("Firma", "Signature")}</div>
-                  <div className="font-serif italic text-sm sm:text-base font-bold text-[#1c1917]">Marina Martín Prieto</div>
+                  <div className="font-serif italic text-sm sm:text-base font-bold text-[#1c1917]">{t(pages.page07?.footerLeftEs || "Marina Martín Prieto", pages.page07?.footerLeftEn || "Marina Martín Prieto")}</div>
                 </div>
                 <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-none border-2 border-[#54422b] flex items-center justify-center text-[9px] sm:text-[10px] uppercase font-mono font-bold text-[#54422b] bg-[#54422b]/10 shadow-xs">
                   SEAL
@@ -1083,7 +1277,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
             </div>
 
             <div className="text-right text-[10px] sm:text-xs font-mono text-[#54422b] pt-1.5 font-bold relative z-10">
-              PÁG. 07 · COLOFÓN
+              {pages.page07?.pageNumber || "PÁG. 07"} · COLOFÓN
             </div>
           </figure>
 
@@ -1199,15 +1393,15 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
 
             <div className="flex items-center justify-between pb-2 border-b border-[#2b2b2b]/10 text-xs sm:text-sm font-mono text-[#54422b] relative z-10">
               <span className="font-bold tracking-wider uppercase">
-                {t("V. LÁMINA FINAL HD", "V. FINAL HD PLATE")}
+                {t(pages.page05?.sectionHeaderEs || "V. LÁMINA FINAL HD", pages.page05?.sectionHeaderEn || "V. FINAL HD PLATE")}
               </span>
-              <span className="font-semibold">{project.sketchbookVol}</span>
+              <span className="font-semibold">{pages.page05?.footerRightEs || project.sketchbookVol}</span>
             </div>
 
             {/* Archival Artwork Plate with ProgressiveImage */}
             <div className="relative my-auto flex-1 max-h-[76%] rounded-none overflow-hidden bg-black/90 border border-[#2b2b2b]/20 shadow-xl group z-10">
               <ProgressiveImage 
-                src={project.imageUrl} 
+                src={pages.page05?.imageUrl || project.imageUrl} 
                 alt={`${t("Lámina final HD de", "Final HD plate of")} ${t(project.titleEs, project.titleEn)}`}
                 widthParam={900}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -1219,7 +1413,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (onOpenZoom) onOpenZoom(project.imageUrl);
+                  if (onOpenZoom) onOpenZoom(pages.page05?.imageUrl || project.imageUrl);
                   else if (onOpenDetail) onOpenDetail();
                 }}
                 className="no-flip absolute bottom-2.5 right-2.5 min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-none bg-black/85 hover:bg-vampire-red text-vampire-red hover:text-black text-xs font-mono font-bold flex items-center gap-1.5 transition-all shadow-lg border border-vampire-red/30 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
@@ -1233,10 +1427,10 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
 
             <div className="pt-2 border-t border-[#2b2b2b]/10 flex items-center justify-between text-xs sm:text-sm font-serif relative z-10">
               <div className="italic text-[#1c1917] truncate max-w-[220px] font-semibold">
-                «{t(project.titleEs, project.titleEn)}» — Marina Martín Prieto
+                «{t(pages.page05?.titleEs || project.titleEs, pages.page05?.titleEn || project.titleEn)}» — Marina Martín Prieto
               </div>
               <span className="font-mono text-[#54422b] text-[10px] sm:text-xs font-bold">
-                PÁG. 05
+                {pages.page05?.pageNumber || "PÁG. 05"}
               </span>
             </div>
           </figure>
@@ -1272,16 +1466,16 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
               <div>
                 <div className="flex items-center justify-between pb-2 border-b border-[#2b2b2b]/15 text-xs sm:text-sm font-mono text-[#54422b]">
                   <span className="font-bold tracking-wider uppercase">
-                    {t("VI. REVISIÓN DE TALLER", "VI. WORKSHOP REVIEW")}
+                    {t(pages.page06?.sectionHeaderEs || "VI. REVISIÓN DE TALLER", pages.page06?.sectionHeaderEn || "VI. WORKSHOP REVIEW")}
                   </span>
-                  <span className="font-bold">PÁG. 06</span>
+                  <span className="font-bold">{pages.page06?.pageNumber || "PÁG. 06"}</span>
                 </div>
 
                 <h3 className="font-serif italic font-bold text-base sm:text-lg md:text-xl text-[#1c1917] mt-3 mb-2">
-                  {t("Metodología & Ejecución", "Methodology & Execution")}
+                  {t(pages.page06?.titleEs || "Metodología & Ejecución", pages.page06?.titleEn || "Methodology & Execution")}
                 </h3>
                 <p className="text-xs sm:text-sm font-serif italic text-[#332e26] leading-relaxed mb-4">
-                  {t(project.techniqueEs, project.techniqueEn)}
+                  {t(pages.page06?.notesEs || project.techniqueEs, pages.page06?.notesEn || project.techniqueEn)}
                 </p>
 
                 {/* 2x2 Clean Technical Specs Grid */}
@@ -1305,16 +1499,18 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                 </div>
               </div>
 
-              <div className="my-2 p-3 rounded-none border-l-4 border-vampire-red bg-white/85 text-xs sm:text-sm font-serif italic text-[#1c1917] font-semibold shadow-xs">
-                «{t(
-                  "La comprensión de la luz y el color traduce las ideas en movimiento.",
-                  "Understanding light and color brings ideas to life."
-                )}»
-              </div>
+              {(pages.page06?.quoteEs || true) && (
+                <div className="my-2 p-3 rounded-none border-l-4 border-vampire-red bg-white/85 text-xs sm:text-sm font-serif italic text-[#1c1917] font-semibold shadow-xs">
+                  «{t(
+                    pages.page06?.quoteEs || "La comprensión de la luz y el color traduce las ideas en movimiento.",
+                    pages.page06?.quoteEn || "Understanding light and color brings ideas to life."
+                  )}»
+                </div>
+              )}
 
               <div className="pt-2 border-t border-[#2b2b2b]/15 flex items-center justify-between text-[10px] sm:text-xs font-mono text-[#54422b]">
-                <span className="font-semibold">{t("PROCESO Y DESARROLLO VISUAL", "VISUAL PROCESS & DEVELOPMENT")}</span>
-                <span className="font-bold">MMP · {project.year}</span>
+                <span className="font-semibold">{t(pages.page06?.footerLeftEs || "PROCESO Y DESARROLLO VISUAL", pages.page06?.footerLeftEn || "VISUAL PROCESS & DEVELOPMENT")}</span>
+                <span className="font-bold">{pages.page06?.footerRightEs || `MMP · ${project.year}`}</span>
               </div>
             </div>
           </figure>
@@ -1378,69 +1574,110 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
               <div>
                 <div className="flex items-center justify-between pb-2 border-b border-[#2b2b2b]/15 text-xs sm:text-sm font-mono text-[#54422b]">
                   <span className="font-bold uppercase tracking-wider">
-                    {t("III. CLAVE TONAL & ILUMINACIÓN", "III. TONAL KEY & LIGHTING")}
+                    {t(pages.page03.sectionHeaderEs, pages.page03.sectionHeaderEn)}
                   </span>
-                  <span className="font-bold">PÁG. 03</span>
+                  <span className="font-bold">{pages.page03.pageNumber}</span>
                 </div>
 
-                <h3 className="font-serif italic font-bold text-base sm:text-lg md:text-xl text-[#1c1917] mt-3 mb-2">
-                  {t("Estudio Atmosférico & Contraste", "Atmospheric Study & Contrast")}
-                </h3>
-
-                {/* Tonal scale with value labels */}
-                <div className="mb-4 p-3 rounded-none bg-[#efe9d9]/70 border border-[#3d362e]/20">
-                  <div className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-[#54422b] mb-2 flex items-center justify-between font-bold">
-                    <span>{t("ESCALA TONAL DINÁMICA", "DYNAMIC TONAL SCALE")}</span>
-                    <span>0% — 100%</span>
-                  </div>
-                  <div className="grid grid-cols-5 h-7 sm:h-8 rounded-none overflow-hidden border border-[#2b2b2b]/30 shadow-xs mb-1.5">
-                    <div className="bg-[#0e0e0e] flex items-center justify-center text-[9px] font-mono text-bone font-bold">0%</div>
-                    <div className="bg-[#383838] flex items-center justify-center text-[9px] font-mono text-bone font-bold">25%</div>
-                    <div className="bg-[#6c6c6c] flex items-center justify-center text-[9px] font-mono text-bone font-bold">50%</div>
-                    <div className="bg-[#b0b0b0] flex items-center justify-center text-[9px] font-mono text-[#1c1917] font-bold">75%</div>
-                    <div className="bg-[#f5f5f5] flex items-center justify-center text-[9px] font-mono text-[#1c1917] font-bold">100%</div>
-                  </div>
-                  <div className="flex justify-between text-[9px] font-mono text-[#54422b]">
-                    <span>{t("Sombra Profunda", "Deep Shadow")}</span>
-                    <span>{t("Medio Tono", "Midtone")}</span>
-                    <span>{t("Alta Luz", "Highlight")}</span>
-                  </div>
+                <div className="mt-2 mb-1.5">
+                  <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-[#165e38] font-bold block mb-0.5">
+                    {t(pages.page03.subHeaderEs, pages.page03.subHeaderEn)}
+                  </span>
+                  <h3 className="font-serif italic font-bold text-base sm:text-lg md:text-xl text-[#1c1917] truncate">
+                    {t(pages.page03.titleEs, pages.page03.titleEn)}
+                  </h3>
                 </div>
 
-                <p className="text-xs sm:text-sm font-serif italic text-[#332e26] leading-relaxed mb-3">
-                  {t(
-                    "La clave tonal busca un rango dinámico donde las sombras profundas definan la atmósfera y los puntos de luz guíen la narrativa visual.",
-                    "The tonal key provides dynamic contrast where deep shadows shape atmosphere and focal highlights guide narrative focus."
-                  )}
-                </p>
+                {/* Illustration I Plate */}
+                <div className="relative aspect-[16/10] w-full rounded-none overflow-hidden bg-black/90 border border-[#2b2b2b]/20 shadow-md my-2">
+                  <ProgressiveImage 
+                    src={pages.page03.imageUrl} 
+                    alt={t(pages.page03.imageAltEs || pages.page03.titleEs, pages.page03.imageAltEn || pages.page03.titleEn)}
+                    widthParam={900}
+                    className="w-full h-full object-cover"
+                    containerClassName="w-full h-full"
+                  />
+                  {(pages.page03.hotspots || []).map((hs, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveHotspot(hs);
+                      }}
+                      className="no-flip absolute w-10 h-10 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer group/hs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
+                      style={{ left: `${hs.x}%`, top: `${hs.y}%` }}
+                      aria-label={`${t("Anotación técnica:", "Technical note:")} ${t(hs.titleEs, hs.titleEn)}`}
+                    >
+                      <span className="w-5 h-5 rounded-none border-2 border-[#B8C5A8] bg-black/90 text-[#B8C5A8] flex items-center justify-center text-xs font-bold shadow-xl group-hover/hs:scale-125 transition-transform">
+                        ✦
+                      </span>
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (onOpenZoom) onOpenZoom(pages.page03.imageUrl);
+                    }}
+                    className="no-flip absolute bottom-1.5 right-1.5 min-h-[36px] px-2.5 py-1 rounded-none bg-black/85 hover:bg-vampire-red text-vampire-red hover:text-black text-xs font-mono font-bold flex items-center gap-1 transition-all shadow-md border border-vampire-red/30 cursor-pointer"
+                    aria-label={t("Ver en pantalla completa", "Fullscreen")}
+                    title={t("Ver en pantalla completa", "Fullscreen")}
+                  >
+                    <Maximize2 size={13} aria-hidden="true" />
+                    <span>HD</span>
+                  </button>
+                  {/* Floating Hotspot Callout */}
+                  <AnimatePresence>
+                    {activeHotspot && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        transition={{ duration: 0.2 }}
+                        className="no-flip absolute bottom-2 left-2 right-16 p-2 rounded-none bg-black/95 backdrop-blur-md text-bone text-xs border border-[#B8C5A8]/40 shadow-2xl z-20" 
+                        role="region" 
+                        aria-label={t(activeHotspot.titleEs, activeHotspot.titleEn)}
+                      >
+                        <div className="flex items-center justify-between text-[#B8C5A8] font-bold mb-0.5 text-[11px]">
+                          <span>✦ {t(activeHotspot.titleEs, activeHotspot.titleEn)}</span>
+                          <button 
+                            type="button" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setActiveHotspot(null);
+                            }} 
+                            className="w-5 h-5 flex items-center justify-center text-bone-muted hover:text-vampire-red cursor-pointer transition-colors"
+                            aria-label={t("Cerrar nota", "Close note")}
+                          >
+                            ✕
+                          </button>
+                        </div>
+                        <p className="font-serif italic text-bone text-[11px] leading-tight line-clamp-2">{t(activeHotspot.descriptionEs, activeHotspot.descriptionEn)}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
 
               <div>
-                {/* Artist Pigment Wells */}
-                <div className="p-3 rounded-none bg-[#efe9d9] border border-[#3d362e]/20 text-xs font-mono text-[#1c1917] mb-2">
-                  <span className="text-vampire-red font-bold block text-[10px] uppercase tracking-wider mb-1.5">
-                    ✦ {t("PIGMENTOS DOMINANTES", "DOMINANT PIGMENTS")}:
-                  </span>
-                  <div className="flex flex-wrap gap-2">
-                    {project.palette.slice(0, 3).map((p, idx) => (
-                      <div key={idx} className="flex items-center gap-1.5 bg-white/80 px-2 py-1 rounded-none border border-[#3d362e]/15 text-[11px]">
-                        <span className="w-3 h-3 rounded-none shrink-0 shadow-xs border border-black/20" style={{ backgroundColor: p.hex }} />
-                        <span className="font-semibold text-[#1c1917]">{t(p.nameEs, p.nameEn)}</span>
-                        <span className="text-[#54422b] text-[10px] font-mono">{p.hex}</span>
-                      </div>
-                    ))}
+                {(pages.page03.quoteEs || pages.page03.notesEs) && (
+                  <div className="my-1 p-2.5 sm:p-3 rounded-none bg-[#f7f2e7] border-l-3 border-[#54422b] shadow-xs">
+                    <p className="font-serif italic text-xs sm:text-sm text-[#2b251e] leading-relaxed line-clamp-3">
+                      «{t(pages.page03.quoteEs || pages.page03.notesEs || "", pages.page03.quoteEn || pages.page03.notesEn || "")}»
+                    </p>
                   </div>
-                </div>
+                )}
 
                 <div className="pt-2 border-t border-[#2b2b2b]/15 flex items-center justify-between text-[10px] sm:text-xs font-mono text-[#54422b]">
-                  <span className="font-serif italic text-[#3d372e] font-semibold">{t("Valores Tonales & Temperatura", "Tonal Values & Temperature")}</span>
-                  <span className="font-bold">EXP. {project.sketchbookVol}</span>
+                  <span className="font-serif italic text-[#3d372e] font-semibold">{t(pages.page03.footerLeftEs || "Ilustraciones · Lámina I", pages.page03.footerLeftEn || "Illustrations · Plate I")}</span>
+                  <span className="font-bold">{pages.page03.footerRightEs || "PLATE 01 · MMP"}</span>
                 </div>
               </div>
             </div>
           </figure>
 
-          {/* Back: Page 04 Left (Estudio Secundario & Color) */}
+          {/* Back: Page 04 Left (Ilustración II / Estudio Secundario & Color) */}
           <figure 
             className="back absolute inset-0 m-0 w-full h-full bg-[#fdfbf7] rounded-none overflow-hidden shadow-2xl p-4 sm:p-6 flex flex-col justify-between border-r border-[#2b2b2b]/15"
             style={{
@@ -1468,25 +1705,53 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
             />
 
             <div className="flex items-center justify-between pb-2 border-b border-[#2b2b2b]/10 text-xs sm:text-sm font-mono text-[#54422b]">
-              <span className="font-bold">PÁG. 04</span>
+              <span className="font-bold">{pages.page04.pageNumber}</span>
               <span className="font-bold tracking-wider uppercase">
-                {t("IV. ESTUDIO SECUNDARIO & COLOR", "IV. SECONDARY STUDY & COLOR")}
+                {t(pages.page04.sectionHeaderEs, pages.page04.sectionHeaderEn)}
               </span>
             </div>
 
-            <div className="relative my-auto flex-1 max-h-[76%] rounded-none overflow-hidden bg-black/90 border border-[#2b2b2b]/20 shadow-lg group">
+            <div className="mt-1 mb-1">
+              <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-[#165e38] font-bold block mb-0.5">
+                {t(pages.page04.subHeaderEs, pages.page04.subHeaderEn)}
+              </span>
+              <h4 className="font-serif italic font-bold text-base sm:text-lg text-[#1c1917] truncate">
+                {t(pages.page04.titleEs, pages.page04.titleEn)}
+              </h4>
+            </div>
+
+            <div className="relative my-auto flex-1 max-h-[72%] rounded-none overflow-hidden bg-black/90 border border-[#2b2b2b]/20 shadow-lg group">
               <ProgressiveImage 
-                src={secondaryImage} 
-                alt={`${t("Estudio secundario de", "Secondary study of")} ${t(project.titleEs, project.titleEn)}`}
+                src={pages.page04.imageUrl} 
+                alt={t(pages.page04.imageAltEs || pages.page04.titleEs, pages.page04.imageAltEn || pages.page04.titleEn)}
                 widthParam={900}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 containerClassName="w-full h-full"
               />
+
+              {(pages.page04.hotspots || []).map((hs, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveHotspot(hs);
+                  }}
+                  className="no-flip absolute w-10 h-10 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer group/hs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
+                  style={{ left: `${hs.x}%`, top: `${hs.y}%` }}
+                  aria-label={`${t("Anotación técnica:", "Technical note:")} ${t(hs.titleEs, hs.titleEn)}`}
+                >
+                  <span className="w-5 h-5 rounded-none border-2 border-[#B8C5A8] bg-black/90 text-[#B8C5A8] flex items-center justify-center text-xs font-bold shadow-xl group-hover/hs:scale-125 transition-transform">
+                    ✦
+                  </span>
+                </button>
+              ))}
+
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (onOpenZoom) onOpenZoom(secondaryImage);
+                  if (onOpenZoom) onOpenZoom(pages.page04.imageUrl);
                 }}
                 className="no-flip absolute bottom-2.5 right-2.5 min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-none bg-black/85 hover:bg-vampire-red text-vampire-red hover:text-black text-xs font-mono font-bold flex items-center gap-1.5 transition-all shadow-md border border-vampire-red/30 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
                 aria-label={t("Ver lámina en pantalla completa", "Fullscreen")}
@@ -1495,11 +1760,50 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                 <Maximize2 size={15} aria-hidden="true" />
                 <span>HD</span>
               </button>
+
+              {/* Floating Hotspot Callout */}
+              <AnimatePresence>
+                {activeHotspot && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.2 }}
+                    className="no-flip absolute bottom-2 left-2 right-16 p-2 rounded-none bg-black/95 backdrop-blur-md text-bone text-xs border border-[#B8C5A8]/40 shadow-2xl z-20" 
+                    role="region" 
+                    aria-label={t(activeHotspot.titleEs, activeHotspot.titleEn)}
+                  >
+                    <div className="flex items-center justify-between text-[#B8C5A8] font-bold mb-0.5 text-[11px]">
+                      <span>✦ {t(activeHotspot.titleEs, activeHotspot.titleEn)}</span>
+                      <button 
+                        type="button" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveHotspot(null);
+                        }} 
+                        className="w-5 h-5 flex items-center justify-center text-bone-muted hover:text-vampire-red cursor-pointer transition-colors"
+                        aria-label={t("Cerrar nota", "Close note")}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <p className="font-serif italic text-bone text-[11px] leading-tight line-clamp-2">{t(activeHotspot.descriptionEs, activeHotspot.descriptionEn)}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
+            {(pages.page04.quoteEs || pages.page04.notesEs) && (
+              <div className="my-1 p-2.5 rounded-none bg-[#f7f2e7] border-l-3 border-[#54422b] shadow-xs">
+                <p className="font-serif italic text-xs text-[#2b251e] leading-relaxed">
+                  «{t(pages.page04.quoteEs || pages.page04.notesEs || "", pages.page04.quoteEn || pages.page04.notesEn || "")}»
+                </p>
+              </div>
+            )}
+
             <div className="pt-2 border-t border-[#2b2b2b]/10 flex items-center justify-between text-xs sm:text-sm font-mono text-[#3d372e]">
-              <span className="font-serif italic font-semibold">{t(project.processImages[1]?.labelEs || "Fase de Acabado", project.processImages[1]?.labelEn || "Finish Phase")}</span>
-              <span className="text-[#54422b] font-bold">PLATE 02 · MMP</span>
+              <span className="font-serif italic font-semibold">{t(pages.page04.footerLeftEs || "Ilustraciones · Lámina II", pages.page04.footerLeftEn || "Illustrations · Plate II")}</span>
+              <span className="text-[#54422b] font-bold">{pages.page04.footerRightEs || "PLATE 02 · MMP"}</span>
             </div>
           </figure>
         </motion.div>
@@ -1562,85 +1866,156 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
               <div>
                 <div className="flex items-center justify-between pb-2 border-b border-[#2b2b2b]/15 text-xs sm:text-sm font-mono text-[#54422b]">
                   <span className="font-bold uppercase tracking-wider">
-                    {t("I. DOSSIER CONCEPTUAL", "I. CONCEPT DOSSIER")}
+                    {t(pages.page01.sectionHeaderEs, pages.page01.sectionHeaderEn)}
                   </span>
-                  <span className="font-bold">PÁG. 01</span>
+                  <span className="font-bold">{pages.page01.pageNumber}</span>
                 </div>
 
-                <div className="mt-3 mb-2">
+                <div className="mt-2.5 mb-2">
                   <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-[#165e38] font-bold block mb-0.5">
-                    {t(project.categoryEs, project.categoryEn)} · {project.year}
+                    {t(pages.page01.subHeaderEs, pages.page01.subHeaderEn)}
                   </span>
                   <h3 className="font-serif italic font-bold text-lg sm:text-xl md:text-2xl text-[#1c1917] truncate">
-                    «{t(project.titleEs, project.titleEn)}»
+                    {t(pages.page01.titleEs, pages.page01.titleEn)}
                   </h3>
                 </div>
 
-                <p className="text-xs sm:text-sm font-serif italic text-[#332e26] leading-relaxed mb-3">
-                  {t(project.descriptionEs, project.descriptionEn)}
-                </p>
+                {/* Character Plate */}
+                <div className="relative aspect-[16/9] w-full rounded-none overflow-hidden bg-black/90 border border-[#2b2b2b]/20 shadow-md my-2">
+                  <ProgressiveImage 
+                    src={pages.page01.imageUrl} 
+                    alt={t(pages.page01.imageAltEs || pages.page01.titleEs, pages.page01.imageAltEn || pages.page01.titleEn)}
+                    widthParam={900}
+                    className="w-full h-full object-cover"
+                    containerClassName="w-full h-full"
+                  />
+                  {(pages.page01.hotspots || []).map((hs, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveHotspot(hs);
+                      }}
+                      className="no-flip absolute w-10 h-10 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer group/hs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
+                      style={{ left: `${hs.x}%`, top: `${hs.y}%` }}
+                      aria-label={`${t("Anotación técnica:", "Technical note:")} ${t(hs.titleEs, hs.titleEn)}`}
+                    >
+                      <span className="w-5 h-5 rounded-none border-2 border-[#B8C5A8] bg-black/90 text-[#B8C5A8] flex items-center justify-center text-xs font-bold shadow-xl group-hover/hs:scale-125 transition-transform">
+                        ✦
+                      </span>
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (onOpenZoom) onOpenZoom(pages.page01.imageUrl);
+                    }}
+                    className="no-flip absolute bottom-1.5 right-1.5 min-h-[36px] px-2.5 py-1 rounded-none bg-black/85 hover:bg-vampire-red text-vampire-red hover:text-black text-xs font-mono font-bold flex items-center gap-1 transition-all shadow-md border border-vampire-red/30 cursor-pointer"
+                    aria-label={t("Ver en pantalla completa", "Fullscreen")}
+                    title={t("Ver en pantalla completa", "Fullscreen")}
+                  >
+                    <Maximize2 size={13} aria-hidden="true" />
+                    <span>HD</span>
+                  </button>
+                  {/* Floating Hotspot Callout */}
+                  <AnimatePresence>
+                    {activeHotspot && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        transition={{ duration: 0.2 }}
+                        className="no-flip absolute bottom-2 left-2 right-16 p-2 rounded-none bg-black/95 backdrop-blur-md text-bone text-xs border border-[#B8C5A8]/40 shadow-2xl z-20" 
+                        role="region" 
+                        aria-label={t(activeHotspot.titleEs, activeHotspot.titleEn)}
+                      >
+                        <div className="flex items-center justify-between text-[#B8C5A8] font-bold mb-0.5 text-[11px]">
+                          <span>✦ {t(activeHotspot.titleEs, activeHotspot.titleEn)}</span>
+                          <button 
+                            type="button" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setActiveHotspot(null);
+                            }} 
+                            className="w-5 h-5 flex items-center justify-center text-bone-muted hover:text-vampire-red cursor-pointer transition-colors"
+                            aria-label={t("Cerrar nota", "Close note")}
+                          >
+                            ✕
+                          </button>
+                        </div>
+                        <p className="font-serif italic text-bone text-[11px] leading-tight line-clamp-2">{t(activeHotspot.descriptionEs, activeHotspot.descriptionEn)}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
 
                 {/* Palette Chips (Min 44x44px hit target for WCAG AAA) */}
-                <div className="mb-3 p-3 rounded-none bg-[#efe9d9]/70 border border-[#3d362e]/20">
-                  <div className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-[#54422b] mb-2 flex items-center justify-between font-bold">
-                    <span>{t("PALETA DE PIGMENTOS", "PIGMENT PALETTE")}</span>
-                    {copiedHex && (
-                      <span className="text-vampire-red flex items-center gap-1 font-mono font-bold">
-                        <Check size={13} aria-hidden="true" /> {copiedHex}
-                      </span>
-                    )}
+                {(pages.page01.palette || project.palette) && (
+                  <div className="mb-2 p-2.5 rounded-none bg-[#efe9d9]/70 border border-[#3d362e]/20">
+                    <div className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-[#54422b] mb-1.5 flex items-center justify-between font-bold">
+                      <span>{t("PALETA CROMÁTICA", "CHROMATIC PALETTE")}</span>
+                      {copiedHex && (
+                        <span className="text-vampire-red flex items-center gap-1 font-mono font-bold">
+                          <Check size={13} aria-hidden="true" /> {copiedHex}
+                        </span>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                      {(pages.page01.palette || project.palette).map((color, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCopyHex(color.hex);
+                          }}
+                          className="no-flip group/chip min-h-[38px] p-1.5 rounded-none bg-white/80 border border-[#3d362e]/20 hover:border-vampire-red transition-all text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red flex items-center gap-1.5"
+                          title={`${t(color.nameEs, color.nameEn)} (${color.hex})`}
+                          aria-label={`${t("Copiar código de color", "Copy color code")}: ${t(color.nameEs, color.nameEn)} (${color.hex})`}
+                        >
+                          <div 
+                            className="w-4 h-4 rounded-none shadow-xs shrink-0 border border-black/20 group-hover/chip:scale-105 transition-transform"
+                            style={{ backgroundColor: color.hex }}
+                            aria-hidden="true"
+                          />
+                          <div className="overflow-hidden">
+                            <span className="text-[10px] font-sans font-bold text-[#1c1917] truncate block leading-tight">
+                              {t(color.nameEs, color.nameEn)}
+                            </span>
+                            <span className="text-[9px] font-mono text-[#54422b] font-semibold block">
+                              {color.hex}
+                            </span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                    {project.palette.map((color, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleCopyHex(color.hex);
-                        }}
-                        className="no-flip group/chip min-h-[44px] p-2 rounded-none bg-white/80 border border-[#3d362e]/20 hover:border-vampire-red transition-all text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red flex items-center gap-2"
-                        title={`${t(color.nameEs, color.nameEn)} (${color.hex})`}
-                        aria-label={`${t("Copiar código de color", "Copy color code")}: ${t(color.nameEs, color.nameEn)} (${color.hex})`}
-                      >
-                        <div 
-                          className="w-5 h-5 rounded-none shadow-xs shrink-0 border border-black/20 group-hover/chip:scale-105 transition-transform"
-                          style={{ backgroundColor: color.hex }}
-                          aria-hidden="true"
-                        />
-                        <div className="overflow-hidden">
-                          <span className="text-[10px] sm:text-[11px] font-sans font-bold text-[#1c1917] truncate block leading-tight">
-                            {t(color.nameEs, color.nameEn)}
-                          </span>
-                          <span className="text-[9px] font-mono text-[#54422b] font-semibold block">
-                            {color.hex}
-                          </span>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                )}
               </div>
 
               {/* Artist Field Notes Callout */}
-              <div className="my-1 p-3 sm:p-3.5 rounded-none bg-[#f7f2e7] border-l-3 border-[#54422b] shadow-xs">
-                <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-mono uppercase tracking-wider text-[#54422b] font-bold mb-1">
-                  <Sparkles size={13} className="text-vampire-red" aria-hidden="true" />
-                  <span>{t("NOTAS DE LA ARTISTA", "ARTIST FIELD NOTES")}</span>
+              {(pages.page01.notesEs || pages.page01.quoteEs || project.notesEs) && (
+                <div className="my-1 p-2.5 sm:p-3 rounded-none bg-[#f7f2e7] border-l-3 border-[#54422b] shadow-xs">
+                  <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-mono uppercase tracking-wider text-[#54422b] font-bold mb-0.5">
+                    <Sparkles size={13} className="text-vampire-red" aria-hidden="true" />
+                    <span>{t(pages.page01.notesTitleEs || "NOTAS DE LA ARTISTA", pages.page01.notesTitleEn || "ARTIST FIELD NOTES")}</span>
+                  </div>
+                  <p className="font-serif italic text-xs sm:text-sm text-[#2b251e] leading-relaxed line-clamp-2">
+                    «{t(pages.page01.notesEs || pages.page01.quoteEs || project.notesEs, pages.page01.notesEn || pages.page01.quoteEn || project.notesEn)}»
+                  </p>
                 </div>
-                <p className="font-serif italic text-xs sm:text-sm text-[#2b251e] leading-relaxed">
-                  «{t(project.notesEs, project.notesEn)}»
-                </p>
-              </div>
+              )}
 
               <div className="pt-2 border-t border-[#2b2b2b]/15 flex items-center justify-between text-[10px] sm:text-xs font-mono text-[#54422b]">
-                <span className="font-serif italic text-[#3d372e] font-semibold">{t("Registro Conceptual", "Concept Record")}</span>
-                <span className="font-bold">EXP. {project.sketchbookVol}</span>
+                <span className="font-serif italic text-[#3d372e] font-semibold">{t(pages.page01.footerLeftEs || `${project.categoryEs} · ${project.titleEs}`, pages.page01.footerLeftEn || `${project.categoryEn} · ${project.titleEn}`)}</span>
+                <span className="font-bold">{pages.page01.footerRightEs || `EXP. ${project.sketchbookVol}`}</span>
               </div>
             </div>
           </figure>
 
-          {/* Back: Page 02 Left (II. Bocetos & Línea Exploratoria) */}
+          {/* Back: Page 02 Left (Diseño del Personaje Secundario / Bocetos) */}
           <figure 
             className="back absolute inset-0 m-0 w-full h-full bg-[#fdfbf7] rounded-none overflow-hidden shadow-2xl p-4 sm:p-6 flex flex-col justify-between border-r border-[#2b2b2b]/15"
             style={{
@@ -1668,22 +2043,31 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
             />
 
             <div className="flex items-center justify-between pb-2 border-b border-[#2b2b2b]/10 text-xs sm:text-sm font-mono text-[#54422b]">
-              <span className="font-bold">PÁG. 02</span>
+              <span className="font-bold">{pages.page02.pageNumber}</span>
               <span className="font-bold uppercase tracking-wider">
-                {t("II. BOCETOS & LÍNEA EXPLORATORIA", "II. SKETCHES & LINE EXPLORATION")}
+                {t(pages.page02.sectionHeaderEs, pages.page02.sectionHeaderEn)}
               </span>
             </div>
 
-            <div className="relative my-auto flex-1 max-h-[76%] rounded-none overflow-hidden bg-black/90 border border-[#2b2b2b]/20 shadow-md">
+            <div className="mt-1 mb-1">
+              <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-[#165e38] font-bold block mb-0.5">
+                {t(pages.page02.subHeaderEs, pages.page02.subHeaderEn)}
+              </span>
+              <h4 className="font-serif italic font-bold text-base sm:text-lg text-[#1c1917] truncate">
+                {t(pages.page02.titleEs, pages.page02.titleEn)}
+              </h4>
+            </div>
+
+            <div className="relative my-auto flex-1 max-h-[72%] rounded-none overflow-hidden bg-black/90 border border-[#2b2b2b]/20 shadow-md">
               <ProgressiveImage 
-                src={sketchImage} 
-                alt={`${t("Boceto y trazo preliminar de", "Preliminary sketch of")} ${t(project.titleEs, project.titleEn)}`}
+                src={pages.page02.imageUrl} 
+                alt={t(pages.page02.imageAltEs || pages.page02.titleEs, pages.page02.imageAltEn || pages.page02.titleEn)}
                 widthParam={900}
                 className="w-full h-full object-cover"
                 containerClassName="w-full h-full"
               />
 
-              {sketchHotspots.map((hs, i) => (
+              {(pages.page02.hotspots || []).map((hs, i) => (
                 <button
                   key={i}
                   type="button"
@@ -1705,11 +2089,11 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (onOpenZoom) onOpenZoom(sketchImage);
+                  if (onOpenZoom) onOpenZoom(pages.page02.imageUrl);
                 }}
                 className="no-flip absolute bottom-2.5 right-2.5 min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-none bg-black/85 hover:bg-vampire-red text-vampire-red hover:text-black text-xs font-mono font-bold flex items-center gap-1.5 transition-all shadow-md border border-vampire-red/30 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
-                aria-label={t("Ver boceto en pantalla completa", "Fullscreen sketch")}
-                title={t("Ver boceto en pantalla completa", "Fullscreen sketch")}
+                aria-label={t("Ver en pantalla completa", "Fullscreen")}
+                title={t("Ver en pantalla completa", "Fullscreen")}
               >
                 <Maximize2 size={15} aria-hidden="true" />
                 <span>HD</span>
@@ -1743,9 +2127,17 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
               </AnimatePresence>
             </div>
 
+            {(pages.page02.quoteEs || pages.page02.notesEs) && (
+              <div className="my-1 p-2.5 rounded-none bg-[#f7f2e7] border-l-3 border-[#54422b] shadow-xs">
+                <p className="font-serif italic text-xs text-[#2b251e] leading-relaxed">
+                  «{t(pages.page02.quoteEs || pages.page02.notesEs || "", pages.page02.quoteEn || pages.page02.notesEn || "")}»
+                </p>
+              </div>
+            )}
+
             <div className="pt-2 border-t border-[#2b2b2b]/15 flex items-center justify-between text-[10px] sm:text-xs font-mono text-[#3d372e]">
-              <span className="font-serif italic font-semibold">{t(project.processImages[0]?.labelEs || "Boceto y Trazo", project.processImages[0]?.labelEn || "Sketch & Stroke")}</span>
-              <span className="text-[#54422b] font-bold">PÁG. 02 · {sketchHotspots.length} {t("ANOTACIONES", "NOTES")}</span>
+              <span className="font-serif italic font-semibold">{t(pages.page02.footerLeftEs || "", pages.page02.footerLeftEn || "")}</span>
+              <span className="text-[#54422b] font-bold">{pages.page02.footerRightEs || "PLATE 01"}</span>
             </div>
           </figure>
         </motion.div>
@@ -1901,34 +2293,94 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
               <div>
                 <div className="flex items-center justify-between pb-2 border-b border-[#2b2b2b]/15 text-xs sm:text-sm font-mono text-[#54422b]">
                   <span className="font-bold uppercase tracking-wider">
-                    {t("ESTUDIO PRELIMINAR", "PRELIMINARY STUDY")}
+                    {t(pages.page00.sectionHeaderEs, pages.page00.sectionHeaderEn)}
                   </span>
-                  <span className="font-bold">PÁG. 00</span>
+                  <span className="font-bold">{pages.page00.pageNumber}</span>
                 </div>
 
                 {/* Title & Concept Header */}
                 <div className="mt-3 mb-2">
                   <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-[#165e38] font-bold block mb-0.5">
-                    {t("NOTAS DE TALLER & GÉNESIS", "STUDIO NOTES & GENESIS")}
+                    {t(pages.page00.subHeaderEs, pages.page00.subHeaderEn)}
                   </span>
                   <h4 className="font-serif italic font-bold text-lg sm:text-xl text-[#1c1917]">
-                    «{t(project.titleEs, project.titleEn)}»
+                    {t(pages.page00.titleEs, pages.page00.titleEn)}
                   </h4>
                 </div>
 
                 {/* Artwork Sketch Vignette */}
-                <div className="relative aspect-[16/9] w-full rounded-none overflow-hidden border border-[#2b2b2b]/20 shadow-sm bg-[#ece5d5]/80 my-2">
+                <div className="relative aspect-[16/9] w-full rounded-none overflow-hidden border border-[#2b2b2b]/20 shadow-sm bg-black/90 my-2">
                   <ProgressiveImage 
-                    src={sketchImage} 
-                    alt={`${t("Estudio preliminar de", "Preliminary study of")} ${t(project.titleEs, project.titleEn)}`} 
+                    src={pages.page00.imageUrl} 
+                    alt={t(pages.page00.imageAltEs || pages.page00.titleEs, pages.page00.imageAltEn || pages.page00.titleEn)} 
                     widthParam={900}
                     className="w-full h-full object-cover filter contrast-105"
                     containerClassName="w-full h-full"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-                  <span className="absolute bottom-1.5 right-2.5 text-[9px] font-mono text-bone font-bold">
-                    REF. SK-001 · MMP
-                  </span>
+
+                  {(pages.page00.hotspots || []).map((hs, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveHotspot(hs);
+                      }}
+                      className="no-flip absolute w-10 h-10 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center cursor-pointer group/hs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vampire-red"
+                      style={{ left: `${hs.x}%`, top: `${hs.y}%` }}
+                      aria-label={`${t("Anotación técnica:", "Technical note:")} ${t(hs.titleEs, hs.titleEn)}`}
+                    >
+                      <span className="w-5 h-5 rounded-none border-2 border-[#B8C5A8] bg-black/90 text-[#B8C5A8] flex items-center justify-center text-xs font-bold shadow-xl group-hover/hs:scale-125 transition-transform">
+                        ✦
+                      </span>
+                    </button>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (onOpenZoom) onOpenZoom(pages.page00.imageUrl);
+                    }}
+                    className="no-flip absolute bottom-1.5 right-1.5 min-h-[36px] px-2.5 py-1 rounded-none bg-black/85 hover:bg-vampire-red text-vampire-red hover:text-black text-xs font-mono font-bold flex items-center gap-1 transition-all shadow-md border border-vampire-red/30 cursor-pointer"
+                    aria-label={t("Ver en pantalla completa", "Fullscreen")}
+                    title={t("Ver en pantalla completa", "Fullscreen")}
+                  >
+                    <Maximize2 size={13} aria-hidden="true" />
+                    <span>HD</span>
+                  </button>
+
+                  {/* Floating Hotspot Callout */}
+                  <AnimatePresence>
+                    {activeHotspot && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        transition={{ duration: 0.2 }}
+                        className="no-flip absolute bottom-2 left-2 right-16 p-2 rounded-none bg-black/95 backdrop-blur-md text-bone text-xs border border-[#B8C5A8]/40 shadow-2xl z-20" 
+                        role="region" 
+                        aria-label={t(activeHotspot.titleEs, activeHotspot.titleEn)}
+                      >
+                        <div className="flex items-center justify-between text-[#B8C5A8] font-bold mb-0.5 text-[11px]">
+                          <span>✦ {t(activeHotspot.titleEs, activeHotspot.titleEn)}</span>
+                          <button 
+                            type="button" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setActiveHotspot(null);
+                            }} 
+                            className="w-5 h-5 flex items-center justify-center text-bone-muted hover:text-vampire-red cursor-pointer transition-colors"
+                            aria-label={t("Cerrar nota", "Close note")}
+                          >
+                            ✕
+                          </button>
+                        </div>
+                        <p className="font-serif italic text-bone text-[11px] leading-tight line-clamp-2">{t(activeHotspot.descriptionEs, activeHotspot.descriptionEn)}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
 
@@ -1936,22 +2388,19 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
               <div className="my-1 p-3 sm:p-3.5 rounded-none bg-[#f7f2e7] border-l-3 border-[#54422b] shadow-xs">
                 <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-mono uppercase tracking-wider text-[#54422b] font-bold mb-1">
                   <Sparkles size={13} className="text-vampire-red" aria-hidden="true" />
-                  <span>{t("PLANTEAMIENTO PLÁSTICO", "PLASTIC APPROACH")}</span>
+                  <span>{t(pages.page00.notesTitleEs || "INDUMENTARIA & SILUETA", pages.page00.notesTitleEn || "COSTUME & SILHOUETTE")}</span>
                 </div>
                 <p className="font-serif italic text-xs sm:text-sm text-[#2b251e] leading-relaxed">
-                  {t(
-                    "«Primeras anotaciones de atmósfera, valores tonales y estructura geométrica preliminar.»",
-                    "«Initial notes on atmosphere, tonal values, and preliminary geometric structure.»"
-                  )}
+                  «{t(pages.page00.quoteEs || pages.page00.notesEs || project.techniqueEs, pages.page00.quoteEn || pages.page00.notesEn || project.techniqueEn)}»
                 </p>
               </div>
 
               <div className="pt-2 border-t border-[#2b2b2b]/15 flex items-center justify-between text-[10px] sm:text-xs font-mono text-[#3d372e]">
                 <div>
-                  <span className="text-[#54422b] uppercase font-bold">{t("REGISTRO", "RECORD")}:</span> {project.year} · MMP
+                  <span className="text-[#54422b] uppercase font-bold">{t(pages.page00.footerLeftEs || `REGISTRO: ${project.year} · MMP`, pages.page00.footerLeftEn || `RECORD: ${project.year} · MMP`)}</span>
                 </div>
                 <div className="text-[#54422b] uppercase tracking-wider font-bold">
-                  ✦ {project.sketchbookVol}
+                  ✦ {pages.page00.footerRightEs || project.sketchbookVol}
                 </div>
               </div>
             </div>
