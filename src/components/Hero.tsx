@@ -149,50 +149,32 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      {/* 2. Deep Muted Green Corner Light Beam from Top-Right Corner (#5D6E4D) */}
-      {/* 2a. Muted Forest Green Corner Light Emitter (#5D6E4D) */}
+      {/* 2. Unified Atmospheric Green Corner Light Emitter & WebGL Rays (#5D6E4D) */}
+      {/* High-performance single ambient glow (no muddy overlapping blurs or delayed blend-screen layers) */}
       <div 
-        className="absolute -top-16 -right-16 w-80 h-80 sm:w-[540px] sm:h-[540px] rounded-full pointer-events-none z-0 blur-[70px] opacity-85"
+        className="absolute -top-12 -right-12 w-80 sm:w-[480px] h-80 sm:h-[480px] rounded-full pointer-events-none z-0"
         style={{
-          background: 'radial-gradient(circle at center, rgba(93, 110, 77, 0.75) 0%, rgba(75, 92, 60, 0.55) 35%, rgba(50, 65, 40, 0.3) 60%, transparent 80%)'
+          background: 'radial-gradient(circle at center, rgba(184, 197, 168, 0.45) 0%, rgba(93, 110, 77, 0.3) 38%, rgba(50, 65, 40, 0.12) 65%, transparent 80%)',
+          filter: 'blur(30px)',
+          opacity: 0.85,
         }}
         aria-hidden="true"
       />
 
-      {/* 2b. Corner Diagonal Volumetric Light Shaft in #5D6E4D */}
-      <div 
-        className="absolute top-0 right-0 w-[140%] h-[140%] pointer-events-none z-0 opacity-70 mix-blend-screen"
-        style={{
-          background: 'conic-gradient(from 195deg at 100% 0%, transparent 0deg, rgba(93, 110, 77, 0.45) 14deg, rgba(75, 92, 60, 0.5) 26deg, rgba(50, 65, 40, 0.25) 40deg, rgba(94, 63, 71, 0) 55deg)',
-          filter: 'blur(35px)',
-          transformOrigin: 'top right',
-        }}
-        aria-hidden="true"
-      />
-
-      {/* 2c. Diagonal Ambient Sheen in Darker Green #5D6E4D */}
-      <div 
-        className="absolute -top-10 -right-10 w-full sm:w-[90%] h-[125%] pointer-events-none z-0 opacity-60 mix-blend-screen"
-        style={{
-          background: 'radial-gradient(circle at 100% 0%, rgba(93, 110, 77, 0.4) 0%, rgba(70, 86, 56, 0.25) 35%, rgba(45, 58, 35, 0.1) 60%, transparent 75%)'
-        }}
-        aria-hidden="true"
-      />
-
-      {/* 2d. Volumetric Atmospheric WebGL Rays in #5D6E4D */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-80 mix-blend-screen">
+      {/* Volumetric Atmospheric WebGL Rays in #5D6E4D (Instant hardware-accelerated rendering) */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-85 mix-blend-screen">
         <SideRays
           speed={0.8}
           rayColor1="#5D6E4D"
           rayColor2="#3E4E32"
-          intensity={1.3}
+          intensity={1.35}
           spread={2.4}
           origin="top-right"
           tilt={-16}
           saturation={1.1}
           blend={0.7}
           falloff={1.4}
-          opacity={0.75}
+          opacity={0.8}
         />
       </div>
 
@@ -233,9 +215,9 @@ export default function Hero() {
 
         {/* Circular Preview Lenses (Inspired directly by Reference Photo 2) */}
         <div className="hidden lg:flex items-center gap-2 text-[10px] text-[#eedbe1] font-sans">
-          <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-[#B8C5A8]/30 font-mono text-[9px] text-[#B8C5A8]">[ Concepto ]</span>
-          <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-[#B8C5A8]/30 font-mono text-[9px] text-[#B8C5A8]">[ Claroscuro ]</span>
-          <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-[#B8C5A8]/30 font-mono text-[9px] text-[#B8C5A8]">[ Atmósfera ]</span>
+          <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-[#B8C5A8]/30 font-mono text-[9px] text-[#B8C5A8]">[ {t("Concepto", "Concept")} ]</span>
+          <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-[#B8C5A8]/30 font-mono text-[9px] text-[#B8C5A8]">[ {t("Claroscuro", "Chiaroscuro")} ]</span>
+          <span className="px-2.5 py-0.5 rounded-full bg-white/10 border border-[#B8C5A8]/30 font-mono text-[9px] text-[#B8C5A8]">[ {t("Atmósfera", "Atmosphere")} ]</span>
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3 text-[9px] sm:text-[10px] text-[#eedbe1]">

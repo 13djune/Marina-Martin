@@ -56,9 +56,18 @@
     transition: color 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, text-decoration-color 0.2s ease;
   }
 
-  a:hover {
-    color: #ffd8dc !important;
-    text-decoration-color: #ffd8dc !important;
+  /* Inline text links hover in rosita claro */
+  a:not([class*="bg-"]):not([class*="btn"]):not([role="button"]):hover {
+    color: #ffd8dc;
+    text-decoration-color: #ffd8dc;
+  }
+
+  /* Solid button elements (anchors or buttons with backgrounds) maintain readable text contrast */
+  a[class*="bg-"], button[class*="bg-"] {
+    text-decoration: none !important;
+  }
+  a[class*="bg-"]:hover {
+    text-decoration: none !important;
   }
 
   @media (pointer: fine) {
@@ -158,62 +167,66 @@
 /* Physical Frosted Glassmorphism Presets - Instant Rich Green Colors on First Paint */
 .moss-card {
   background: linear-gradient(135deg, rgba(184, 197, 168, 0.12) 0%, rgba(255, 255, 255, 0.07) 45%, rgba(93, 110, 77, 0.24) 100%);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(184, 197, 168, 0.35);
   box-shadow: 
-    0 24px 60px rgba(32, 16, 22, 0.4),
+    0 20px 50px rgba(32, 16, 22, 0.38),
     inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.4),
     inset 0 -1px 2px 0 rgba(0, 0, 0, 0.25),
-    0 0 25px rgba(184, 197, 168, 0.12);
+    0 0 20px rgba(184, 197, 168, 0.12);
   color: #faf7f2;
+  transform: translateZ(0);
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .moss-card:hover {
   border-color: rgba(184, 197, 168, 0.75);
   box-shadow: 
-    0 32px 75px rgba(32, 16, 22, 0.55),
+    0 28px 65px rgba(32, 16, 22, 0.5),
     inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.5),
-    0 0 35px rgba(184, 197, 168, 0.35);
+    0 0 30px rgba(184, 197, 168, 0.3);
 }
 
 .glass-card, .stone-card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 45%, rgba(68, 38, 47, 0.35) 100%);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.22);
   box-shadow: 
-    0 24px 60px rgba(32, 16, 22, 0.4),
+    0 20px 50px rgba(32, 16, 22, 0.35),
     inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.35),
     inset 0 -1px 2px 0 rgba(0, 0, 0, 0.25);
   color: #faf7f2;
+  transform: translateZ(0);
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 /* Real Physical Frosted Glassmorphism Panels */
 .glass-panel {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 40%, rgba(68, 38, 47, 0.45) 100%);
-  backdrop-filter: blur(32px) saturate(190%);
-  -webkit-backdrop-filter: blur(32px) saturate(190%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.24);
   box-shadow: 
-    0 30px 80px rgba(28, 14, 20, 0.55), 
+    0 25px 60px rgba(28, 14, 20, 0.45), 
     inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.45),
     inset 1px 0 1px 0 rgba(255, 255, 255, 0.2),
     inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.35),
-    inset 0 0 35px 0 rgba(184, 197, 168, 0.08);
+    0 0 25px 0 rgba(184, 197, 168, 0.08);
+  transform: translateZ(0);
 }
 
 .glass-panel-subtle {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.03) 45%, rgba(68, 38, 47, 0.3) 100%);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 
-    0 20px 50px rgba(28, 14, 20, 0.35), 
+    0 16px 40px rgba(28, 14, 20, 0.3), 
     inset 0 1px 1px 0 rgba(255, 255, 255, 0.35),
     inset 0 -1px 1px 0 rgba(0, 0, 0, 0.2);
+  transform: translateZ(0);
 }
 
 .glass-input {

@@ -122,12 +122,12 @@ export default function Process() {
               </div>
             </div>
 
-            {/* 5 Simplified Step Cards */}
+            {/* 5 Simplified Step Cards in Botanical Green */}
             <div className="grid grid-cols-5 gap-5">
               {processSteps.map((step) => (
                 <div
                   key={step.number}
-                  className="moss-card rounded-2xl p-5 border border-white/20 hover:border-[#B8C5A8]/70 transition-all duration-300 group backdrop-blur-xl bg-white/[0.08] flex flex-col justify-between"
+                  className="rounded-2xl p-5 border border-[#B8C5A8]/35 hover:border-[#B8C5A8] transition-all duration-300 group backdrop-blur-xl bg-gradient-to-br from-[#45583b]/45 via-[#36472f]/60 to-[#232f1f]/75 flex flex-col justify-between shadow-[0_12px_30px_rgba(20,30,18,0.35)] hover:shadow-[0_15px_35px_rgba(184,197,168,0.2)]"
                 >
                   <div>
                     <h3 className="text-base font-serif font-bold text-[#faf7f2] mb-2 group-hover:text-[#B8C5A8] transition-colors leading-snug">
@@ -150,12 +150,12 @@ export default function Process() {
             {processSteps.map((step) => (
               <div key={step.number} className="relative z-10">
                 {/* Node */}
-                <div className="absolute -left-8 top-4 -translate-x-1/2 w-8 h-8 rounded-full bg-[#5E3F47] border-2 border-[#B8C5A8] flex items-center justify-center font-mono font-bold text-xs text-[#faf7f2] shadow-[0_0_10px_rgba(184,197,168,0.5)]">
+                <div className="absolute -left-8 top-4 -translate-x-1/2 w-8 h-8 rounded-full bg-[#3d4d32] border-2 border-[#B8C5A8] flex items-center justify-center font-mono font-bold text-xs text-[#faf7f2] shadow-[0_0_10px_rgba(184,197,168,0.5)]">
                   {step.number}
                 </div>
 
                 {/* Card */}
-                <div className="moss-card p-5 rounded-2xl text-left border border-white/20 backdrop-blur-xl bg-white/[0.08] shadow-sm">
+                <div className="p-5 rounded-2xl text-left border border-[#B8C5A8]/35 backdrop-blur-xl bg-gradient-to-br from-[#45583b]/45 via-[#36472f]/60 to-[#232f1f]/75 shadow-[0_12px_30px_rgba(20,30,18,0.35)]">
                   <h3 className="text-base font-serif font-bold text-[#faf7f2] mb-1.5">
                     {t(step.titleEs, step.titleEn)}
                   </h3>

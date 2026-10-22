@@ -5,8 +5,14 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#3f252c] px-6 border-t border-white/15 text-center relative overflow-hidden transition-all duration-700 py-12 text-[#faf7f2]">
-      {/* Background glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-40 bg-[#B8C5A8]/12 blur-[100px] pointer-events-none" aria-hidden="true" />
+      {/* Background glow (Hardware-friendly radial gradient, no expensive blur filter) */}
+      <div 
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-28 pointer-events-none" 
+        style={{
+          background: 'radial-gradient(ellipse at 50% 0%, rgba(184, 197, 168, 0.16) 0%, transparent 70%)'
+        }}
+        aria-hidden="true" 
+      />
 
       <div className="max-w-4xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-center text-xs font-mono uppercase tracking-[0.25em] text-[#eedbe1] gap-4 md:gap-0 font-medium">

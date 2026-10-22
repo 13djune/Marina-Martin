@@ -49,16 +49,16 @@ export default function Biography() {
       id="about" 
       className="py-24 px-6 md:px-12 relative z-10 text-[#faf7f2] overflow-hidden"
     >
-      {/* Distinct Sage & Moss Green Atmospheric Illumination highlighting Section from #5E3F47 */}
+      {/* Subtle Luminous Sage Ambient Light highlighting Section without muddy color overlap */}
       <div 
         className="absolute inset-0 pointer-events-none z-0"
         style={{
-          background: 'radial-gradient(ellipse at 50% 25%, rgba(68, 92, 54, 0.45) 0%, rgba(45, 64, 36, 0.28) 50%, transparent 80%)'
+          background: 'radial-gradient(ellipse at 50% 20%, rgba(184, 197, 168, 0.09) 0%, transparent 70%)'
         }}
         aria-hidden="true"
       />
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Top Section Intro: Profile Card & Bio Content with Framer Motion Entrance */}
+        {/* Top Section Intro: Profile Card & Bio Content */}
         <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-24 mb-24">
           
           {/* Image Side with Instant Rich Green Presence (No color loading lag) */}
@@ -88,8 +88,6 @@ export default function Biography() {
                 }}
               />
             </div>
-            
-            <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-[#5b6c4b]/30 blur-3xl rounded-full z-[-1]"></div>
           </div>
 
           {/* Text Side with Instant Clean Rendering */}
@@ -200,11 +198,11 @@ export default function Biography() {
                       window.location.hash = '#contact';
                     }
                   }}
-                  className="inline-flex items-center gap-2.5 bg-[#faf7f2] hover:bg-[#B8C5A8] text-[#263120] text-xs uppercase tracking-[0.2em] px-7 py-3.5 font-black transition-all duration-300 rounded-xl cursor-pointer shadow-xl hover:shadow-[0_6px_30px_rgba(184,197,168,0.4)] hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  className="inline-flex items-center gap-2.5 bg-[#faf7f2] hover:bg-[#ffd8dc] text-[#263120] hover:text-[#263120] text-xs uppercase tracking-[0.2em] px-7 py-3.5 font-black transition-all duration-300 rounded-xl cursor-pointer shadow-xl hover:shadow-[0_6px_30px_rgba(255,216,220,0.4)] hover:scale-105 active:scale-95 group min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                   title={t("Ir a la sección de contacto", "Scroll to contact section")}
                 >
-                  <span>{t("TRABAJA CONMIGO", "WORK WITH ME")}</span>
-                  <ArrowDown size={15} className="group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
+                  <span className="text-[#263120] font-black">{t("TRABAJA CONMIGO", "WORK WITH ME")}</span>
+                  <ArrowDown size={15} className="text-[#263120] group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
                 </a>
               </div>
             </div>
@@ -269,16 +267,19 @@ export default function Biography() {
                 </div>
               </div>
 
-              {/* Job 2: Artista Conceptual - Nocturnia Studios */}
-              <div className="moss-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group hover:border-[#B8C5A8]/50 transition-all duration-300">
-                <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/50 to-transparent pointer-events-none z-20" aria-hidden="true" />
+              {/* Job 2: Artista Conceptual - Nocturnia Studios (Featured Card in Rich Botanical Green) */}
+              <div className="rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group border-2 border-[#B8C5A8]/50 bg-gradient-to-br from-[#4d6040]/80 via-[#3d4d32]/90 to-[#273421]/95 backdrop-blur-xl shadow-[0_20px_50px_rgba(20,30,18,0.5),inset_0_1.5px_2px_rgba(184,197,168,0.35)] hover:border-[#B8C5A8] transition-all duration-300">
+                <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#B8C5A8]/70 to-transparent pointer-events-none z-20" aria-hidden="true" />
                 <div className="relative z-10">
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-xs font-mono px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-[#B8C5A8] font-semibold shadow-xs">
+                    <span className="text-xs font-mono px-3.5 py-1.5 rounded-full bg-[#2a3623]/80 border border-[#B8C5A8]/40 text-[#faf7f2] font-semibold shadow-xs">
                       {t("Ago 2023 — Presente", "Aug 2023 — Present")}
                     </span>
+                    <span className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-[#B8C5A8]/20 border border-[#B8C5A8]/50 text-[#faf7f2] font-bold">
+                      ★ {t("ROL DESTACADO", "FEATURED ROLE")}
+                    </span>
                   </div>
-                  <h5 className="text-lg font-bold text-bone leading-snug mb-1">{t("Artista Conceptual", "Concept Artist")}</h5>
+                  <h5 className="text-lg font-bold text-[#faf7f2] leading-snug mb-1">{t("Artista Conceptual", "Concept Artist")}</h5>
                   <div className="text-xs uppercase tracking-wider text-[#d5decb] font-mono font-semibold mb-3">
                     <a 
                       href="https://www.linkedin.com/company/nocturnia-studios/" 
@@ -289,18 +290,18 @@ export default function Biography() {
                       Nocturnia Studios ↗
                     </a>
                   </div>
-                  <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans mb-5">
+                  <p className="text-sm text-[#eedbe1] font-normal leading-relaxed font-sans mb-5">
                     {t(
-                      <>Trabajo autónomo en remoto. Diseño y desarrollo visual de <strong className="text-bone font-semibold">fondos, entornos y personajes</strong> utilizando <strong className="text-bone font-semibold">Adobe Photoshop</strong> para <strong className="text-bone font-semibold">proyectos cinematográficos</strong>.</>,
-                      <>Freelance remote work. Design and visual development of <strong className="text-bone font-semibold">backgrounds, environments and characters</strong> using <strong className="text-bone font-semibold">Adobe Photoshop</strong> for <strong className="text-bone font-semibold">cinematic projects</strong>.</>
+                      <>Trabajo autónomo en remoto. Diseño y desarrollo visual de <strong className="text-white font-semibold">fondos, entornos y personajes</strong> utilizando <strong className="text-white font-semibold">Adobe Photoshop</strong> para <strong className="text-white font-semibold">proyectos cinematográficos</strong>.</>,
+                      <>Freelance remote work. Design and visual development of <strong className="text-white font-semibold">backgrounds, environments and characters</strong> using <strong className="text-white font-semibold">Adobe Photoshop</strong> for <strong className="text-white font-semibold">cinematic projects</strong>.</>
                     )}
                   </p>
                 </div>
-                <div className="flex flex-wrap gap-1.5 pt-3 border-t border-white/10 relative z-10">
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Personajes</span>
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Entornos & Props</span>
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Photoshop</span>
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Procreate</span>
+                <div className="flex flex-wrap gap-1.5 pt-3 border-t border-[#B8C5A8]/20 relative z-10">
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-[#25311f]/90 text-[#faf7f2] border border-[#B8C5A8]/30">Personajes</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-[#25311f]/90 text-[#faf7f2] border border-[#B8C5A8]/30">Entornos & Props</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-[#25311f]/90 text-[#faf7f2] border border-[#B8C5A8]/30">Photoshop</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-[#25311f]/90 text-[#faf7f2] border border-[#B8C5A8]/30">Procreate</span>
                 </div>
               </div>
 
@@ -338,8 +339,6 @@ export default function Biography() {
             {/* Column Left: Educación & Formación Superior (Rich & Complete - No Void) */}
             <div className="moss-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group">
               <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" aria-hidden="true" />
-              <div className="absolute -top-[100%] -left-[50%] w-[200%] h-[200%] pointer-events-none rotate-12 bg-gradient-to-b from-white/[0.07] via-transparent to-transparent z-0" aria-hidden="true" />
-              <div className="absolute top-0 right-0 w-36 h-36 bg-[#B8C5A8]/8 rounded-full blur-2xl pointer-events-none group-hover:bg-[#B8C5A8]/15 transition-colors" aria-hidden="true" />
 
               <div className="relative z-10 space-y-7">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">
@@ -419,11 +418,11 @@ export default function Biography() {
                   <div className="flex flex-wrap items-center gap-2">
                     {/* Español: Native language (Prominently marked with rounded pill) */}
                     <span className="text-xs font-mono px-3.5 py-1.5 rounded-full bg-[#5D6E4D]/60 border border-[#B8C5A8] text-[#faf7f2] font-bold shadow-[0_0_12px_rgba(184,197,168,0.25)] flex items-center gap-1.5">
-                      ★ <strong className="text-[#faf7f2]">Español:</strong> {t("Nativo", "Native")}
+                      ★ <strong className="text-[#faf7f2]">{t("Español", "Spanish")}:</strong> {t("Nativo", "Native")}
                     </span>
                     {/* English: Neutral rounded pill */}
                     <span className="text-xs font-mono px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/15 text-bone">
-                      <strong className="text-[#faf7f2]">English:</strong> B2 {t("Profesional", "Professional")}
+                      <strong className="text-[#faf7f2]">{t("Inglés", "English")}:</strong> B2 {t("Profesional", "Professional")}
                     </span>
                     {/* Japanese: Unmarked neutral rounded pill */}
                     <span className="text-xs font-mono px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/15 text-bone">
@@ -434,11 +433,9 @@ export default function Biography() {
               </div>
             </div>
 
-            {/* Column Right: Reconocimientos & Premios Oficiales */}
-            <div className="moss-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group">
-              <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none z-20" aria-hidden="true" />
-              <div className="absolute -top-[100%] -left-[50%] w-[200%] h-[200%] pointer-events-none rotate-12 bg-gradient-to-b from-white/[0.07] via-transparent to-transparent z-0" aria-hidden="true" />
-              <div className="absolute top-0 right-0 w-36 h-36 bg-[#B8C5A8]/8 rounded-full blur-2xl pointer-events-none group-hover:bg-[#B8C5A8]/15 transition-colors" aria-hidden="true" />
+            {/* Column Right: Reconocimientos & Premios Oficiales (Rich Botanical Green Card) */}
+            <div className="rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group border border-[#B8C5A8]/50 bg-gradient-to-br from-[#45583b]/65 via-[#35452f]/75 to-[#243020]/90 backdrop-blur-xl shadow-[0_24px_55px_rgba(20,32,18,0.45),inset_0_1.5px_1.5px_rgba(184,197,168,0.35)] hover:border-[#B8C5A8]/80 transition-all">
+              <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#B8C5A8]/70 to-transparent pointer-events-none z-20" aria-hidden="true" />
 
               <div className="relative z-10 space-y-7">
                 <div className="flex items-center gap-3 border-b border-white/10 pb-4">

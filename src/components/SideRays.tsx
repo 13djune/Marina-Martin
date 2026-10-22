@@ -42,20 +42,20 @@ export const SideRays: React.FC<SideRaysProps> = ({
   className = '',
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const isVisibleRef = useRef(false);
+  const isVisibleRef = useRef(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     // Check WebGL availability
-    const gl = canvas.getContext('webgl', { alpha: true, antialias: false });
+    const gl = canvas.getContext('webgl', { alpha: true, antialias: false, powerPreference: 'high-performance' });
     if (!gl) return;
 
     let animId: number | null = null;
     let observer: IntersectionObserver | null = null;
 
-    // Intersection observer for performance optimization
+    // Intersection observer for performance optimization when scrolled out of view
     observer = new IntersectionObserver(
       ([entry]) => {
         isVisibleRef.current = entry.isIntersecting;
@@ -196,7 +196,7 @@ export const SideRays: React.FC<SideRaysProps> = ({
     const flipY = origin === 'bottom-right' || origin === 'bottom-left' ? 1.0 : 0.0;
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       const width = canvas.clientWidth || window.innerWidth;
       const height = canvas.clientHeight || window.innerHeight;
       const displayW = Math.floor(width * dpr);

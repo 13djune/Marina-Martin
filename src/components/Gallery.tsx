@@ -136,7 +136,7 @@ export default function Gallery() {
           {/* Large Interleaved Typography: Text woven with real artwork capsules and lenses */}
           <div className="text-left select-none space-y-3 sm:space-y-4">
             <div className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-sans font-black uppercase text-[#faf7f2] leading-[1.15] tracking-tight flex flex-wrap items-center gap-x-3 gap-y-2.5">
-              <span>CREAMOS</span>
+              <span>{t("CREAMOS", "WE CREATE")}</span>
               
               {/* Inline Image Capsule 1 */}
               <span className="inline-flex items-center h-8 sm:h-11 md:h-13 px-2 sm:px-2.5 rounded-full bg-white/15 border border-white/30 backdrop-blur-md overflow-hidden shadow-lg transform hover:scale-105 transition-transform align-middle">
@@ -145,11 +145,11 @@ export default function Gallery() {
                   alt="Entorno orgánico" 
                   className="w-12 sm:w-16 md:w-20 h-5 sm:h-7 md:h-9 object-cover rounded-full"
                 />
-                <span className="text-[10px] font-mono text-[#B8C5A8] ml-1.5 hidden sm:inline">[Entorno]</span>
+                <span className="text-[10px] font-mono text-[#B8C5A8] ml-1.5 hidden sm:inline">[{t("Entorno", "Environment")}]</span>
               </span>
 
-              <span>MUNDOS</span>
-              <span className="italic font-serif font-light text-[#B8C5A8]">VISUALES</span>
+              <span>{t("MUNDOS", "VISUAL")}</span>
+              <span className="italic font-serif font-light text-[#B8C5A8]">{t("VISUALES", "WORLDS")}</span>
               
               {/* Inline Circular Image Lens 2 */}
               <span className="inline-flex items-center justify-center w-8 h-8 sm:w-11 sm:h-11 md:w-13 md:h-13 rounded-full bg-white/20 border-2 border-white/40 overflow-hidden shadow-lg transform hover:scale-110 transition-transform align-middle">
@@ -160,8 +160,8 @@ export default function Gallery() {
                 />
               </span>
 
-              <span>PARA</span>
-              <span>CINE</span>
+              <span>{t("PARA", "FOR")}</span>
+              <span>{t("CINE", "CINEMA")}</span>
 
               {/* Inline Image Capsule 3 */}
               <span className="inline-flex items-center h-8 sm:h-11 md:h-13 px-2 sm:px-2.5 rounded-full bg-white/15 border border-white/30 backdrop-blur-md overflow-hidden shadow-lg transform hover:scale-105 transition-transform align-middle">
@@ -170,11 +170,11 @@ export default function Gallery() {
                   alt="Personaje y ropaje" 
                   className="w-12 sm:w-16 md:w-20 h-5 sm:h-7 md:h-9 object-cover rounded-full"
                 />
-                <span className="text-[10px] font-mono text-[#B8C5A8] ml-1.5 hidden sm:inline">[Personaje]</span>
+                <span className="text-[10px] font-mono text-[#B8C5A8] ml-1.5 hidden sm:inline">[{t("Personaje", "Character")}]</span>
               </span>
 
               <span>&</span>
-              <span className="italic font-serif font-light text-[#faf7f2]">VIDEOJUEGOS</span>
+              <span className="italic font-serif font-light text-[#faf7f2]">{t("VIDEOJUEGOS", "VIDEO GAMES")}</span>
             </div>
 
             <p className="text-xs sm:text-sm md:text-base font-serif italic text-[#eedbe1] max-w-3xl pt-2 leading-relaxed">

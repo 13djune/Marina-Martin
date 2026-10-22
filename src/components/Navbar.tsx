@@ -112,12 +112,14 @@ export default function Navbar() {
             <button 
               type="button"
               onClick={toggleLang}
-              className="flex items-center gap-2 hover:text-[#ffd8dc] hover:border-[#ffd8dc] transition-colors ml-2 border border-white/25 px-3.5 min-h-[44px] rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8] cursor-pointer font-bold text-[#faf7f2] backdrop-blur-md bg-white/10 hover:bg-white/20"
+              className="flex items-center gap-1.5 transition-colors ml-2 border border-white/25 hover:border-[#ffd8dc] px-3.5 min-h-[44px] rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8] cursor-pointer font-bold text-[#faf7f2] backdrop-blur-md bg-white/10 hover:bg-white/20"
               aria-label={lang === 'es' ? 'Cambiar idioma a Inglés (EN)' : 'Switch language to Spanish (ES)'}
-              title={lang === 'es' ? 'Cambiar idioma a Inglés (EN)' : 'Switch language to Spanish (ES)'}
+              title={lang === 'es' ? 'Cambiar a English' : 'Cambiar a Español'}
             >
-              <Globe size={15} className="text-[#B8C5A8]" aria-hidden="true" />
-              <span>{lang === 'es' ? 'EN' : 'ES'}</span>
+              <Globe size={14} className="text-[#B8C5A8]" aria-hidden="true" />
+              <span className={`text-[11px] font-mono ${lang === 'es' ? 'text-[#B8C5A8] font-black underline underline-offset-2' : 'text-white/60 hover:text-[#ffd8dc]'}`}>ES</span>
+              <span className="text-white/30 text-[10px]">/</span>
+              <span className={`text-[11px] font-mono ${lang === 'en' ? 'text-[#B8C5A8] font-black underline underline-offset-2' : 'text-white/60 hover:text-[#ffd8dc]'}`}>EN</span>
             </button>
           </div>
 

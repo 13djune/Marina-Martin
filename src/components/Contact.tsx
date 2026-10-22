@@ -193,11 +193,11 @@ export default function Contact() {
                   </button>
                   <a
                     href="mailto:marina.martin.prieto@gmail.com"
-                    className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#faf7f2] hover:bg-[#ffd8dc] text-[#263120] text-xs font-mono font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md hover:shadow-lg active:scale-95"
+                    className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#faf7f2] hover:bg-[#ffd8dc] text-[#263120] hover:text-[#263120] text-xs font-mono font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md hover:shadow-lg active:scale-95"
                     aria-label={t("Escribir correo a marina.martin.prieto@gmail.com", "Write email to marina.martin.prieto@gmail.com")}
                   >
-                    <span>{t("Escribir", "Write")}</span>
-                    <span aria-hidden="true" className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
+                    <span className="text-[#263120] font-black">{t("Escribir", "Write")}</span>
+                    <span aria-hidden="true" className="text-[#263120] font-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
                   </a>
                 </div>
               </div>
