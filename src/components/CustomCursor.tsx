@@ -50,20 +50,20 @@ export default function CustomCursor() {
 
     const onMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (
+      if (!target) return;
+      const shouldHover = Boolean(
         target.tagName.toLowerCase() === 'button' ||
         target.tagName.toLowerCase() === 'a' ||
         target.closest('button') ||
         target.closest('a') ||
-        target.classList.contains('cursor-pointer') ||
+        target.classList?.contains('cursor-pointer') ||
         target.closest('.cursor-pointer') ||
-        target.getAttribute('role') === 'button' ||
+        target.getAttribute?.('role') === 'button' ||
         target.tagName.toLowerCase() === 'input' ||
         target.tagName.toLowerCase() === 'textarea'
-      ) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
+      );
+      if (isHoveringRef.current !== shouldHover) {
+        setIsHovering(shouldHover);
       }
     };
 

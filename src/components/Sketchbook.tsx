@@ -140,36 +140,31 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
   const carmillaIllustration1Hotspots = pages.page03.hotspots || [];
   const carmillaIllustration2Hotspots = pages.page04.hotspots || [];
 
-  // Tactile book flip / slide animation variants for Framer Motion
+  // Tactile book flip / slide animation variants for Framer Motion (Smooth, non-jumping)
   const mobileFlipVariants = {
     enter: (direction: 'forward' | 'backward') => ({
-      x: direction === 'forward' ? '75%' : '-75%',
-      rotateY: direction === 'forward' ? 24 : -24,
+      x: direction === 'forward' ? '35%' : '-35%',
       opacity: 0,
-      scale: 0.93,
+      scale: 0.97,
     }),
     center: {
       x: '0%',
-      rotateY: 0,
       opacity: 1,
       scale: 1,
       transition: {
-        x: { type: 'spring', stiffness: 280, damping: 28 },
-        rotateY: { type: 'spring', stiffness: 260, damping: 26 },
-        opacity: { duration: 0.28 },
-        scale: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+        x: { type: 'spring', stiffness: 320, damping: 32 },
+        opacity: { duration: 0.25 },
+        scale: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
       },
     },
     exit: (direction: 'forward' | 'backward') => ({
-      x: direction === 'forward' ? '-75%' : '75%',
-      rotateY: direction === 'forward' ? -24 : 24,
+      x: direction === 'forward' ? '-35%' : '35%',
       opacity: 0,
-      scale: 0.93,
+      scale: 0.97,
       transition: {
-        x: { type: 'spring', stiffness: 280, damping: 28 },
-        rotateY: { type: 'spring', stiffness: 260, damping: 26 },
-        opacity: { duration: 0.2 },
-        scale: { duration: 0.3 },
+        x: { type: 'spring', stiffness: 320, damping: 32 },
+        opacity: { duration: 0.18 },
+        scale: { duration: 0.2 },
       },
     }),
   };
@@ -913,10 +908,11 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.94, y: 25 }}
-      whileInView={{ opacity: 1, scale: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+      initial={isDetail ? { opacity: 0, scale: 0.98 } : { opacity: 0, scale: 0.96 }}
+      animate={isDetail ? { opacity: 1, scale: 1 } : undefined}
+      whileInView={!isDetail ? { opacity: 1, scale: 1 } : undefined}
+      viewport={{ once: true }}
+      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
       className={`book-section relative w-full flex flex-col items-center justify-center select-none py-1 ${className}`}
       role="region"
       aria-roledescription={t("Cuaderno interactivo", "Interactive sketchbook")}
@@ -977,7 +973,7 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
             className="w-full aspect-[1/1] sm:aspect-[4/5] relative select-none"
             style={{ perspective: 1400 }}
           >
-            <AnimatePresence mode="popLayout" custom={mobileDirection}>
+            <AnimatePresence mode="wait" custom={mobileDirection}>
               <motion.div
                 key={mobilePageIndex}
                 custom={mobileDirection}
@@ -1194,14 +1190,17 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
           style={{
             transformOrigin: 'left center',
             transformStyle: 'preserve-3d',
+            willChange: 'transform',
             pointerEvents: isCoverClosed ? 'none' : 'auto',
           }}
           animate={{
             rotateY: (0 >= totalLeaves - flippedCount) ? -180 : 0,
+            translateZ: turningLeaf === 0 ? 5 : 0,
             zIndex: getLeafZIndex(0),
           }}
           transition={{
             rotateY: { duration: FLIP_DURATION, ease: FLIP_EASE },
+            translateZ: { duration: FLIP_DURATION * 0.5 },
             zIndex: { duration: 0 },
           }}
           onClick={(e) => {
@@ -1346,14 +1345,17 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
           style={{
             transformOrigin: 'left center',
             transformStyle: 'preserve-3d',
+            willChange: 'transform',
             pointerEvents: isCoverClosed || isBackClosed ? 'none' : 'auto',
           }}
           animate={{
             rotateY: (1 >= totalLeaves - flippedCount) ? -180 : 0,
+            translateZ: turningLeaf === 1 ? 5 : 0,
             zIndex: getLeafZIndex(1),
           }}
           transition={{
             rotateY: { duration: FLIP_DURATION, ease: FLIP_EASE },
+            translateZ: { duration: FLIP_DURATION * 0.5 },
             zIndex: { duration: 0 },
           }}
           onClick={(e) => {
@@ -1525,14 +1527,17 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
           style={{
             transformOrigin: 'left center',
             transformStyle: 'preserve-3d',
+            willChange: 'transform',
             pointerEvents: isCoverClosed || isBackClosed ? 'none' : 'auto',
           }}
           animate={{
             rotateY: (2 >= totalLeaves - flippedCount) ? -180 : 0,
+            translateZ: turningLeaf === 2 ? 5 : 0,
             zIndex: getLeafZIndex(2),
           }}
           transition={{
             rotateY: { duration: FLIP_DURATION, ease: FLIP_EASE },
+            translateZ: { duration: FLIP_DURATION * 0.5 },
             zIndex: { duration: 0 },
           }}
           onClick={(e) => {
@@ -1817,14 +1822,17 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
           style={{
             transformOrigin: 'left center',
             transformStyle: 'preserve-3d',
+            willChange: 'transform',
             pointerEvents: isCoverClosed || isBackClosed ? 'none' : 'auto',
           }}
           animate={{
             rotateY: (3 >= totalLeaves - flippedCount) ? -180 : 0,
+            translateZ: turningLeaf === 3 ? 5 : 0,
             zIndex: getLeafZIndex(3),
           }}
           transition={{
             rotateY: { duration: FLIP_DURATION, ease: FLIP_EASE },
+            translateZ: { duration: FLIP_DURATION * 0.5 },
             zIndex: { duration: 0 },
           }}
           onClick={(e) => {
@@ -2151,14 +2159,17 @@ export const Sketchbook: React.FC<SketchbookProps> = ({
           style={{
             transformOrigin: 'left center',
             transformStyle: 'preserve-3d',
+            willChange: 'transform',
             pointerEvents: isBackClosed ? 'none' : 'auto',
           }}
           animate={{
             rotateY: (4 >= totalLeaves - flippedCount) ? -180 : 0,
+            translateZ: turningLeaf === 4 ? 5 : 0,
             zIndex: getLeafZIndex(4),
           }}
           transition={{
             rotateY: { duration: FLIP_DURATION, ease: FLIP_EASE },
+            translateZ: { duration: FLIP_DURATION * 0.5 },
             zIndex: { duration: 0 },
           }}
           onClick={(e) => {

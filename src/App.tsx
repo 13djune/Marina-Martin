@@ -56,7 +56,7 @@ function MainContent() {
         {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
       </AnimatePresence>
       
-      <div className={`bg-[#5E3F47] min-h-screen relative overflow-hidden text-[#faf7f2] selection:bg-[#5b6c4b] selection:text-[#faf7f2] transition-opacity duration-300 ${isLoading ? 'opacity-0 h-screen overflow-hidden' : 'opacity-100'}`}>
+      <div className={`bg-[#5E3F47] min-h-screen relative overflow-hidden text-[#faf7f2] selection:bg-[#5b6c4b] selection:text-[#faf7f2] transition-opacity duration-300 ${isLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
         <CustomCursor />
         <BackToTop />
         {/* Rich Velvety Burgundy Mauve Canvas Foundation (#5E3F47) */}

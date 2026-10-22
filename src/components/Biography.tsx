@@ -45,12 +45,8 @@ export default function Biography() {
   ];
 
   return (
-    <motion.section 
+    <section 
       id="about" 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.02 }}
-      transition={{ duration: 0.45, ease: "easeOut" }}
       className="py-24 px-6 md:px-12 relative z-10 text-[#faf7f2] overflow-hidden"
     >
       {/* Distinct Sage & Moss Green Atmospheric Illumination highlighting Section from #5E3F47 */}
@@ -65,12 +61,8 @@ export default function Biography() {
         {/* Top Section Intro: Profile Card & Bio Content with Framer Motion Entrance */}
         <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-24 mb-24">
           
-          {/* Image Side with Framer Motion Fade-in and subtle vertical motion */}
-          <motion.div 
-            initial={{ opacity: 0, y: 35 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+          {/* Image Side with Instant Rich Green Presence (No color loading lag) */}
+          <div 
             className="w-full md:w-5/12 relative"
           >
             <div className="w-full flex justify-center">
@@ -86,8 +78,8 @@ export default function Biography() {
                 enableTilt={true}
                 enableMobileTilt={false}
                 behindGlowEnabled={true}
-                behindGlowColor="rgba(91, 108, 75, 0.25)"
-                innerGradient="linear-gradient(145deg, rgba(91, 108, 75, 0.15) 0%, rgba(255, 255, 255, 0.2) 100%)"
+                behindGlowColor="rgba(184, 197, 168, 0.45)"
+                innerGradient="linear-gradient(145deg, rgba(91, 108, 75, 0.3) 0%, rgba(35, 48, 32, 0.85) 100%)"
                 onContactClick={() => {
                   const element = document.getElementById('contact');
                   if (element) {
@@ -97,15 +89,11 @@ export default function Biography() {
               />
             </div>
             
-            <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-[#5b6c4b]/20 blur-3xl rounded-full z-[-1]"></div>
-          </motion.div>
+            <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-[#5b6c4b]/30 blur-3xl rounded-full z-[-1]"></div>
+          </div>
 
-          {/* Text Side with Framer Motion Fade-in and vertical movement */}
-          <motion.div 
-            initial={{ opacity: 0, y: 35 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.85, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+          {/* Text Side with Instant Clean Rendering */}
+          <div 
             className="w-full md:w-7/12 flex flex-col justify-center"
           >
             <div className="pt-6">
@@ -220,17 +208,11 @@ export default function Biography() {
                 </a>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Resume / Experience Section: Master Curated 2-Tier Balanced Layout */}
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.08 }}
-          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="pt-16 border-t border-white/15 space-y-12"
-        >
+        {/* Resume / Experience Section: Master Curated 2-Tier Balanced Layout (Instant color presence, no delay) */}
+        <div className="pt-16 border-t border-white/15 space-y-12">
           {/* Section Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2">
             <div>
@@ -257,9 +239,6 @@ export default function Biography() {
                 <Briefcase size={15} />
               </div>
               <h4 className="text-xl font-serif text-[#faf7f2] font-bold italic">{t("Experiencia Profesional", "Professional Experience")}</h4>
-              <span className="text-[11px] font-mono uppercase tracking-widest text-[#B8C5A8] ml-2 font-semibold">
-                {t("3 Roles de Producción", "3 Production Roles")}
-              </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
@@ -268,19 +247,18 @@ export default function Biography() {
                 <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/50 to-transparent pointer-events-none z-20" aria-hidden="true" />
                 <div className="relative z-10">
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#B8C5A8] font-bold bg-white/15 px-2.5 py-0.5 rounded-full border border-white/20">
-                      {t("ACTUALIDAD", "PRESENT")}
+                    <span className="text-xs font-mono px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-[#B8C5A8] font-semibold shadow-xs">
+                      {t("2022 — Presente", "2022 — Present")}
                     </span>
-                    <span className="text-xs font-mono text-[#d5decb]">{t("2022 - Actualidad", "2022 - Present")}</span>
                   </div>
                   <h5 className="text-lg font-bold text-bone leading-snug mb-1">{t("Ilustradora Freelance", "Freelance Illustrator")}</h5>
                   <div className="text-xs uppercase tracking-wider text-[#d5decb] font-mono font-semibold mb-3">
-                    {t("Autónoma", "Freelance")}
+                    {t("Autónoma · Trabajo Remoto", "Freelance · Remote Work")}
                   </div>
                   <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans mb-5">
                     {t(
-                      <>Trabajo independiente y encargos personalizados. Creación de <strong className="text-bone font-semibold">ilustraciones para portadas de libros</strong>, diseño visual para una <strong className="text-bone font-semibold">asociación sin ánimo de lucro</strong> y gestión continua de comisiones artísticas internacionales.</>,
-                      <>Independent artwork and custom assignments. Creation of <strong className="text-bone font-semibold">book cover illustrations</strong>, visual design for a <strong className="text-bone font-semibold">non-profit association</strong>, and ongoing management of international art commissions.</>
+                      <>Trabajo independiente y encargos personalizados. Creación de <strong className="text-bone font-semibold">ilustraciones para portadas de libros</strong>, diseño visual para una <strong className="text-bone font-semibold">asociación sin ánimo de lucro</strong> y gestión continua de <strong className="text-bone font-semibold">comisiones artísticas internacionales</strong>.</>,
+                      <>Independent artwork and custom assignments. Creation of <strong className="text-bone font-semibold">book cover illustrations</strong>, visual design for a <strong className="text-bone font-semibold">non-profit association</strong>, and ongoing management of <strong className="text-bone font-semibold">international art commissions</strong>.</>
                     )}
                   </p>
                 </div>
@@ -296,10 +274,9 @@ export default function Biography() {
                 <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/50 to-transparent pointer-events-none z-20" aria-hidden="true" />
                 <div className="relative z-10">
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#B8C5A8] font-bold bg-white/15 px-2.5 py-0.5 rounded-full border border-white/20">
-                      {t("ACTUALIDAD", "PRESENT")}
+                    <span className="text-xs font-mono px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-[#B8C5A8] font-semibold shadow-xs">
+                      {t("Ago 2023 — Presente", "Aug 2023 — Present")}
                     </span>
-                    <span className="text-xs font-mono text-[#d5decb]">{t("Ago 2023 - Actualidad", "Aug 2023 - Present")}</span>
                   </div>
                   <h5 className="text-lg font-bold text-bone leading-snug mb-1">{t("Artista Conceptual", "Concept Artist")}</h5>
                   <div className="text-xs uppercase tracking-wider text-[#d5decb] font-mono font-semibold mb-3">
@@ -307,23 +284,23 @@ export default function Biography() {
                       href="https://www.linkedin.com/company/nocturnia-studios/" 
                       target="_blank" 
                       rel="noopener noreferrer" 
-                      className="text-[#B8C5A8] hover:text-white font-semibold transition-colors underline decoration-[#B8C5A8]/50"
+                      className="text-[#B8C5A8] hover:text-[#ffd8dc] font-semibold transition-colors underline decoration-[#B8C5A8]/50 hover:decoration-[#ffd8dc]"
                     >
                       Nocturnia Studios ↗
                     </a>
                   </div>
                   <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans mb-5">
                     {t(
-                      <>Trabajo autónomo en remoto. Diseño y desarrollo visual de <strong className="text-bone font-semibold">fondos, entornos y personajes</strong> utilizando <strong className="text-bone font-semibold">Adobe Photoshop</strong> para proyectos cinematográficos.</>,
-                      <>Freelance remote work. Design and visual development of <strong className="text-bone font-semibold">backgrounds, environments and characters</strong> using <strong className="text-bone font-semibold">Adobe Photoshop</strong> for cinematic projects.</>
+                      <>Trabajo autónomo en remoto. Diseño y desarrollo visual de <strong className="text-bone font-semibold">fondos, entornos y personajes</strong> utilizando <strong className="text-bone font-semibold">Adobe Photoshop</strong> para <strong className="text-bone font-semibold">proyectos cinematográficos</strong>.</>,
+                      <>Freelance remote work. Design and visual development of <strong className="text-bone font-semibold">backgrounds, environments and characters</strong> using <strong className="text-bone font-semibold">Adobe Photoshop</strong> for <strong className="text-bone font-semibold">cinematic projects</strong>.</>
                     )}
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-1.5 pt-3 border-t border-white/10 relative z-10">
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Concept Art</span>
-                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-[#5b6c4b]/30 text-[#B8C5A8] border border-[#B8C5A8]/40 font-bold">Personajes</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Personajes</span>
                   <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Entornos & Props</span>
                   <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Photoshop</span>
+                  <span className="text-[10px] font-mono px-2 py-1 rounded-md bg-white/[0.08] text-bone border border-white/10">Procreate</span>
                 </div>
               </div>
 
@@ -332,19 +309,18 @@ export default function Biography() {
                 <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/50 to-transparent pointer-events-none z-20" aria-hidden="true" />
                 <div className="relative z-10">
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#d5decb] font-bold bg-white/10 px-2.5 py-0.5 rounded-full border border-white/15">
-                      {t("MADRID", "MADRID")}
+                    <span className="text-xs font-mono px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-[#B8C5A8] font-semibold shadow-xs">
+                      {t("Marzo 2023", "March 2023")}
                     </span>
-                    <span className="text-xs font-mono text-[#d5decb]">{t("Mar 2023", "Mar 2023")}</span>
                   </div>
                   <h5 className="text-lg font-bold text-bone leading-snug mb-1">{t("Azafata de Eventos, AULA", "Event Hostess, AULA")}</h5>
                   <div className="text-xs uppercase tracking-wider text-[#d5decb] font-mono font-semibold mb-3">
-                    Lightbox Academy • Madrid
+                    Lightbox Academy · Madrid
                   </div>
                   <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans mb-5">
                     {t(
-                      "Contrato de prácticas en Madrid. Asistencia y representación académica en el Salón Internacional del Estudiante y la Oferta Educativa (AULA), asesorando y orientando a futuros estudiantes de artes digitales.",
-                      "Internship in Madrid. Attendance and academic representation at the International Educational Opportunities Exhibition (AULA), advising future digital art students."
+                      <>Contrato de prácticas en Madrid. Asistencia y representación académica en el <strong className="text-bone font-semibold">Salón Internacional del Estudiante y la Oferta Educativa (AULA)</strong>, asesorando y orientando a futuros estudiantes de <strong className="text-bone font-semibold">artes digitales</strong>.</>,
+                      <>Internship in Madrid. Attendance and academic representation at the <strong className="text-bone font-semibold">International Educational Opportunities Exhibition (AULA)</strong>, advising future students of <strong className="text-bone font-semibold">digital arts</strong>.</>
                     )}
                   </p>
                 </div>
@@ -387,20 +363,22 @@ export default function Biography() {
                         href="https://lboxacademy.es/" 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="text-[#B8C5A8] hover:text-white font-semibold transition-colors underline decoration-[#B8C5A8]/50"
+                        className="text-[#B8C5A8] hover:text-[#ffd8dc] font-semibold transition-colors underline decoration-[#B8C5A8]/50 hover:decoration-[#ffd8dc]"
                       >
                         Lightbox Academy ↗
                       </a>
                     </h5>
-                    <span className="text-xs font-mono text-[#B8C5A8]">2023 · Madrid</span>
+                    <span className="text-[11px] font-mono px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-[#B8C5A8] font-semibold shadow-xs">
+                      {t("2023 · Madrid", "2023 · Madrid")}
+                    </span>
                   </div>
                   <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2">
                     {t("Máster / Especialización en Concept Art", "Master / Specialization in Concept Art")}
                   </div>
                   <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
                     {t(
-                      <>Especialización en desarrollo visual: <strong className="text-bone font-semibold">diseño de personajes, entornos y atrezo</strong>, ilustración digital, <strong className="text-bone font-semibold">teoría del color e iluminación cinematográfica</strong>.</>,
-                      <>Visual development specialization: <strong className="text-bone font-semibold">character design, environments and props</strong>, digital illustration, <strong className="text-bone font-semibold">color theory and cinematic lighting</strong>.</>
+                      <>Especialización en <strong className="text-bone font-semibold">desarrollo visual</strong>: <strong className="text-bone font-semibold">diseño de personajes, entornos y atrezo</strong>, <strong className="text-bone font-semibold">ilustración digital</strong>, <strong className="text-bone font-semibold">teoría del color e iluminación cinematográfica</strong>.</>,
+                      <>Specialization in <strong className="text-bone font-semibold">visual development</strong>: <strong className="text-bone font-semibold">character design, environments and props</strong>, <strong className="text-bone font-semibold">digital illustration</strong>, <strong className="text-bone font-semibold">color theory and cinematic lighting</strong>.</>
                     )}
                   </p>
                 </div>
@@ -410,15 +388,17 @@ export default function Biography() {
                   <div className="absolute w-2.5 h-2.5 bg-[#B8C5A8] rotate-45 organic-diamond-sm -left-[6px] top-2 shadow-[0_0_8px_rgba(184,197,168,0.7)]" aria-hidden="true" />
                   <div className="flex items-center justify-between gap-2 mb-1">
                     <h5 className="text-base sm:text-lg font-bold text-bone leading-snug">{t("Grado en Bellas Artes", "Degree in Fine Arts")}</h5>
-                    <span className="text-xs font-mono text-[#B8C5A8]">2017 - 2021 · Granada</span>
+                    <span className="text-[11px] font-mono px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-[#B8C5A8] font-semibold shadow-xs">
+                      {t("2017 — 2021 · Granada", "2017 — 2021 · Granada")}
+                    </span>
                   </div>
                   <div className="text-xs uppercase tracking-wider text-[#B8C5A8] font-mono font-semibold mb-2">
                     Universidad de Granada
                   </div>
                   <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans">
                     {t(
-                      <>Cuatro años de formación plástica integral: <strong className="text-bone font-semibold">dibujo del natural, pintura al óleo y acrílico, anatomía artística</strong>, pensamiento visual crítico y composición clásica.</>,
-                      <>Four years of comprehensive plastic training: <strong className="text-bone font-semibold">life drawing, oil & acrylic painting, artistic anatomy</strong>, critical visual thinking and classical composition.</>
+                      <>Cuatro años de <strong className="text-bone font-semibold">formación plástica integral</strong>: <strong className="text-bone font-semibold">dibujo del natural, pintura al óleo y acrílico, anatomía artística</strong>, <strong className="text-bone font-semibold">pensamiento visual crítico</strong> y <strong className="text-bone font-semibold">composición clásica</strong>.</>,
+                      <>Four years of <strong className="text-bone font-semibold">comprehensive plastic training</strong>: <strong className="text-bone font-semibold">life drawing, oil & acrylic painting, artistic anatomy</strong>, <strong className="text-bone font-semibold">critical visual thinking</strong> and <strong className="text-bone font-semibold">classical composition</strong>.</>
                     )}
                   </p>
                 </div>
@@ -437,14 +417,17 @@ export default function Biography() {
                     </div>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-xs font-sans px-2.5 py-1 rounded-lg bg-white/[0.05] border border-white/10 text-bone">
-                      <strong className="text-[#B8C5A8]">Español:</strong> {t("Nativo", "Native")}
+                    {/* Español: Native language (Prominently marked with rounded pill) */}
+                    <span className="text-xs font-mono px-3.5 py-1.5 rounded-full bg-[#5D6E4D]/60 border border-[#B8C5A8] text-[#faf7f2] font-bold shadow-[0_0_12px_rgba(184,197,168,0.25)] flex items-center gap-1.5">
+                      ★ <strong className="text-[#faf7f2]">Español:</strong> {t("Nativo", "Native")}
                     </span>
-                    <span className="text-xs font-sans px-2.5 py-1 rounded-lg bg-white/[0.05] border border-white/10 text-bone">
-                      <strong className="text-[#B8C5A8]">English:</strong> B2 {t("Profesional", "Professional")}
+                    {/* English: Neutral rounded pill */}
+                    <span className="text-xs font-mono px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/15 text-bone">
+                      <strong className="text-[#faf7f2]">English:</strong> B2 {t("Profesional", "Professional")}
                     </span>
-                    <span className="text-xs font-sans px-2.5 py-1 rounded-lg bg-[#5b6c4b]/20 border border-[#B8C5A8]/30 text-bone">
-                      <strong className="text-[#B8C5A8]">{t("Japonés", "Japanese")}:</strong> N5
+                    {/* Japanese: Unmarked neutral rounded pill */}
+                    <span className="text-xs font-mono px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/15 text-bone">
+                      <strong className="text-[#faf7f2]">{t("Japonés", "Japanese")}:</strong> N5
                     </span>
                   </div>
                 </div>
@@ -478,7 +461,7 @@ export default function Biography() {
                     <span className="text-[10px] font-mono uppercase tracking-widest text-[#B8C5A8] font-bold bg-[#5b6c4b]/20 px-2.5 py-0.5 rounded-full border border-[#B8C5A8]/30 flex items-center gap-1">
                       <Award size={11} /> {t("PREMIO JOVEN", "YOUTH PRIZE")}
                     </span>
-                    <span className="text-xs font-mono text-bone-muted">{t("Sep 2026", "Sep 2026")}</span>
+                    <span className="text-[11px] font-mono px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-[#B8C5A8] font-semibold shadow-xs">{t("Sep 2026 · Granada", "Sep 2026 · Granada")}</span>
                   </div>
 
                   {/* Disposición al lado del texto */}
@@ -492,7 +475,7 @@ export default function Biography() {
                           href="https://fundacioncrg.com/fundacion-caja-rural-granada-entrega-el-primer-premio-de-su-xviii-certamen-de-pintura-rapida-a-pepe-bonano/" 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          className="text-[#B8C5A8] hover:text-white font-semibold transition-colors inline-block underline decoration-[#B8C5A8]/50"
+                          className="text-[#B8C5A8] hover:text-[#ffd8dc] font-semibold transition-colors inline-block underline decoration-[#B8C5A8]/50 hover:decoration-[#ffd8dc]"
                           title={t("Ver enlace oficial en Fundación Caja Rural Granada", "View official link at Fundación Caja Rural Granada")}
                         >
                           Fundación Caja Rural Granada ↗
@@ -500,8 +483,8 @@ export default function Biography() {
                       </div>
                       <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans pt-1">
                         {t(
-                          <>Ganadora del <strong className="text-bone font-semibold">Premio Joven</strong> con mi cuadro <strong className="text-bone font-semibold">«Plaza Berrocal»</strong>, capturando la luz, la memoria y la atmósfera de mi infancia en <strong className="text-bone font-semibold">Granada</strong>.</>,
-                          <>Winner of the <strong className="text-bone font-semibold">Youth Prize</strong> with my painting <strong className="text-bone font-semibold">«Plaza Berrocal»</strong>, capturing the light, memory and atmosphere of my childhood in <strong className="text-bone font-semibold">Granada</strong>.</>
+                          <>Ganadora del <strong className="text-bone font-semibold">Premio Joven</strong> con mi cuadro <strong className="text-bone font-semibold">«Plaza Berrocal»</strong>, capturando la <strong className="text-bone font-semibold">luz, la memoria y la atmósfera</strong> de mi infancia en <strong className="text-bone font-semibold">Granada</strong>.</>,
+                          <>Winner of the <strong className="text-bone font-semibold">Youth Prize</strong> with my painting <strong className="text-bone font-semibold">«Plaza Berrocal»</strong>, capturing the <strong className="text-bone font-semibold">light, memory and atmosphere</strong> of my childhood in <strong className="text-bone font-semibold">Granada</strong>.</>
                         )}
                       </p>
                     </div>
@@ -544,7 +527,7 @@ export default function Biography() {
                     <span className="text-[10px] font-mono uppercase tracking-widest text-[#B8C5A8] font-bold bg-[#5b6c4b]/20 px-2.5 py-0.5 rounded-full border border-[#B8C5A8]/30 flex items-center gap-1">
                       <Award size={11} /> {t("1º PREMIO", "1ST PRIZE")}
                     </span>
-                    <span className="text-xs font-mono text-bone-muted">{t("Nov 2022", "Nov 2022")}</span>
+                    <span className="text-[11px] font-mono px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-[#B8C5A8] font-semibold shadow-xs">{t("Nov 2022 · Madrid", "Nov 2022 · Madrid")}</span>
                   </div>
 
                   {/* Disposición al lado del texto */}
@@ -555,7 +538,7 @@ export default function Biography() {
                           href="https://lboxacademy.es/eventos/entrega-del-premio-de-la-sexta-edicion-speed-painting-2022/" 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          className="text-[#B8C5A8] hover:text-white font-semibold transition-colors underline decoration-[#B8C5A8]/50"
+                          className="text-[#B8C5A8] hover:text-[#ffd8dc] font-semibold transition-colors underline decoration-[#B8C5A8]/50 hover:decoration-[#ffd8dc]"
                         >
                           {t("VI Edición Speed Painting", "VI Speed Painting Edition")} ↗
                         </a>
@@ -565,8 +548,8 @@ export default function Biography() {
                       </div>
                       <p className="text-sm text-bone-muted font-normal leading-relaxed font-sans pt-1">
                         {t(
-                          "Reto en directo de crear una ilustración sobre el Japón medieval con un toque de fantasía en tres horas bajo estricto límite temporal.",
-                          "Live challenge to create an illustration inspired by medieval Japan with a fantasy twist in three hours under strict time limit."
+                          <>Reto en directo de crear una <strong className="text-bone font-semibold">ilustración conceptual sobre el Japón medieval</strong> con un toque de fantasía en <strong className="text-bone font-semibold">tres horas</strong> bajo <strong className="text-bone font-semibold">estricto límite temporal</strong>.</>,
+                          <>Live challenge to create a <strong className="text-bone font-semibold">concept illustration inspired by medieval Japan</strong> with a fantasy twist in <strong className="text-bone font-semibold">three hours</strong> under <strong className="text-bone font-semibold">strict time limit</strong>.</>
                         )}
                       </p>
                     </div>
@@ -603,7 +586,7 @@ export default function Biography() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Lightbox Modal para ampliar las fotos de los premios */}
@@ -668,6 +651,6 @@ export default function Biography() {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.section>
+    </section>
   );
 }

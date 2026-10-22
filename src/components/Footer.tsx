@@ -16,7 +16,7 @@ export default function Footer() {
               href="https://www.instagram.com/black_umi" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="text-[#B8C5A8] hover:text-white font-semibold transition-colors min-h-[44px] flex items-center px-1 underline decoration-[#B8C5A8]/50 hover:decoration-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8]"
+              className="text-[#B8C5A8] hover:text-[#ffd8dc] font-semibold transition-colors min-h-[44px] flex items-center px-1 underline decoration-[#B8C5A8]/50 hover:decoration-[#ffd8dc] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8]"
               aria-label="Instagram de Marina Martín Prieto (abre en pestaña nueva)"
             >
               Instagram ↗
@@ -25,7 +25,7 @@ export default function Footer() {
               href="https://www.linkedin.com/in/marina-martin-prieto/" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="text-[#B8C5A8] hover:text-white font-semibold transition-colors min-h-[44px] flex items-center px-1 underline decoration-[#B8C5A8]/50 hover:decoration-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8]"
+              className="text-[#B8C5A8] hover:text-[#ffd8dc] font-semibold transition-colors min-h-[44px] flex items-center px-1 underline decoration-[#B8C5A8]/50 hover:decoration-[#ffd8dc] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8]"
               aria-label="LinkedIn de Marina Martín Prieto (abre en pestaña nueva)"
             >
               LinkedIn ↗

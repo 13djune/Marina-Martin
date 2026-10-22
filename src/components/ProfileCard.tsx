@@ -29,8 +29,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   showUserInfo = true,
   enableTilt = true,
   behindGlowEnabled = true,
-  behindGlowColor = 'rgba(62, 232, 143, 0.22)',
-  innerGradient = 'linear-gradient(145deg, rgba(62, 232, 143, 0.12) 0%, rgba(20, 24, 21, 0.95) 100%)',
+  behindGlowColor = 'rgba(184, 197, 168, 0.45)',
+  innerGradient = 'linear-gradient(145deg, rgba(91, 108, 75, 0.3) 0%, rgba(20, 24, 21, 0.95) 100%)',
   className = '',
   onContactClick,
 }) => {
@@ -81,14 +81,14 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
       className={`relative w-full max-w-[310px] sm:max-w-[360px] md:max-w-[385px] mx-auto select-none touch-manipulation ${className}`.trim()}
       style={{ perspective: '1200px' }}
     >
-      {/* 1. Behind Atmospheric Studio Desk Glow (Hardcoded fixed styles, no CSS variables) */}
+      {/* 1. Behind Atmospheric Studio Desk Glow (Instant rich green glow, no color loading lag) */}
       {behindGlowEnabled && (
         <div
-          className="absolute -inset-4 sm:-inset-6 pointer-events-none rounded-[36px] transition-opacity duration-500"
+          className="absolute -inset-4 sm:-inset-6 pointer-events-none rounded-[36px]"
           style={{
-            background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, ${behindGlowColor} 0%, rgba(62, 232, 143, 0.05) 45%, transparent 70%)`,
-            filter: 'blur(38px)',
-            opacity: isHovered ? 0.95 : 0.65,
+            background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, ${behindGlowColor} 0%, rgba(91, 108, 75, 0.15) 45%, transparent 70%)`,
+            filter: 'blur(34px)',
+            opacity: 0.88,
           }}
           aria-hidden="true"
         />

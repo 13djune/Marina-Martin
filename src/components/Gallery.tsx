@@ -31,33 +31,33 @@ export default function Gallery() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: 'top 85%',
+          start: 'top 95%',
           toggleActions: 'play none none none',
         },
       });
 
       tl.fromTo(
         headerRef.current,
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }
       )
       .fromTo(
         redLineRef.current,
-        { scaleX: 0 },
-        { scaleX: 1, duration: 0.8, ease: 'power3.out' },
-        '-=0.5'
+        { opacity: 0.6 },
+        { opacity: 1, duration: 0.35, ease: 'power2.out' },
+        '-=0.2'
       )
       .fromTo(
         descRef.current,
-        { opacity: 0, y: 25 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' },
-        '-=0.6'
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' },
+        '-=0.3'
       )
       .fromTo(
         filterRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' },
-        '-=0.4'
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+        '-=0.25'
       );
     }, section);
 
@@ -113,49 +113,10 @@ export default function Gallery() {
       className="py-20 md:py-28 px-4 sm:px-6 md:px-12 relative z-10"
     >
       <div className="max-w-7xl mx-auto">
-        {/* Section Header: Galería de Proyectos */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-12 gap-6">
-          <div ref={headerRef} className="will-change-transform">
-            <div className="flex items-center gap-2 mb-3 text-xs font-mono uppercase tracking-[0.25em] text-[#B8C5A8] font-bold">
-              <BookOpen size={14} aria-hidden="true" />
-              <span>{t("ARCHIVO DE CUADERNOS & ESTUDIOS", "SKETCHBOOK ARCHIVE & STUDIES")}</span>
-            </div>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-black uppercase text-[#faf7f2] italic leading-tight">
-              {t("Galería de", "Project")}<br/>
-              <span className="text-[#B8C5A8]">{t("Proyectos", "Gallery")}</span>
-            </h2>
-            <div 
-              ref={redLineRef}
-              className="w-24 h-1.5 bg-[#B8C5A8] mt-4 origin-left will-change-transform rounded-full"
-            />
-          </div>
-
-          <div ref={descRef} className="max-w-md space-y-3 will-change-transform">
-            <p className="text-[#eedbe1] text-sm md:text-base font-serif italic leading-relaxed">
-              {t(
-                "Colección de cuadernos de bocetos encuadernados. Haz clic en cualquier portada para abrir el cuaderno interactivo en 3D y explorar su proceso de creación.",
-                "Collection of bound sketchbooks. Click on any cover to open the interactive 3D book and explore its creative visual development process."
-              )}
-            </p>
-            <div className="flex items-center gap-2 text-xs font-mono text-[#eedbe1]">
-              <Sparkles size={13} className="text-[#B8C5A8]" aria-hidden="true" />
-              <span>
-                {t("Total en archivo:", "Archive total:")} <strong className="text-[#B8C5A8] font-bold">{galleryItems.length} {t("volúmenes", "volumes")}</strong>
-              </span>
-            </div>
-          </div>
-        </div>
-
         {/* ========================================================================= */}
-        {/* EDITORIAL SHOWCASE CARD: Frosted Glassmorphism with Interleaved Typography */}
+        {/* EDITORIAL SHOWCASE CARD: Placed above Galería de Proyectos title           */}
         {/* ========================================================================= */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="glass-panel rounded-3xl p-6 sm:p-8 md:p-10 mb-12 relative overflow-hidden backdrop-blur-2xl bg-white/[0.08] border border-white/25 shadow-[0_25px_65px_rgba(28,14,20,0.5),inset_0_1.5px_1.5px_rgba(255,255,255,0.4)]"
-        >
+        <div className="glass-panel rounded-3xl p-6 sm:p-8 md:p-10 mb-12 relative overflow-hidden backdrop-blur-2xl bg-white/[0.08] border border-white/25 shadow-[0_25px_65px_rgba(28,14,20,0.5),inset_0_1.5px_1.5px_rgba(255,255,255,0.4)]">
           {/* Top specular sheen */}
           <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/60 to-transparent pointer-events-none" />
 
@@ -163,7 +124,7 @@ export default function Gallery() {
           <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono uppercase tracking-widest text-[#eedbe1] pb-4 mb-6 border-b border-white/20">
             <div className="flex items-center gap-2">
               <span className="text-white font-bold bg-[#5b6c4b]/30 px-2.5 py-0.5 rounded-full border border-[#B8C5A8]/30">[ {t("Visión Escultórica", "Sculptural Vision")} ]</span>
-              <span className="bg-white/[0.06] px-2.5 py-0.5 rounded-full border border-white/10">[ {t("Atmósfera 8K", "8K Atmosphere")} ]</span>
+              <span className="bg-white/[0.06] px-2.5 py-0.5 rounded-full border border-white/10">[ {t("Atmósfera Cinematográfica", "Cinematic Atmosphere")} ]</span>
               <span className="bg-white/[0.06] px-2.5 py-0.5 rounded-full border border-white/10">[ {t("Claroscuro", "Chiaroscuro")} ]</span>
             </div>
             <div className="flex items-center gap-2 text-[#B8C5A8]">
@@ -218,12 +179,45 @@ export default function Gallery() {
 
             <p className="text-xs sm:text-sm md:text-base font-serif italic text-[#eedbe1] max-w-3xl pt-2 leading-relaxed">
               {t(
-                "«Cada imagen es un destello de una historia no contada; la luz guía la mirada, mientras la forma esculpe la memoria visual.»",
-                "«Each image is a spark of an untold story; light leads the eye while form sculpts the visual memory.»"
+                <>«Cada imagen es un destello de una <strong className="text-white font-semibold">historia no contada</strong>; la <strong className="text-white font-semibold">luz guía la mirada</strong>, mientras la <strong className="text-white font-semibold">forma esculpe la memoria visual</strong>.»</>,
+                <>«Each image is a spark of an <strong className="text-white font-semibold">untold story</strong>; <strong className="text-white font-semibold">light leads the eye</strong> while <strong className="text-white font-semibold">form sculpts the visual memory</strong>.»</>
               )}
             </p>
           </div>
-        </motion.div>
+        </div>
+
+        {/* Section Header: Galería de Proyectos */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-12 gap-6">
+          <div ref={headerRef} className="will-change-transform">
+            <div className="flex items-center gap-2 mb-3 text-xs font-mono uppercase tracking-[0.25em] text-[#B8C5A8] font-bold">
+              <BookOpen size={14} aria-hidden="true" />
+              <span>{t("ARCHIVO DE CUADERNOS & ESTUDIOS", "SKETCHBOOK ARCHIVE & STUDIES")}</span>
+            </div>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-black uppercase text-[#faf7f2] italic leading-tight">
+              {t("Galería de", "Project")}<br/>
+              <span className="text-[#B8C5A8]">{t("Proyectos", "Gallery")}</span>
+            </h2>
+            <div 
+              ref={redLineRef}
+              className="w-24 h-1.5 bg-[#B8C5A8] mt-4 origin-left will-change-transform rounded-full"
+            />
+          </div>
+
+          <div ref={descRef} className="max-w-md space-y-3 will-change-transform">
+            <p className="text-[#eedbe1] text-sm md:text-base font-serif italic leading-relaxed">
+              {t(
+                <>Colección de <strong className="text-white font-semibold">cuadernos de bocetos encuadernados</strong>. Haz clic en cualquier portada para abrir el <strong className="text-white font-semibold">cuaderno interactivo en 3D</strong> y explorar su <strong className="text-white font-semibold">proceso de creación</strong>.</>,
+                <>Collection of <strong className="text-white font-semibold">bound sketchbooks</strong>. Click on any cover to open the <strong className="text-white font-semibold">interactive 3D book</strong> and explore its <strong className="text-white font-semibold">creative development process</strong>.</>
+              )}
+            </p>
+            <div className="flex items-center gap-2 text-xs font-mono text-[#eedbe1]">
+              <Sparkles size={13} className="text-[#B8C5A8]" aria-hidden="true" />
+              <span>
+                {t("Total en archivo:", "Archive total:")} <strong className="text-[#B8C5A8] font-bold">{galleryItems.length} {t("volúmenes", "volumes")}</strong>
+              </span>
+            </div>
+          </div>
+        </div>
 
         {/* Category Filter Tabs with Smooth Layout Transition Animation */}
         <div 
@@ -270,39 +264,43 @@ export default function Gallery() {
           </div>
         </div>
 
-        {/* Sketchbook Covers Grid - With Animated Card Layout Transitions */}
-        <motion.div 
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 min-h-[380px]"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredItems.map((item, index) => (
-              <motion.div
-                key={item.id}
-                layout
-                layoutId={`card-${item.id}`}
-                variants={itemVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                transition={{
-                  layout: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
-                  opacity: { duration: 0.35 },
-                }}
-              >
-                <SketchbookCoverCard
-                  project={item}
-                  index={index}
-                  onClick={(e) => {
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    setOriginRect(rect);
-                    setSelectedProject(item);
+        {/* Sketchbook Covers Grid - With Smooth Staggered Transitions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 min-h-[380px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCategory}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+              className="contents"
+            >
+              {filteredItems.map((item, index) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.45,
+                    delay: Math.min(index * 0.04, 0.2),
+                    ease: [0.16, 1, 0.3, 1],
                   }}
-                />
-              </motion.div>
-            ))}
+                  className="w-full"
+                >
+                  <SketchbookCoverCard
+                    project={item}
+                    index={index}
+                    onClick={(e) => {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      setOriginRect(rect);
+                      setSelectedProject(item);
+                    }}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
           </AnimatePresence>
-        </motion.div>
+        </div>
       </div>
 
       {/* Full-Screen Immersive Sketchbook Studio Modal */}

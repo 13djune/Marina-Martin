@@ -10,8 +10,16 @@ export default function Navbar() {
   const { lang, toggleLang, t } = useLanguage();
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrolled = window.scrollY > 40;
+          setIsScrolled((prev) => (prev !== scrolled ? scrolled : prev));
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -83,7 +91,7 @@ export default function Navbar() {
           <a 
             href="#" 
             onClick={(e) => handleNavClick(e, '#')}
-            className="text-lg sm:text-xl md:text-2xl font-bold tracking-tighter uppercase border-b-2 border-[#B8C5A8] pb-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8] text-[#faf7f2] hover:text-[#B8C5A8] transition-colors"
+            className="text-lg sm:text-xl md:text-2xl font-bold tracking-tighter uppercase border-b-2 border-[#B8C5A8] pb-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8] text-[#faf7f2] hover:text-[#ffd8dc] transition-colors"
             aria-label="Marina Martín Prieto · Inicio"
           >
             MARINA • MARTÍN PRIETO
@@ -96,7 +104,7 @@ export default function Navbar() {
                 key={link.nameEn}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className="hover:text-[#B8C5A8] transition-colors min-h-[44px] flex items-center px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8]"
+                className="hover:text-[#ffd8dc] transition-colors min-h-[44px] flex items-center px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8]"
               >
                 {t(link.nameEs, link.nameEn)}
               </a>
@@ -104,7 +112,7 @@ export default function Navbar() {
             <button 
               type="button"
               onClick={toggleLang}
-              className="flex items-center gap-2 hover:text-[#B8C5A8] hover:border-[#B8C5A8] transition-colors ml-2 border border-white/25 px-3.5 min-h-[44px] rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8] cursor-pointer font-bold text-[#faf7f2] backdrop-blur-md bg-white/10 hover:bg-white/20"
+              className="flex items-center gap-2 hover:text-[#ffd8dc] hover:border-[#ffd8dc] transition-colors ml-2 border border-white/25 px-3.5 min-h-[44px] rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8C5A8] cursor-pointer font-bold text-[#faf7f2] backdrop-blur-md bg-white/10 hover:bg-white/20"
               aria-label={lang === 'es' ? 'Cambiar idioma a Inglés (EN)' : 'Switch language to Spanish (ES)'}
               title={lang === 'es' ? 'Cambiar idioma a Inglés (EN)' : 'Switch language to Spanish (ES)'}
             >
@@ -207,11 +215,11 @@ export default function Navbar() {
                       <span className="text-xs font-mono text-[#B8C5A8] font-bold">
                         {link.number}
                       </span>
-                      <span className="text-xl font-serif font-bold text-[#faf7f2] group-hover:text-[#B8C5A8] transition-colors italic">
+                      <span className="text-xl font-serif font-bold text-[#faf7f2] group-hover:text-[#ffd8dc] transition-colors italic">
                         {t(link.nameEs, link.nameEn)}
                       </span>
                     </div>
-                    <ArrowRight size={18} className="text-[#eedbe1] group-hover:text-[#B8C5A8] group-hover:translate-x-1 transition-all" />
+                    <ArrowRight size={18} className="text-[#eedbe1] group-hover:text-[#ffd8dc] group-hover:translate-x-1 transition-all" />
                   </motion.a>
                 ))}
               </nav>

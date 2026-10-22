@@ -32,7 +32,7 @@
   --color-dusty-pink-light: #fff0f2;
   --color-dusty-pink-deep: #e8b4b8;
   --color-link-rose: #B8C5A8;
-  --color-link-rose-hover: #ffffff;
+  --color-link-rose-hover: #ffd8dc;
 }
 
 @layer base {
@@ -50,6 +50,15 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: "Playfair Display", Georgia, serif;
     color: #faf7f2;
+  }
+
+  a {
+    transition: color 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, text-decoration-color 0.2s ease;
+  }
+
+  a:hover {
+    color: #ffd8dc !important;
+    text-decoration-color: #ffd8dc !important;
   }
 
   @media (pointer: fine) {
@@ -146,8 +155,30 @@
   border-radius: 24% 76% 24% 76% / 76% 24% 76% 24%;
 }
 
-/* Physical Frosted Glassmorphism Presets (Tuned for #5E3F47 background) */
-.moss-card, .glass-card, .stone-card {
+/* Physical Frosted Glassmorphism Presets - Instant Rich Green Colors on First Paint */
+.moss-card {
+  background: linear-gradient(135deg, rgba(184, 197, 168, 0.12) 0%, rgba(255, 255, 255, 0.07) 45%, rgba(93, 110, 77, 0.24) 100%);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(184, 197, 168, 0.35);
+  box-shadow: 
+    0 24px 60px rgba(32, 16, 22, 0.4),
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.25),
+    0 0 25px rgba(184, 197, 168, 0.12);
+  color: #faf7f2;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.moss-card:hover {
+  border-color: rgba(184, 197, 168, 0.75);
+  box-shadow: 
+    0 32px 75px rgba(32, 16, 22, 0.55),
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.5),
+    0 0 35px rgba(184, 197, 168, 0.35);
+}
+
+.glass-card, .stone-card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 45%, rgba(68, 38, 47, 0.35) 100%);
   backdrop-filter: blur(28px) saturate(180%);
   -webkit-backdrop-filter: blur(28px) saturate(180%);
@@ -157,15 +188,7 @@
     inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.35),
     inset 0 -1px 2px 0 rgba(0, 0, 0, 0.25);
   color: #faf7f2;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.moss-card:hover, .glass-card:hover, .stone-card:hover {
-  border-color: rgba(184, 197, 168, 0.65);
-  box-shadow: 
-    0 32px 75px rgba(32, 16, 22, 0.55),
-    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.5),
-    0 0 35px rgba(184, 197, 168, 0.3);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 /* Real Physical Frosted Glassmorphism Panels */
@@ -242,8 +265,8 @@
 }
 
 .link-accent:hover, .link-highlight:hover {
-  color: #ffffff;
-  text-decoration-color: #ffffff;
-  text-shadow: 0 0 12px rgba(184, 197, 168, 0.65);
+  color: #ffd8dc !important;
+  text-decoration-color: #ffd8dc !important;
+  text-shadow: 0 0 12px rgba(255, 216, 220, 0.65);
 }
 

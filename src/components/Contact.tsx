@@ -138,9 +138,11 @@ export default function Contact() {
             {t("Pedir una", "Request a")}<br />
             <span className="text-[#B8C5A8] font-black not-italic uppercase tracking-widest">{t("Comisión", "Commission")}</span>
           </h2>
-          <div className="w-24 h-1.5 bg-[#B8C5A8] mx-auto mt-6 rounded-full"></div>
           <p className="text-[#eedbe1] mt-8 max-w-2xl mx-auto text-lg font-serif leading-relaxed">
-            {t("¿Interesado en trabajar juntos? Cuéntame sobre tu proyecto y adjunta referencias o documentos relevantes.", "Interested in working together? Tell me about your project and attach relevant references or documents.")}
+            {t(
+              <>¿Interesado en <strong className="text-white font-semibold">trabajar juntos</strong>? Cuéntame sobre tu proyecto y adjunta <strong className="text-white font-semibold">referencias visuales o documentos</strong> relevantes para coordinar la <strong className="text-white font-semibold">visión artística</strong>.</>,
+              <>Interested in <strong className="text-white font-semibold">working together</strong>? Tell me about your project and attach relevant <strong className="text-white font-semibold">visual references or documents</strong> to coordinate the <strong className="text-white font-semibold">artistic vision</strong>.</>
+            )}
           </p>
 
           {/* Direct Email Highlight - Frosted Glassmorphism Card (Wider/Longer so whole email fits seamlessly) */}
@@ -162,7 +164,7 @@ export default function Contact() {
                     </div>
                     <a 
                       href="mailto:marina.martin.prieto@gmail.com" 
-                      className="text-base sm:text-lg md:text-xl font-mono font-bold text-[#faf7f2] hover:text-[#B8C5A8] transition-colors underline decoration-white/40 hover:decoration-[#B8C5A8] tracking-tight whitespace-nowrap block"
+                      className="text-base sm:text-lg md:text-xl font-mono font-bold text-[#faf7f2] hover:text-[#ffd8dc] transition-colors underline decoration-white/40 hover:decoration-[#ffd8dc] tracking-tight whitespace-nowrap block"
                       title={t("Enviar correo electrónico a marina.martin.prieto@gmail.com", "Send email to marina.martin.prieto@gmail.com")}
                     >
                       marina.martin.prieto@gmail.com
@@ -174,7 +176,7 @@ export default function Contact() {
                   <button
                     type="button"
                     onClick={handleCopyEmail}
-                    className="min-h-[44px] px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/25 hover:border-white/50 text-[#faf7f2] hover:text-white text-xs font-mono font-bold transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 shadow-sm"
+                    className="min-h-[44px] px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/25 hover:border-[#ffd8dc]/50 text-[#faf7f2] hover:text-[#ffd8dc] text-xs font-mono font-bold transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 shadow-sm"
                     aria-label={t("Copiar dirección de email al portapapeles", "Copy email address to clipboard")}
                   >
                     {copiedEmail ? (
@@ -191,7 +193,7 @@ export default function Contact() {
                   </button>
                   <a
                     href="mailto:marina.martin.prieto@gmail.com"
-                    className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#faf7f2] hover:bg-[#B8C5A8] text-[#263120] text-xs font-mono font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md hover:shadow-lg active:scale-95"
+                    className="min-h-[44px] px-5 py-2.5 rounded-xl bg-[#faf7f2] hover:bg-[#ffd8dc] text-[#263120] text-xs font-mono font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md hover:shadow-lg active:scale-95"
                     aria-label={t("Escribir correo a marina.martin.prieto@gmail.com", "Write email to marina.martin.prieto@gmail.com")}
                   >
                     <span>{t("Escribir", "Write")}</span>

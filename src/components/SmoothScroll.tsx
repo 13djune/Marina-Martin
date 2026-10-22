@@ -9,14 +9,20 @@ if (typeof window !== 'undefined') {
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    // Respect reduced motion preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.0,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.0,
+      syncTouch: false,
     });
 
     (window as any).lenis = lenis;
@@ -29,9 +35,16 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     };
 
     gsap.ticker.add(tickerCallback);
-    gsap.ticker.lagSmoothing(0);
+    // Smooth frame delta spikes instead of jumping abruptly
+    gsap.ticker.lagSmoothing(500, 33);
+
+    // Refresh scroll triggers after document layout stabilizes
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 400);
 
     return () => {
+      clearTimeout(refreshTimer);
       gsap.ticker.remove(tickerCallback);
       lenis.destroy();
       (window as any).lenis = undefined;

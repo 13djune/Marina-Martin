@@ -67,7 +67,7 @@ export default function Hero() {
         }
       }
 
-      // 2. Smooth, Unified Parallax on Scroll (Preserving solid contrast without sudden washed-out color shifts)
+      // 2. Smooth, Unified Parallax on Scroll (Inertial smoothing prevents micro-jumps)
       if (contentRef.current) {
         gsap.to(contentRef.current, {
           yPercent: -12,
@@ -77,7 +77,7 @@ export default function Hero() {
             trigger: section,
             start: 'top top',
             end: '85% top',
-            scrub: true,
+            scrub: 0.8,
           },
         });
       }
@@ -90,7 +90,7 @@ export default function Hero() {
             trigger: section,
             start: 'top top',
             end: 'bottom top',
-            scrub: true,
+            scrub: 0.8,
           },
         });
       }
@@ -103,7 +103,7 @@ export default function Hero() {
             trigger: section,
             start: 'top top',
             end: 'bottom top',
-            scrub: true,
+            scrub: 0.8,
           },
         });
       }
@@ -117,7 +117,7 @@ export default function Hero() {
             trigger: section,
             start: 'top top',
             end: '20% top',
-            scrub: true,
+            scrub: 0.5,
           },
         });
       }
@@ -241,7 +241,7 @@ export default function Hero() {
         <div className="flex items-center gap-2 sm:gap-3 text-[9px] sm:text-[10px] text-[#eedbe1]">
           <span>{t("MADRID · REMOTO", "MADRID · REMOTE")}</span>
           <span className="w-1.5 h-1.5 rounded-full bg-[#B8C5A8]" aria-hidden="true" />
-          <span>{t("ILUMINACIÓN CINEMATOGRÁFICA 8K", "8K CINEMATIC LIGHTING")}</span>
+          <span>{t("ILUMINACIÓN CINEMATOGRÁFICA", "CINEMATIC LIGHTING")}</span>
         </div>
       </div>
 
